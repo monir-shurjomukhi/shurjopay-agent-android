@@ -10,6 +10,8 @@ Branches:
 Git workflow
 ```GIT_WORKFLOW
 2) Git branch "rzrasel"
+    -
+    - Git project setup with android studio ⇒ Sunday December 26, 2021, 18:10:45
     - rzrasel (merge with) main → Sunday December 26, 2021, 18:04:01
 1) Git branch "main"
     - Create new branch "rzrasel" in git ⇒ Sunday December 26, 2021, 18:00:38
