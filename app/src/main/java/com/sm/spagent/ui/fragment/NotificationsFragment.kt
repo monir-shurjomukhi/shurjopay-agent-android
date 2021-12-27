@@ -1,4 +1,4 @@
-package com.sm.spagent.ui.notifications
+package com.sm.spagent.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,8 +8,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.sm.spagent.R
 import com.sm.spagent.databinding.FragmentNotificationsBinding
+import com.sm.spagent.ui.viewmodel.NotificationsViewModel
 
 class NotificationsFragment : Fragment() {
 

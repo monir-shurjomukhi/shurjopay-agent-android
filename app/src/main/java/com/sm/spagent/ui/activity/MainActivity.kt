@@ -1,4 +1,4 @@
-package com.sm.spagent
+package com.sm.spagent.ui.activity
 
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -7,6 +7,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.sm.spagent.R
 import com.sm.spagent.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
