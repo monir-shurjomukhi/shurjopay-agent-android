@@ -11,6 +11,7 @@ Git workflow
 ```GIT_WORKFLOW
 4) Git branch "rzrasel"
     -
+    - ModelHomeMenu data class created ⇒ Monday December 27, 2021, 18:38:43
     - ShopOwnerRepository class created ⇒ Monday December 27, 2021, 18:31:33
     - DatabaseShopOwnerInfo class created and RoomDatabase implemented ⇒ Monday December 27, 2021, 13:59:39
     - modelroomdb room data and database upadted ⇒ Monday December 27, 2021, 13:44:10

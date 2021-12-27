@@ -17,6 +17,6 @@ interface DaoShopOwnerInfo {
     @Query("delete from shop_owner_info")
     fun deleteAllNotes()
 
-    @Query("select * from shop_owner_info order by owner_name desc")
+    @Query("select * from shop_owner_info order by owner_name asc")
     fun getAllNotes(): LiveData<List<ModelShopOwnerInfo>>
 }
