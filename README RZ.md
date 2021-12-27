@@ -11,6 +11,7 @@ Git workflow
 ```GIT_WORKFLOW
 4) Git branch "rzrasel"
     -
+    - modelroomdb room data and database setup ⇒ Monday December 27, 2021, 13:19:42
     - rzrasel (merge with) main → Sunday December 26, 2021, 18:29:08
 3) Git branch "main"
     - main (merge with) rzrasel ⇨ Sunday December 26, 2021, 18:26:49
@@ -20,4 +21,8 @@ Git workflow
 1) Git branch "main"
     - Create new branch "rzrasel" in git ⇒ Sunday December 26, 2021, 18:00:38
     - Git regular pull push ⇨ Sunday December 26, 2021, 17:52:57
+```
+
+```DATE_TIME
+echo date("D", (time() + 6 * 60 * 60)) . "day " . date("F j, Y, G:i:s", (time() + 6 * 60 * 60));
 ```
