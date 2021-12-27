@@ -4,19 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
-interface ShopOwnerInfoDao {
+interface DaoShopOwnerInfo {
     @Insert
-    fun insert(shopOwnerInfo: ShopOwnerInfoModel)
+    fun insert(shopOwnerInfo: ModelShopOwnerInfo)
 
     @Update
-    fun update(shopOwnerInfo: ShopOwnerInfoModel)
+    fun update(shopOwnerInfo: ModelShopOwnerInfo)
 
     @Delete
-    fun delete(note: ShopOwnerInfoModel)
+    fun delete(note: ModelShopOwnerInfo)
 
     @Query("delete from shop_owner_info")
     fun deleteAllNotes()
 
     @Query("select * from shop_owner_info order by owner_name desc")
-    fun getAllNotes(): LiveData<List<ShopOwnerInfoModel>>
+    fun getAllNotes(): LiveData<List<ModelShopOwnerInfo>>
 }

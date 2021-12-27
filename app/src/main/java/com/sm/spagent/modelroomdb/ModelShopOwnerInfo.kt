@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "shop_owner_info")
-data class ShopOwnerInfoModel(
+data class ModelShopOwnerInfo(
     @PrimaryKey(autoGenerate = false) val id: Int? = null,
     val owner_name: String,
     val nid_no: String,
