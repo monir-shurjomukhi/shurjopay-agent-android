@@ -11,6 +11,7 @@ Git workflow
 ```GIT_WORKFLOW
 6) Git branch "rzrasel"
     -
+    - Design RecyclerView as home menu ⇨ Tuesday December 28, 2021, 17:16:43
     - HomeMenu ModelHomeMenu data class, RecyclerAdapterHomeMenu adapter is created ⇨ Tuesday December 28, 2021, 17:06:27
     - rzrasel (merge with) main ⇨ Tuesday December 28, 2021, 12:50:25
     - Regualr git pull push ⇨ Tuesday December 28, 2021, 12:48:53
