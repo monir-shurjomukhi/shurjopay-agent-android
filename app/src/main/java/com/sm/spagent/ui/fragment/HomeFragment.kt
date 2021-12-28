@@ -44,8 +44,6 @@ class HomeFragment : Fragment() {
             textView.text = it
         })
         //
-        //loadHomeMenu()
-        //val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
         val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(context, 3)
         binding.sysRecyclerViewMenu.layoutManager = layoutManager
         adapterHomeMenu = RecyclerAdapterHomeMenu()
