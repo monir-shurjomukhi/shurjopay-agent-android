@@ -9,8 +9,9 @@ Branches:
 
 Git workflow
 ```GIT_WORKFLOW
+7) Git branch "main"
+    - main (merge with) rzrasel → Tuesday December 28, 2021, 18:42:03
 6) Git branch "rzrasel"
-    -
     - Design RecyclerView and update home menu ⇨ Tuesday December 28, 2021, 18:38:56
     - Design RecyclerView as home menu ⇨ Tuesday December 28, 2021, 17:16:43
     - HomeMenu ModelHomeMenu data class, RecyclerAdapterHomeMenu adapter is created ⇨ Tuesday December 28, 2021, 17:06:27
