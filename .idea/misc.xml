@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/D Drive/Android Project/And Sm shurjoPay Agent/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/D Drive/Android Project/And Sm shurjoPay Agent/app/src/main/res/layout/fragment_dashboard.xml" value="0.20833333333333334" />
+        <entry key="..\:/D Drive/Android Project/And Sm shurjoPay Agent/app/src/main/res/layout/fragment_home.xml" value="0.20833333333333334" />
+        <entry key="..\:/D Drive/Android Project/And Sm shurjoPay Agent/app/src/main/res/layout/recycler_view_home_menu.xml" value="0.1" />
+        <entry key="..\:/D Drive/Android Project/And Sm shurjoPay Agent/app/src/main/res/menu/bottom_nav_menu.xml" value="0.20833333333333334" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3484375" />
       </map>
     </option>
