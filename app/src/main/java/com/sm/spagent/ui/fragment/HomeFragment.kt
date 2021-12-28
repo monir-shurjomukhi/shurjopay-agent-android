@@ -27,7 +27,6 @@ class HomeFragment : Fragment() {
 
     //
     private lateinit var adapterHomeMenu: RecyclerAdapterHomeMenu
-    private lateinit var homeMenuList: List<ModelHomeMenu>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,28 +44,20 @@ class HomeFragment : Fragment() {
             textView.text = it
         })
         //
-        loadHomeMenu()
+        //loadHomeMenu()
         //val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
         val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(context, 3)
         binding.sysRecyclerViewMenu.layoutManager = layoutManager
         adapterHomeMenu = RecyclerAdapterHomeMenu()
-        adapterHomeMenu.submitList(homeMenuList)
         binding.sysRecyclerViewMenu.adapter = adapterHomeMenu
+        homeViewModel.homeMenuData.observe(viewLifecycleOwner, Observer<List<Any>> { homeModel ->
+            adapterHomeMenu.submitList(homeModel as List<ModelHomeMenu>)
+        })
         return root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun loadHomeMenu() {
-        homeMenuList = listOf(
-            ModelHomeMenu("Attendance", null, null),
-            ModelHomeMenu("Change Password", null, null),
-            ModelHomeMenu("Recommendation", null, null),
-            ModelHomeMenu("New Merchandiser", null, null),
-            ModelHomeMenu("Merchandiser List", null, null),
-        )
     }
 }

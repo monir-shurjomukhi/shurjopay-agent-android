@@ -2,6 +2,7 @@ package com.sm.spagent
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.sm.spagent.databinding.RecyclerViewHomeMenuBinding
 import com.sm.spagent.modelroomdb.ModelHomeMenu
@@ -13,6 +14,7 @@ class RecyclerAdapterHomeMenu : RecyclerView.Adapter<RecyclerAdapterHomeMenu.Vie
     fun submitList(newData: List<ModelHomeMenu>) {
         adapterItemList.clear()
         adapterItemList.addAll(newData)
+        adapterItemList
         notifyDataSetChanged()
     }
 
