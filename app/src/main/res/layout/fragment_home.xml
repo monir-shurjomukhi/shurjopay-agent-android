@@ -89,7 +89,7 @@
             android:id="@+id/exitImageView"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            tools:src="@drawable/ic_attendance" />
+            tools:src="@drawable/ic_exit" />
 
         <TextView
             android:id="@+id/exitTextView"
@@ -128,6 +128,7 @@
             tools:src="@drawable/ic_new_merchant" />
 
         <TextView
+            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

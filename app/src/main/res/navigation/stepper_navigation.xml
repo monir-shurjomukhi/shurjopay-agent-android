@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_stepper"
+    app:startDestination="@id/step_1_dest">
+
+  <fragment
+      android:id="@+id/step_1_dest"
+      android:name="com.sm.spagent.ui.fragment.HomeFragment"
+      android:label="@string/personal_info" />
+
+  <fragment
+      android:id="@+id/step_2_dest"
+      android:name="com.sm.spagent.ui.fragment.DashboardFragment"
+      android:label="@string/shop_info" />
+
+  <fragment
+      android:id="@+id/step_3_dest"
+      android:name="com.sm.spagent.ui.fragment.NotificationsFragment"
+      android:label="@string/a_c_info" />
+</navigation>

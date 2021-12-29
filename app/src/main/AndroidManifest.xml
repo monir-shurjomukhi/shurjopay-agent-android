@@ -10,6 +10,9 @@
       android:supportsRtl="true"
       android:theme="@style/Theme.ShurjoPayAgent">
     <activity
+        android:name=".ui.activity.NewMerchantActivity"
+        android:exported="true" />
+    <activity
         android:name=".ui.activity.MainActivity"
         android:exported="true"
         android:label="@string/app_name">

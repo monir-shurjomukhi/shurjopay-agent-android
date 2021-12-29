@@ -6,7 +6,10 @@
   <string name="title_notifications">Notifications</string>
   <string name="attendance">Attendance\n</string>
   <string name="exit">Exit\n</string>
-  <string name="new_merchant">New Merchant</string>
+  <string name="new_merchant">New\nMerchant</string>
   <string name="synchronize">Synchronize\n</string>
   <string name="change_password">Change Password</string>
+  <string name="personal_info">Personal Info</string>
+  <string name="shop_info">Shop Info</string>
+  <string name="a_c_info">A/C Info</string>
 </resources>
