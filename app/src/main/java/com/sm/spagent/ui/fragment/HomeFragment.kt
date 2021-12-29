@@ -44,7 +44,7 @@ class HomeFragment : Fragment() {
       R.drawable.ic_synchronize
     )
     val adapter = HomeAdapter(requireContext(), gridItems, gridIcons)
-    binding.gridView.adapter = adapter
+    //binding.gridView.adapter = adapter
 
     return root
   }

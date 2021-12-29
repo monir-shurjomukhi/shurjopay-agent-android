@@ -4,9 +4,9 @@
   <string name="title_merchants">Merchants</string>
   <string name="title_dashboard">Dashboard</string>
   <string name="title_notifications">Notifications</string>
-  <string name="attendance">Attendance</string>
-  <string name="exit">Exit</string>
+  <string name="attendance">Attendance\n</string>
+  <string name="exit">Exit\n</string>
   <string name="new_merchant">New Merchant</string>
-  <string name="synchronize">Synchronize</string>
+  <string name="synchronize">Synchronize\n</string>
   <string name="change_password">Change Password</string>
 </resources>
