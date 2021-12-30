@@ -6,7 +6,7 @@
 
   <fragment
       android:id="@+id/step_1_dest"
-      android:name="com.sm.spagent.ui.fragment.HomeFragment"
+      android:name="com.sm.spagent.ui.fragment.PersonalInfoFragment"
       android:label="@string/personal_info" />
 
   <fragment

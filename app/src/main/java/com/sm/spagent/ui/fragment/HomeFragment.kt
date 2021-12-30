@@ -1,5 +1,6 @@
 package com.sm.spagent.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.sm.spagent.R
 import com.sm.spagent.databinding.FragmentHomeBinding
+import com.sm.spagent.ui.activity.NewMerchantActivity
 import com.sm.spagent.ui.adapter.HomeAdapter
 import com.sm.spagent.ui.viewmodel.HomeViewModel
 
@@ -45,6 +47,10 @@ class HomeFragment : Fragment() {
     )
     val adapter = HomeAdapter(requireContext(), gridItems, gridIcons)
     //binding.gridView.adapter = adapter
+
+    binding.newMerchantLayout.setOnClickListener {
+      startActivity(Intent(requireContext(), NewMerchantActivity::class.java))
+    }
 
     return root
   }
