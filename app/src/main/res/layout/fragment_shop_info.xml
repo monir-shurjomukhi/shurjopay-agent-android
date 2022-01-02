@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.PersonalInfoFragment">
+    tools:context=".ui.fragment.ShopInfoFragment">
 
   <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
@@ -324,66 +324,6 @@
       </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/ownerSignatureLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="#DDDDDD"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ownerNIDBackLayout">
-
-      <TextView
-          android:id="@+id/ownerSignatureTextView"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/shop_owner_signature"
-          android:textSize="16sp"
-          android:layout_marginTop="16dp"
-          android:layout_marginStart="16dp"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent" />
-
-      <com.google.android.material.card.MaterialCardView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
-          android:layout_marginBottom="16dp"
-          app:cardCornerRadius="4dp"
-          app:cardElevation="4dp"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/ownerSignaturePickerLayout">
-
-        <ImageView
-            android:id="@+id/ownerSignatureImageView"
-            android:layout_width="320dp"
-            android:layout_height="140dp"
-            android:src="@drawable/ic_baseline_gesture_24" />
-      </com.google.android.material.card.MaterialCardView>
-
-      <com.google.android.material.card.MaterialCardView
-          android:id="@+id/ownerSignaturePickerLayout"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
-          android:layout_marginEnd="16dp"
-          app:cardCornerRadius="4dp"
-          app:cardElevation="4dp"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:padding="8dp"
-            android:id="@+id/ownerSignaturePickerImageView"
-            android:src="@drawable/ic_baseline_add_a_photo_24"
-            android:layout_width="48dp"
-            android:layout_height="48dp" />
-      </com.google.android.material.card.MaterialCardView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/registerButton"
         android:layout_width="0dp"
@@ -397,6 +337,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ownerSignatureLayout" />
+        app:layout_constraintTop_toBottomOf="@id/ownerNIDBackLayout" />
   </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

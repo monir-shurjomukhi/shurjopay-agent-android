@@ -24,4 +24,5 @@
   <string name="owner_image">Owner Image</string>
   <string name="front_side_of_nid">Front Side of NID</string>
   <string name="back_side_of_nid">Back Side of NID</string>
+  <string name="shop_owner_signature">Shop Owner Signature</string>
 </resources>

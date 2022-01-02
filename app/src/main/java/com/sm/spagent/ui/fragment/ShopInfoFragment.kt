@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.sm.spagent.databinding.FragmentPersonalInfoBinding
 import com.sm.spagent.ui.viewmodel.DashboardViewModel
 
-class PersonalInfoFragment : Fragment() {
+class ShopInfoFragment : Fragment() {
 
   private lateinit var dashboardViewModel: DashboardViewModel
   private var _binding: FragmentPersonalInfoBinding? = null
