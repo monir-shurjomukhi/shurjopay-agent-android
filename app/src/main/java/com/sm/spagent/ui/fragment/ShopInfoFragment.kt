@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.sm.spagent.databinding.FragmentPersonalInfoBinding
+import com.sm.spagent.databinding.FragmentShopInfoBinding
 import com.sm.spagent.ui.viewmodel.DashboardViewModel
 
 class ShopInfoFragment : Fragment() {
 
   private lateinit var dashboardViewModel: DashboardViewModel
-  private var _binding: FragmentPersonalInfoBinding? = null
+  private var _binding: FragmentShopInfoBinding? = null
 
   // This property is only valid between onCreateView and
   // onDestroyView.
@@ -25,7 +25,7 @@ class ShopInfoFragment : Fragment() {
   ): View {
     dashboardViewModel = ViewModelProvider(this)[DashboardViewModel::class.java]
 
-    _binding = FragmentPersonalInfoBinding.inflate(inflater, container, false)
+    _binding = FragmentShopInfoBinding.inflate(inflater, container, false)
     val root: View = binding.root
 
     return root

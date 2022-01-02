@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.sm.spagent.databinding.FragmentPersonalInfoBinding
+import com.sm.spagent.ui.activity.NewMerchantActivity
 import com.sm.spagent.ui.viewmodel.DashboardViewModel
 
 class PersonalInfoFragment : Fragment() {
@@ -27,6 +28,10 @@ class PersonalInfoFragment : Fragment() {
 
     _binding = FragmentPersonalInfoBinding.inflate(inflater, container, false)
     val root: View = binding.root
+
+    binding.saveNextButton.setOnClickListener {
+      (activity as NewMerchantActivity).goToNextStep()
+    }
 
     return root
   }

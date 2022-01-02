@@ -25,4 +25,11 @@
   <string name="front_side_of_nid">Front Side of NID</string>
   <string name="back_side_of_nid">Back Side of NID</string>
   <string name="shop_owner_signature">Shop Owner Signature</string>
+  <string name="shop_business_name">Shop/Business Name</string>
+  <string name="shop_address">Shop Address</string>
+  <string name="shop_location">Shop Location</string>
+  <string name="division">Division</string>
+  <string name="district">District</string>
+  <string name="trade_license">Trade License</string>
+  <string name="shop_front">Shop Front</string>
 </resources>
