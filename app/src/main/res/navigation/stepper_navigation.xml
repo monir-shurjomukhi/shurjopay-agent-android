@@ -16,6 +16,6 @@
 
   <fragment
       android:id="@+id/step_3_dest"
-      android:name="com.sm.spagent.ui.fragment.NotificationsFragment"
-      android:label="@string/a_c_info" />
+      android:name="com.sm.spagent.ui.fragment.AccountInfoFragment"
+      android:label="@string/account_info" />
 </navigation>

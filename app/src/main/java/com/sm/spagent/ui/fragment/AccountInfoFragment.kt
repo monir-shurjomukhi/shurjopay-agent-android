@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.sm.spagent.R
 import com.sm.spagent.databinding.FragmentAccountInfoBinding
 import com.sm.spagent.ui.activity.NewMerchantActivity
 import com.sm.spagent.ui.viewmodel.DashboardViewModel
@@ -28,6 +29,16 @@ class AccountInfoFragment : Fragment() {
 
     _binding = FragmentAccountInfoBinding.inflate(inflater, container, false)
     val root: View = binding.root
+
+    binding.accountRadioGroup.setOnCheckedChangeListener { _, checkedId ->
+      if (checkedId == R.id.existingAccountRadioButton) {
+        binding.accountInfoLayout.visibility = View.VISIBLE
+        binding.nomineeInfoLayout.visibility = View.GONE
+      } else {
+        binding.accountInfoLayout.visibility = View.GONE
+        binding.nomineeInfoLayout.visibility = View.VISIBLE
+      }
+    }
 
     binding.saveNextButton.setOnClickListener {
       (activity as NewMerchantActivity).goToNextStep()
