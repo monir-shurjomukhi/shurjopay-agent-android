@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.sm.spagent.R
 import com.sm.spagent.databinding.FragmentHomeBinding
 import com.sm.spagent.ui.activity.NewMerchantActivity
-import com.sm.spagent.ui.adapter.HomeAdapter
 import com.sm.spagent.ui.viewmodel.HomeViewModel
 
 class HomeFragment : Fragment() {
@@ -45,10 +44,19 @@ class HomeFragment : Fragment() {
       R.drawable.ic_new_merchant,
       R.drawable.ic_synchronize
     )
-    val adapter = HomeAdapter(requireContext(), gridItems, gridIcons)
+    //val adapter = HomeAdapter(requireContext(), gridItems, gridIcons)
     //binding.gridView.adapter = adapter
 
     binding.newMerchantLayout.setOnClickListener {
+      startActivity(Intent(requireContext(), NewMerchantActivity::class.java))
+    }
+    binding.attendanceLayout.setOnClickListener {
+      startActivity(Intent(requireContext(), NewMerchantActivity::class.java))
+    }
+    binding.exitLayout.setOnClickListener {
+      startActivity(Intent(requireContext(), NewMerchantActivity::class.java))
+    }
+    binding.synchronizeLayout.setOnClickListener {
       startActivity(Intent(requireContext(), NewMerchantActivity::class.java))
     }
 

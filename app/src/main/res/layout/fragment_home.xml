@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.HomeFragment">
 
   <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_gravity="center"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:padding="12dp"
-      tools:context=".ui.fragment.HomeFragment">
+      android:padding="12dp">
 
     <!--<GridView
         android:padding="@dimen/activity_horizontal_margin"
@@ -52,7 +52,7 @@
             android:id="@+id/itemImageView"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            tools:src="@drawable/ic_attendance" />
+            android:src="@drawable/ic_attendance" />
 
         <TextView
             android:id="@+id/itemNameTextView"
@@ -61,7 +61,7 @@
             android:layout_marginTop="8dp"
             android:textSize="20sp"
             android:textStyle="bold"
-            tools:text="@string/attendance" />
+            android:text="@string/attendance" />
       </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -86,10 +86,9 @@
           android:padding="16dp">
 
         <ImageView
-            android:id="@+id/exitImageView"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            tools:src="@drawable/ic_exit" />
+            android:src="@drawable/ic_exit" />
 
         <TextView
             android:id="@+id/exitTextView"
@@ -98,7 +97,7 @@
             android:layout_marginTop="8dp"
             android:textSize="20sp"
             android:textStyle="bold"
-            tools:text="@string/exit" />
+            android:text="@string/exit" />
       </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -125,7 +124,7 @@
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
-            tools:src="@drawable/ic_new_merchant" />
+            android:src="@drawable/ic_new_merchant" />
 
         <TextView
             android:gravity="center"
@@ -161,7 +160,7 @@
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
-            tools:src="@drawable/ic_synchronize" />
+            android:src="@drawable/ic_synchronize" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -169,7 +168,7 @@
             android:layout_marginTop="8dp"
             android:textSize="20sp"
             android:textStyle="bold"
-            tools:text="@string/synchronize" />
+            android:text="@string/synchronize" />
       </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
   </androidx.constraintlayout.widget.ConstraintLayout>
