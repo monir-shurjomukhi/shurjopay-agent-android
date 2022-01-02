@@ -6,14 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.sm.spagent.databinding.FragmentShopInfoBinding
+import com.sm.spagent.databinding.FragmentAccountInfoBinding
 import com.sm.spagent.ui.activity.NewMerchantActivity
 import com.sm.spagent.ui.viewmodel.DashboardViewModel
 
-class ShopInfoFragment : Fragment() {
+class AccountInfoFragment : Fragment() {
 
   private lateinit var dashboardViewModel: DashboardViewModel
-  private var _binding: FragmentShopInfoBinding? = null
+  private var _binding: FragmentAccountInfoBinding? = null
 
   // This property is only valid between onCreateView and
   // onDestroyView.
@@ -26,7 +26,7 @@ class ShopInfoFragment : Fragment() {
   ): View {
     dashboardViewModel = ViewModelProvider(this)[DashboardViewModel::class.java]
 
-    _binding = FragmentShopInfoBinding.inflate(inflater, container, false)
+    _binding = FragmentAccountInfoBinding.inflate(inflater, container, false)
     val root: View = binding.root
 
     binding.saveNextButton.setOnClickListener {

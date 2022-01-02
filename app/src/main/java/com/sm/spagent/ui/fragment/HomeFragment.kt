@@ -51,13 +51,13 @@ class HomeFragment : Fragment() {
       startActivity(Intent(requireContext(), NewMerchantActivity::class.java))
     }
     binding.attendanceLayout.setOnClickListener {
-      startActivity(Intent(requireContext(), NewMerchantActivity::class.java))
+//      startActivity(Intent(requireContext(), NewMerchantActivity::class.java))
     }
     binding.exitLayout.setOnClickListener {
-      startActivity(Intent(requireContext(), NewMerchantActivity::class.java))
+//      startActivity(Intent(requireContext(), NewMerchantActivity::class.java))
     }
     binding.synchronizeLayout.setOnClickListener {
-      startActivity(Intent(requireContext(), NewMerchantActivity::class.java))
+//      startActivity(Intent(requireContext(), NewMerchantActivity::class.java))
     }
 
     return root
