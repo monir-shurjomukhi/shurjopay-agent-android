@@ -32,8 +32,11 @@ class PersonalInfoFragment : Fragment() {
     _binding = FragmentPersonalInfoBinding.inflate(inflater, container, false)
     val root: View = binding.root
 
+    binding.divisionLayout.setOnKeyListener(null)
+    binding.districtLayout.setOnKeyListener(null)
+    binding.policeStationLayout.setOnKeyListener(null)
+
     binding.dobLayout.editText?.showSoftInputOnFocus = false
-//    binding.dobLayout.setOnClickListener { showDatePickerDialog() }
     binding.dobLayout.editText?.setOnTouchListener { _, event ->
       if(event.action == MotionEvent.ACTION_UP) {
         showDatePickerDialog()
@@ -61,7 +64,8 @@ class PersonalInfoFragment : Fragment() {
     val d = c.get(Calendar.DAY_OF_MONTH)
 
     val dialog = DatePickerDialog(requireContext(), { _, year, monthOfYear, dayOfMonth ->
-      binding.dobLayout.editText?.setText("$year-${monthOfYear+1}-$dayOfMonth")
+      val date = "$year-${monthOfYear+1}-$dayOfMonth"
+      binding.dobLayout.editText?.setText(date)
     }, y, m, d)
 
     dialog.show()
