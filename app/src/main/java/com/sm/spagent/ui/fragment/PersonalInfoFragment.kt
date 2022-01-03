@@ -1,7 +1,9 @@
 package com.sm.spagent.ui.fragment
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -9,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.sm.spagent.databinding.FragmentPersonalInfoBinding
 import com.sm.spagent.ui.activity.NewMerchantActivity
 import com.sm.spagent.ui.viewmodel.DashboardViewModel
+import java.util.*
 
 class PersonalInfoFragment : Fragment() {
 
@@ -29,6 +32,16 @@ class PersonalInfoFragment : Fragment() {
     _binding = FragmentPersonalInfoBinding.inflate(inflater, container, false)
     val root: View = binding.root
 
+    binding.dobLayout.editText?.showSoftInputOnFocus = false
+//    binding.dobLayout.setOnClickListener { showDatePickerDialog() }
+    binding.dobLayout.editText?.setOnTouchListener { _, event ->
+      if(event.action == MotionEvent.ACTION_UP) {
+        showDatePickerDialog()
+        true
+      }
+      false
+    }
+
     binding.saveNextButton.setOnClickListener {
       (activity as NewMerchantActivity).goToNextStep()
     }
@@ -39,5 +52,18 @@ class PersonalInfoFragment : Fragment() {
   override fun onDestroyView() {
     super.onDestroyView()
     _binding = null
+  }
+
+  private fun showDatePickerDialog() {
+    val c = Calendar.getInstance()
+    val y = c.get(Calendar.YEAR)
+    val m = c.get(Calendar.MONTH)
+    val d = c.get(Calendar.DAY_OF_MONTH)
+
+    val dialog = DatePickerDialog(requireContext(), { _, year, monthOfYear, dayOfMonth ->
+      binding.dobLayout.editText?.setText("$year-${monthOfYear+1}-$dayOfMonth")
+    }, y, m, d)
+
+    dialog.show()
   }
 }
