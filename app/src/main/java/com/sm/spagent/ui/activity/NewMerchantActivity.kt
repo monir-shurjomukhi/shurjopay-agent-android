@@ -2,6 +2,7 @@ package com.sm.spagent.ui.activity
 
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.aceinteract.android.stepper.StepperNavListener
@@ -19,7 +20,7 @@ class NewMerchantActivity : AppCompatActivity(), StepperNavListener {
     //setSupportActionBar(binding.toolbar)
     supportActionBar?.setDisplayHomeAsUpEnabled(true)
     supportActionBar?.setDisplayShowHomeEnabled(true)
-
+    supportActionBar?.title = getString(R.string.new_merchant)
 
     binding.stepper.setupWithNavController(findNavController(R.id.frame_stepper))
     binding.stepper.stepperNavListener = this
@@ -34,7 +35,15 @@ class NewMerchantActivity : AppCompatActivity(), StepperNavListener {
   }
 
   override fun onStepChanged(step: Int) {
-    Log.d(TAG, "onStepChanged: ")
+    Log.d(TAG, "onStepChanged: $step")
+  }
+
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    // handle arrow click here
+    if (item.itemId == android.R.id.home) {
+      onBackPressed()
+    }
+    return super.onOptionsItemSelected(item)
   }
 
   companion object {

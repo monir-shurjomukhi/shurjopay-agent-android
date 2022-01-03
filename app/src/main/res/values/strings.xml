@@ -47,4 +47,9 @@
   <string name="branch_name">Branch Name</string>
   <string name="routing_number">Routing Number</string>
   <string name="account_info">Account Info</string>
+  <string name="account_category">Account Category</string>
+  <string name="existing">Existing</string>
+  <string name="new_">New</string>
+  <string name="mfs">MFS</string>
+  <string name="mfs_name">MFS Name</string>
 </resources>

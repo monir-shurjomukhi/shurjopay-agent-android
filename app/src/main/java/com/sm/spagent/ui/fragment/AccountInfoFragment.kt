@@ -31,12 +31,22 @@ class AccountInfoFragment : Fragment() {
     val root: View = binding.root
 
     binding.accountRadioGroup.setOnCheckedChangeListener { _, checkedId ->
-      if (checkedId == R.id.existingAccountRadioButton) {
-        binding.accountInfoLayout.visibility = View.VISIBLE
-        binding.nomineeInfoLayout.visibility = View.GONE
-      } else {
-        binding.accountInfoLayout.visibility = View.GONE
-        binding.nomineeInfoLayout.visibility = View.VISIBLE
+      when (checkedId) {
+        R.id.existingAccountRadioButton -> {
+          binding.accountInfoLayout.visibility = View.VISIBLE
+          binding.nomineeInfoLayout.visibility = View.GONE
+          binding.mfsInfoLayout.visibility = View.GONE
+        }
+        R.id.newAccountRadioButton -> {
+          binding.accountInfoLayout.visibility = View.GONE
+          binding.nomineeInfoLayout.visibility = View.VISIBLE
+          binding.mfsInfoLayout.visibility = View.GONE
+        }
+        R.id.mfsAccountRadioButton -> {
+          binding.accountInfoLayout.visibility = View.GONE
+          binding.nomineeInfoLayout.visibility = View.GONE
+          binding.mfsInfoLayout.visibility = View.VISIBLE
+        }
       }
     }
 

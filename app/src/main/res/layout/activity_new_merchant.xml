@@ -45,7 +45,7 @@
         app:stepperTextColor="@android:color/black"
         app:stepperTextSize="12sp"
         app:stepperType="tab"
-        app:stepperWidgetColor="@color/teal_200" />
+        app:stepperWidgetColor="@color/purple_500" />
   </androidx.cardview.widget.CardView>
 
   <fragment
