@@ -53,4 +53,12 @@
   <string name="mfs">MFS</string>
   <string name="mfs_name">MFS Name</string>
   <string name="police_station">Police Station</string>
+  <string name="existing_bank">Existing Bank</string>
+  <string name="unable_to_connect">Unable To Connect</string>
+  <string name="login">Login</string>
+  <string name="password">Password</string>
+  <string name="username">Username</string>
+  <string name="this_field_is_required">This field is required</string>
+  <string name="mobile_number_is_invalid">Mobile number is invalid</string>
+  <string name="mobile_number_or_password_did_not_match">Mobile number or password did not match!</string>
 </resources>

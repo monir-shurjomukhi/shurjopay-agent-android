@@ -47,7 +47,7 @@ interface ApiInterface {
     @Body otp: Otp
   ): Response<Otp>
 
-  @POST("customer-login")
+  @POST("qr-login")
   suspend fun login(
     @Body login: Login
   ): Response<Login>
