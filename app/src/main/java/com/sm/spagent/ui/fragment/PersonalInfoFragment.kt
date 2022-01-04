@@ -64,6 +64,10 @@ class PersonalInfoFragment : Fragment() {
           binding.ownerSignatureImageView.setImageBitmap(bitmap)
           ownerSignature = Base64.encodeToString(byteArray, Base64.DEFAULT)
         }
+        else -> {
+          binding.ownerImageView.setImageBitmap(bitmap)
+          ownerImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
+        }
       }
     } else {
       // an error occurred
@@ -95,10 +99,10 @@ class PersonalInfoFragment : Fragment() {
       false
     }
 
-    binding.ownerImagePickerLayout.setOnClickListener { startOwnerImageCrop() }
-    binding.ownerNIDFrontPickerLayout.setOnClickListener { startNIDFrontCrop() }
-    binding.ownerNIDBackPickerLayout.setOnClickListener { startNIDBackCrop() }
-    binding.ownerSignatureLayout.setOnClickListener { startOwnerSignatureCrop() }
+    binding.ownerImagePickerLayout.setOnClickListener { startImageCrop(ImageType.OWNER) }
+    binding.ownerNIDFrontPickerLayout.setOnClickListener { startImageCrop(ImageType.OWNER_NID_FRONT) }
+    binding.ownerNIDBackPickerLayout.setOnClickListener { startImageCrop(ImageType.OWNER_NID_BACK) }
+    binding.ownerSignatureLayout.setOnClickListener { startImageCrop(ImageType.OWNER_SIGNATURE) }
 
     binding.saveNextButton.setOnClickListener {
       (activity as NewMerchantActivity).goToNextStep()
@@ -126,8 +130,8 @@ class PersonalInfoFragment : Fragment() {
     dialog.show()
   }
 
-  private fun startOwnerImageCrop() {
-    imageType = ImageType.OWNER
+  private fun startImageCrop(type: ImageType) {
+    imageType = type
     cropImage.launch(
       options {
         setImageSource(
@@ -135,52 +139,13 @@ class PersonalInfoFragment : Fragment() {
           includeCamera = true
         )
         setGuidelines(CropImageView.Guidelines.ON_TOUCH)
-        setAspectRatio(3, 4)
-        setFixAspectRatio(true)
-      }
-    )
-  }
-
-  private fun startNIDFrontCrop() {
-    imageType = ImageType.OWNER_NID_FRONT
-    cropImage.launch(
-      options {
-        setImageSource(
-          includeGallery = false,
-          includeCamera = true
-        )
-        setGuidelines(CropImageView.Guidelines.ON_TOUCH)
-        setAspectRatio(4, 3)
-        setFixAspectRatio(true)
-      }
-    )
-  }
-
-  private fun startNIDBackCrop() {
-    imageType = ImageType.OWNER_NID_BACK
-    cropImage.launch(
-      options {
-        setImageSource(
-          includeGallery = false,
-          includeCamera = true
-        )
-        setGuidelines(CropImageView.Guidelines.ON_TOUCH)
-        setAspectRatio(4, 3)
-        setFixAspectRatio(true)
-      }
-    )
-  }
-
-  private fun startOwnerSignatureCrop() {
-    imageType = ImageType.OWNER_SIGNATURE
-    cropImage.launch(
-      options {
-        setImageSource(
-          includeGallery = false,
-          includeCamera = true
-        )
-        setGuidelines(CropImageView.Guidelines.ON_TOUCH)
-        setAspectRatio(2, 1)
+        when(imageType) {
+          ImageType.OWNER -> setAspectRatio(3, 4)
+          ImageType.OWNER_NID_FRONT -> setAspectRatio(4, 3)
+          ImageType.OWNER_NID_BACK -> setAspectRatio(4, 3)
+          ImageType.OWNER_SIGNATURE -> setAspectRatio(2, 1)
+          else -> setAspectRatio(3, 4)
+        }
         setFixAspectRatio(true)
       }
     )
