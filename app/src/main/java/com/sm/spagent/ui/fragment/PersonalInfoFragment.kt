@@ -8,6 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageView
+import com.canhub.cropper.options
 import com.sm.spagent.databinding.FragmentPersonalInfoBinding
 import com.sm.spagent.ui.activity.NewMerchantActivity
 import com.sm.spagent.ui.viewmodel.DashboardViewModel
@@ -21,6 +24,18 @@ class PersonalInfoFragment : Fragment() {
   // This property is only valid between onCreateView and
   // onDestroyView.
   private val binding get() = _binding!!
+
+  private val cropImage = registerForActivityResult(CropImageContract()) { result ->
+    if (result.isSuccessful) {
+      // use the returned uri
+      val uriContent = result.uriContent
+      val uriFilePath = result.getUriFilePath(requireContext()) // optional usage
+      binding.ownerImageView.setImageURI(uriContent)
+    } else {
+      // an error occurred
+      val exception = result.error
+    }
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -44,6 +59,8 @@ class PersonalInfoFragment : Fragment() {
       }
       false
     }
+
+    binding.ownerImagePickerLayout.setOnClickListener { startCrop() }
 
     binding.saveNextButton.setOnClickListener {
       (activity as NewMerchantActivity).goToNextStep()
@@ -69,5 +86,19 @@ class PersonalInfoFragment : Fragment() {
     }, y, m, d)
 
     dialog.show()
+  }
+
+  private fun startCrop() {
+    cropImage.launch(
+      options {
+        setImageSource(
+          includeGallery = false,
+          includeCamera = true
+        )
+        setGuidelines(CropImageView.Guidelines.ON_TOUCH)
+        setAspectRatio(3, 4)
+        setFixAspectRatio(true)
+      }
+    )
   }
 }
