@@ -7,26 +7,26 @@ import android.provider.MediaStore
 import android.text.InputType
 import android.util.Base64
 import android.util.Log
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageView
 import com.canhub.cropper.options
+import com.sm.spagent.R
 import com.sm.spagent.databinding.FragmentPersonalInfoBinding
 import com.sm.spagent.model.ImageType
-import com.sm.spagent.ui.activity.NewMerchantActivity
 import com.sm.spagent.ui.viewmodel.PersonalInfoViewModel
 import java.io.ByteArrayOutputStream
 import java.util.*
 
 
-class PersonalInfoFragment : Fragment() {
+class PersonalInfoFragment : BaseFragment() {
 
   private lateinit var viewModel: PersonalInfoViewModel
   private var _binding: FragmentPersonalInfoBinding? = null
@@ -91,6 +91,20 @@ class PersonalInfoFragment : Fragment() {
     _binding = FragmentPersonalInfoBinding.inflate(inflater, container, false)
     val root: View = binding.root
 
+    setupViews()
+    observeData()
+
+    viewModel.getDivisions()
+
+    return root
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
+  }
+
+  private fun setupViews() {
     binding.divisionTextView.inputType = InputType.TYPE_NULL
     binding.districtTextView.inputType = InputType.TYPE_NULL
     binding.policeStationTextView.inputType = InputType.TYPE_NULL
@@ -128,9 +142,12 @@ class PersonalInfoFragment : Fragment() {
     }
 
     binding.saveNextButton.setOnClickListener {
-      (activity as NewMerchantActivity).goToNextStep()
+//      (activity as NewMerchantActivity).goToNextStep()
+      validateInputs()
     }
+  }
 
+  private fun observeData() {
     viewModel.division.observe(viewLifecycleOwner, { division ->
       divisions.clear()
       for(data in division.divisions!!) {
@@ -178,15 +195,6 @@ class PersonalInfoFragment : Fragment() {
         }
       }
     })
-
-    viewModel.getDivisions()
-
-    return root
-  }
-
-  override fun onDestroyView() {
-    super.onDestroyView()
-    _binding = null
   }
 
   private fun showDatePickerDialog() {
@@ -222,6 +230,117 @@ class PersonalInfoFragment : Fragment() {
         setFixAspectRatio(true)
       }
     )
+  }
+
+  private fun validateInputs() {
+    val name = binding.nameLayout.editText?.text.toString()
+    val contactNo = binding.contactLayout.editText?.text.toString()
+    val email = binding.emailLayout.editText?.text.toString()
+    val nid = binding.nidLayout.editText?.text.toString()
+    val tin = binding.tinLayout.editText?.text.toString()
+    val address = binding.addressLayout.editText?.text.toString()
+    val division = binding.divisionTextView.text.toString()
+    val district = binding.districtTextView.text.toString()
+    val policeStation = binding.policeStationTextView.text.toString()
+    val dob = binding.dobLayout.editText?.text.toString()
+
+    if (name.isEmpty()) {
+      binding.nameLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.nameLayout.y.toInt())
+      return
+    } else {
+      binding.nameLayout.error = null
+    }
+    if (contactNo.isEmpty()) {
+      binding.contactLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.contactLayout.y.toInt())
+      return
+    } else {
+      binding.contactLayout.error = null
+    }
+    if (contactNo.length != 11 || !contactNo.startsWith("01")) {
+      binding.contactLayout.error = getString(R.string.contact_number_is_invalid)
+      binding.scrollView.smoothScrollTo(0, binding.contactLayout.y.toInt())
+      return
+    } else {
+      binding.contactLayout.error = null
+    }
+    if (email.isNotEmpty() && !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+      binding.emailLayout.error = getString(R.string.email_is_invalid)
+      binding.scrollView.smoothScrollTo(0, binding.emailLayout.y.toInt())
+      return
+    } else {
+      binding.emailLayout.error = null
+    }
+    if (nid.isEmpty()) {
+      binding.nidLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.nidLayout.y.toInt())
+      return
+    } else {
+      binding.nidLayout.error = null
+    }
+    if (nid.length != 10 && nid.length != 13 && nid.length != 17) {
+      binding.nidLayout.error = getString(R.string.nid_is_invalid)
+      binding.scrollView.smoothScrollTo(0, binding.nidLayout.y.toInt())
+      return
+    } else {
+      binding.nidLayout.error = null
+    }
+    if (address.isEmpty()) {
+      binding.addressLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.addressLayout.y.toInt())
+      return
+    } else {
+      binding.addressLayout.error = null
+    }
+    if (division.isEmpty()) {
+      binding.divisionLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.divisionLayout.y.toInt())
+      return
+    } else {
+      binding.divisionLayout.error = null
+    }
+    if (district.isEmpty()) {
+      binding.districtLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.districtLayout.y.toInt())
+      return
+    } else {
+      binding.districtLayout.error = null
+    }
+    if (policeStation.isEmpty()) {
+      binding.policeStationLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.policeStationLayout.y.toInt())
+      return
+    } else {
+      binding.policeStationLayout.error = null
+    }
+    if (dob.isEmpty()) {
+      binding.dobLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.dobLayout.y.toInt())
+      return
+    } else {
+      binding.dobLayout.error = null
+    }
+    if (ownerImage == null) {
+      shortSnack(binding.ownerImageLayout, R.string.capture_shop_owner_image)
+      binding.scrollView.smoothScrollTo(0, binding.ownerImageLayout.y.toInt())
+      return
+    }
+    if (ownerNIDFront == null) {
+      shortSnack(binding.ownerNIDFrontLayout, R.string.capture_front_side_of_nid)
+      binding.scrollView.smoothScrollTo(0, binding.ownerNIDFrontLayout.y.toInt())
+      return
+    }
+    if (ownerNIDBack == null) {
+      shortSnack(binding.ownerNIDBackLayout, R.string.capture_back_side_of_nid)
+      binding.scrollView.smoothScrollTo(0, binding.ownerNIDBackLayout.y.toInt())
+      return
+    }
+    if (ownerSignature == null) {
+      shortSnack(binding.ownerSignatureLayout, R.string.capture_shop_owner_signature)
+      binding.scrollView.smoothScrollTo(0, binding.ownerSignatureLayout.y.toInt())
+      return
+    }
   }
 
   companion object {
