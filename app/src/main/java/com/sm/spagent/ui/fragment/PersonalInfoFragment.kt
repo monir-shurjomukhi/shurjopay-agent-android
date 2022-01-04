@@ -12,6 +12,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.canhub.cropper.CropImageContract
@@ -108,6 +109,14 @@ class PersonalInfoFragment : Fragment() {
     binding.ownerNIDBackPickerLayout.setOnClickListener { startImageCrop(ImageType.OWNER_NID_BACK) }
     binding.ownerSignatureLayout.setOnClickListener { startImageCrop(ImageType.OWNER_SIGNATURE) }
 
+    binding.divisionTextView.doAfterTextChanged { text ->
+      binding.districtTextView.text = null
+      if (text?.isNotEmpty() == true) {
+        val divisionId = divisions[text.toString()]
+        viewModel.getDistricts(divisionId!!)
+      }
+    }
+
     binding.saveNextButton.setOnClickListener {
       (activity as NewMerchantActivity).goToNextStep()
     }
@@ -124,6 +133,22 @@ class PersonalInfoFragment : Fragment() {
           divisions.keys.toList()
         ).also { adapter ->
           binding.divisionTextView.setAdapter(adapter)
+        }
+      }
+    })
+
+    viewModel.district.observe(viewLifecycleOwner, { district ->
+      districts.clear()
+      for(data in district.districts!!) {
+        districts[data.district_name.toString()] = data.id!!
+      }
+
+      context?.let {
+        ArrayAdapter(
+          it, android.R.layout.simple_list_item_1,
+          districts.keys.toList()
+        ).also { adapter ->
+          binding.districtTextView.setAdapter(adapter)
         }
       }
     })

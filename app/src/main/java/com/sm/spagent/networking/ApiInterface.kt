@@ -5,6 +5,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiInterface {
 
@@ -13,16 +14,15 @@ interface ApiInterface {
   @GET("qr-division-names")
   suspend fun getDivisions(): Response<Division>
 
+  @GET("qr-district-names/{division_id}")
+  suspend fun getDistricts(
+    @Path("division_id") divisionId: Int
+  ): Response<District>
+
   /*@GET("counterNumbers/createCounterNumber/")
   fun createCounterNumber(
     @Header("Authorization") token: String
-  ): Call<CounterNumber>
-
-  @GET("customers/getByMobileNumber/{mobile_number}")
-  fun getCustomer(
-    @Header("Authorization") token: String,
-    @Path("mobile_number") mobileNumber: String
-  ): Call<Customer>*/
+  ): Call<CounterNumber>*/
 
   //////////////////// POST ///////////////////
 

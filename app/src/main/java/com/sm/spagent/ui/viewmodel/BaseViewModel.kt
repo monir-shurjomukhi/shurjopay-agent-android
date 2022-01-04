@@ -1,6 +1,7 @@
 package com.sm.spagent.ui.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.sm.spagent.networking.ApiClient
@@ -19,4 +20,12 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
       "https://stagingapp.engine.shurjopayment.com/api/",
       preference.getToken()!!
     ).create(ApiInterface::class.java)
+
+    init {
+      Log.d(TAG, "token: ${preference.getToken()}")
+    }
+
+  companion object {
+    private const val TAG = "BaseViewModel"
+  }
 }
