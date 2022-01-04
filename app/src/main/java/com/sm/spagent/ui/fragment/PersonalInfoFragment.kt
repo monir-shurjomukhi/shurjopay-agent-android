@@ -1,7 +1,11 @@
 package com.sm.spagent.ui.fragment
 
 import android.app.DatePickerDialog
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Base64
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -12,14 +16,23 @@ import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageView
 import com.canhub.cropper.options
 import com.sm.spagent.databinding.FragmentPersonalInfoBinding
+import com.sm.spagent.model.ImageType
 import com.sm.spagent.ui.activity.NewMerchantActivity
 import com.sm.spagent.ui.viewmodel.DashboardViewModel
+import java.io.ByteArrayOutputStream
 import java.util.*
+
 
 class PersonalInfoFragment : Fragment() {
 
   private lateinit var dashboardViewModel: DashboardViewModel
   private var _binding: FragmentPersonalInfoBinding? = null
+
+  private var imageType = ImageType.OWNER
+  private var ownerImage: String? = null
+  private var ownerNIDFront: String? = null
+  private var ownerNIDBack: String? = null
+  private var ownerSignature: String? = null
 
   // This property is only valid between onCreateView and
   // onDestroyView.
@@ -30,10 +43,32 @@ class PersonalInfoFragment : Fragment() {
       // use the returned uri
       val uriContent = result.uriContent
       val uriFilePath = result.getUriFilePath(requireContext()) // optional usage
-      binding.ownerImageView.setImageURI(uriContent)
+      val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, uriContent)
+      val outputStream = ByteArrayOutputStream()
+      bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+      val byteArray: ByteArray = outputStream.toByteArray()
+      when (imageType) {
+        ImageType.OWNER -> {
+          binding.ownerImageView.setImageBitmap(bitmap)
+          ownerImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
+        }
+        ImageType.OWNER_NID_FRONT -> {
+          binding.ownerNIDFrontImageView.setImageBitmap(bitmap)
+          ownerNIDFront = Base64.encodeToString(byteArray, Base64.DEFAULT)
+        }
+        ImageType.OWNER_NID_BACK -> {
+          binding.ownerNIDBackImageView.setImageBitmap(bitmap)
+          ownerNIDBack = Base64.encodeToString(byteArray, Base64.DEFAULT)
+        }
+        ImageType.OWNER_SIGNATURE -> {
+          binding.ownerSignatureImageView.setImageBitmap(bitmap)
+          ownerSignature = Base64.encodeToString(byteArray, Base64.DEFAULT)
+        }
+      }
     } else {
       // an error occurred
       val exception = result.error
+      Log.e(TAG, "exception: ${exception?.message}", exception)
     }
   }
 
@@ -60,7 +95,10 @@ class PersonalInfoFragment : Fragment() {
       false
     }
 
-    binding.ownerImagePickerLayout.setOnClickListener { startCrop() }
+    binding.ownerImagePickerLayout.setOnClickListener { startOwnerImageCrop() }
+    binding.ownerNIDFrontPickerLayout.setOnClickListener { startNIDFrontCrop() }
+    binding.ownerNIDBackPickerLayout.setOnClickListener { startNIDBackCrop() }
+    binding.ownerSignatureLayout.setOnClickListener { startOwnerSignatureCrop() }
 
     binding.saveNextButton.setOnClickListener {
       (activity as NewMerchantActivity).goToNextStep()
@@ -88,7 +126,8 @@ class PersonalInfoFragment : Fragment() {
     dialog.show()
   }
 
-  private fun startCrop() {
+  private fun startOwnerImageCrop() {
+    imageType = ImageType.OWNER
     cropImage.launch(
       options {
         setImageSource(
@@ -100,5 +139,54 @@ class PersonalInfoFragment : Fragment() {
         setFixAspectRatio(true)
       }
     )
+  }
+
+  private fun startNIDFrontCrop() {
+    imageType = ImageType.OWNER_NID_FRONT
+    cropImage.launch(
+      options {
+        setImageSource(
+          includeGallery = false,
+          includeCamera = true
+        )
+        setGuidelines(CropImageView.Guidelines.ON_TOUCH)
+        setAspectRatio(4, 3)
+        setFixAspectRatio(true)
+      }
+    )
+  }
+
+  private fun startNIDBackCrop() {
+    imageType = ImageType.OWNER_NID_BACK
+    cropImage.launch(
+      options {
+        setImageSource(
+          includeGallery = false,
+          includeCamera = true
+        )
+        setGuidelines(CropImageView.Guidelines.ON_TOUCH)
+        setAspectRatio(4, 3)
+        setFixAspectRatio(true)
+      }
+    )
+  }
+
+  private fun startOwnerSignatureCrop() {
+    imageType = ImageType.OWNER_SIGNATURE
+    cropImage.launch(
+      options {
+        setImageSource(
+          includeGallery = false,
+          includeCamera = true
+        )
+        setGuidelines(CropImageView.Guidelines.ON_TOUCH)
+        setAspectRatio(2, 1)
+        setFixAspectRatio(true)
+      }
+    )
+  }
+
+  companion object {
+    private const val TAG = "PersonalInfoFragment"
   }
 }

@@ -420,7 +420,7 @@
         <ImageView
             android:id="@+id/ownerSignatureImageView"
             android:layout_width="320dp"
-            android:layout_height="140dp"
+            android:layout_height="160dp"
             android:src="@drawable/ic_baseline_gesture_24" />
       </com.google.android.material.card.MaterialCardView>
 
