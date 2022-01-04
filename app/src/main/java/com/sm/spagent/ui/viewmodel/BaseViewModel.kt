@@ -3,14 +3,14 @@ package com.sm.spagent.ui.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.sm.spagent.networking.ApiInterface
 import com.sm.spagent.networking.ApiClient
+import com.sm.spagent.networking.ApiInterface
 import com.sm.spagent.preference.AgentPreference
 
 open class BaseViewModel(application: Application) : AndroidViewModel(application) {
   val progress = MutableLiveData<Boolean>()
   val message = MutableLiveData<Int>()
-  val preference = AgentPreference(application)
+  private val preference = AgentPreference(application)
   val apiClient: ApiInterface =
     ApiClient().getApiClient("https://stagingapp.engine.shurjopayment.com/api/")
       .create(ApiInterface::class.java)

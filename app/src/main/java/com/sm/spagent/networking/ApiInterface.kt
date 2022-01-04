@@ -3,18 +3,17 @@ package com.sm.spagent.networking
 import com.sm.spagent.model.*
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface ApiInterface {
 
   ///////////////////// GET ///////////////////
 
-  /*@GET("insertcheck/{mobile_number}")
-  fun insertCheck(
-    @Path("mobile_number") mobileNumber: String
-  ): Call<InsertCheck>
+  @GET("qr-division-names")
+  suspend fun getDivisions(): Response<Division>
 
-  @GET("counterNumbers/createCounterNumber/")
+  /*@GET("counterNumbers/createCounterNumber/")
   fun createCounterNumber(
     @Header("Authorization") token: String
   ): Call<CounterNumber>

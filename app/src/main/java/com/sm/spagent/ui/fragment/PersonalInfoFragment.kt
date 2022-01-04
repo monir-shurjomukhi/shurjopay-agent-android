@@ -4,12 +4,14 @@ import android.app.DatePickerDialog
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.InputType
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.canhub.cropper.CropImageContract
@@ -18,15 +20,18 @@ import com.canhub.cropper.options
 import com.sm.spagent.databinding.FragmentPersonalInfoBinding
 import com.sm.spagent.model.ImageType
 import com.sm.spagent.ui.activity.NewMerchantActivity
-import com.sm.spagent.ui.viewmodel.DashboardViewModel
+import com.sm.spagent.ui.viewmodel.PersonalInfoViewModel
 import java.io.ByteArrayOutputStream
 import java.util.*
 
 
 class PersonalInfoFragment : Fragment() {
 
-  private lateinit var dashboardViewModel: DashboardViewModel
+  private lateinit var viewModel: PersonalInfoViewModel
   private var _binding: FragmentPersonalInfoBinding? = null
+  // This property is only valid between onCreateView and
+  // onDestroyView.
+  private val binding get() = _binding!!
 
   private var imageType = ImageType.OWNER
   private var ownerImage: String? = null
@@ -34,9 +39,9 @@ class PersonalInfoFragment : Fragment() {
   private var ownerNIDBack: String? = null
   private var ownerSignature: String? = null
 
-  // This property is only valid between onCreateView and
-  // onDestroyView.
-  private val binding get() = _binding!!
+  private val divisions = mutableMapOf<String, Int>()
+  private val districts = mutableMapOf<String, Int>()
+  private val policeStations = mutableMapOf<String, Int>()
 
   private val cropImage = registerForActivityResult(CropImageContract()) { result ->
     if (result.isSuccessful) {
@@ -81,14 +86,13 @@ class PersonalInfoFragment : Fragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    dashboardViewModel = ViewModelProvider(this)[DashboardViewModel::class.java]
-
+    viewModel = ViewModelProvider(this)[PersonalInfoViewModel::class.java]
     _binding = FragmentPersonalInfoBinding.inflate(inflater, container, false)
     val root: View = binding.root
 
-    binding.divisionLayout.setOnKeyListener(null)
-    binding.districtLayout.setOnKeyListener(null)
-    binding.policeStationLayout.setOnKeyListener(null)
+    binding.divisionTextView.inputType = InputType.TYPE_NULL
+    binding.districtTextView.inputType = InputType.TYPE_NULL
+    binding.policeStationTextView.inputType = InputType.TYPE_NULL
 
     binding.dobLayout.editText?.showSoftInputOnFocus = false
     binding.dobLayout.editText?.setOnTouchListener { _, event ->
@@ -107,6 +111,24 @@ class PersonalInfoFragment : Fragment() {
     binding.saveNextButton.setOnClickListener {
       (activity as NewMerchantActivity).goToNextStep()
     }
+
+    viewModel.division.observe(viewLifecycleOwner, { division ->
+      divisions.clear()
+      for(data in division.divisions!!) {
+        divisions[data.division_name.toString()] = data.id!!
+      }
+
+      context?.let {
+        ArrayAdapter(
+          it, android.R.layout.simple_list_item_1,
+          divisions.keys.toList()
+        ).also { adapter ->
+          binding.divisionTextView.setAdapter(adapter)
+        }
+      }
+    })
+
+    viewModel.getDivisions()
 
     return root
   }
