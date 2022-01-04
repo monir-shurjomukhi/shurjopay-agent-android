@@ -111,9 +111,19 @@ class PersonalInfoFragment : Fragment() {
 
     binding.divisionTextView.doAfterTextChanged { text ->
       binding.districtTextView.text = null
+      binding.districtTextView.setAdapter(null)
       if (text?.isNotEmpty() == true) {
         val divisionId = divisions[text.toString()]
         viewModel.getDistricts(divisionId!!)
+      }
+    }
+
+    binding.districtTextView.doAfterTextChanged { text ->
+      binding.policeStationTextView.text = null
+      binding.policeStationTextView.setAdapter(null)
+      if (text?.isNotEmpty() == true) {
+        val districtId = districts[text.toString()]
+        viewModel.getPoliceStations(districtId!!)
       }
     }
 
@@ -149,6 +159,22 @@ class PersonalInfoFragment : Fragment() {
           districts.keys.toList()
         ).also { adapter ->
           binding.districtTextView.setAdapter(adapter)
+        }
+      }
+    })
+
+    viewModel.policeStation.observe(viewLifecycleOwner, { policeStation ->
+      policeStations.clear()
+      for(data in policeStation.police_stations!!) {
+        policeStations[data.police_station_name.toString()] = data.id!!
+      }
+
+      context?.let {
+        ArrayAdapter(
+          it, android.R.layout.simple_list_item_1,
+          policeStations.keys.toList()
+        ).also { adapter ->
+          binding.policeStationTextView.setAdapter(adapter)
         }
       }
     })

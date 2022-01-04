@@ -19,6 +19,11 @@ interface ApiInterface {
     @Path("division_id") divisionId: Int
   ): Response<District>
 
+  @GET("qr-police-station-names/{district_id}")
+  suspend fun getPoliceStations(
+    @Path("district_id") districtId: Int
+  ): Response<PoliceStation>
+
   /*@GET("counterNumbers/createCounterNumber/")
   fun createCounterNumber(
     @Header("Authorization") token: String
