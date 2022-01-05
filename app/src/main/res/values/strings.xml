@@ -69,4 +69,6 @@
   <string name="capture_back_side_of_nid">Capture back side of NID</string>
   <string name="capture_shop_owner_signature">Capture shop owner signature</string>
   <string name="next">Next</string>
+  <string name="business_type">Business Type</string>
+  <string name="shop_size">Shop Size</string>
 </resources>
