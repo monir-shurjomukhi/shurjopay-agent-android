@@ -21,6 +21,7 @@ import com.canhub.cropper.options
 import com.sm.spagent.R
 import com.sm.spagent.databinding.FragmentPersonalInfoBinding
 import com.sm.spagent.model.ImageType
+import com.sm.spagent.ui.activity.NewMerchantActivity
 import com.sm.spagent.ui.viewmodel.PersonalInfoViewModel
 import java.io.ByteArrayOutputStream
 import java.util.*
@@ -39,6 +40,7 @@ class PersonalInfoFragment : BaseFragment() {
   private var ownerNIDFront: String? = null
   private var ownerNIDBack: String? = null
   private var ownerSignature: String? = null
+  private var currentStep = 1
 
   private val divisions = mutableMapOf<String, Int>()
   private val districts = mutableMapOf<String, Int>()
@@ -109,8 +111,8 @@ class PersonalInfoFragment : BaseFragment() {
     binding.districtTextView.inputType = InputType.TYPE_NULL
     binding.policeStationTextView.inputType = InputType.TYPE_NULL
 
-    binding.dobLayout.editText?.showSoftInputOnFocus = false
-    binding.dobLayout.editText?.setOnTouchListener { _, event ->
+    binding.step2DOBLayout.editText?.showSoftInputOnFocus = false
+    binding.step2DOBLayout.editText?.setOnTouchListener { _, event ->
       if(event.action == MotionEvent.ACTION_UP) {
         showDatePickerDialog()
         true
@@ -142,8 +144,11 @@ class PersonalInfoFragment : BaseFragment() {
     }
 
     binding.saveNextButton.setOnClickListener {
-//      (activity as NewMerchantActivity).goToNextStep()
-      validateInputs()
+      when(currentStep) {
+        1 -> validateStep1Inputs()
+        2 -> validateStep2Inputs()
+        3 -> validateInputs()
+      }
     }
   }
 
@@ -205,7 +210,7 @@ class PersonalInfoFragment : BaseFragment() {
 
     val dialog = DatePickerDialog(requireContext(), { _, year, monthOfYear, dayOfMonth ->
       val date = "$year-${monthOfYear+1}-$dayOfMonth"
-      binding.dobLayout.editText?.setText(date)
+      binding.step2DOBLayout.editText?.setText(date)
     }, y, m, d)
 
     dialog.show()
@@ -230,6 +235,63 @@ class PersonalInfoFragment : BaseFragment() {
         setFixAspectRatio(true)
       }
     )
+  }
+
+  private fun validateStep1Inputs() {
+    if (ownerImage == null) {
+      shortSnack(binding.ownerImageLayout, R.string.capture_shop_owner_image)
+      binding.scrollView.smoothScrollTo(0, binding.ownerImageLayout.y.toInt())
+      return
+    }
+    if (ownerNIDFront == null) {
+      shortSnack(binding.ownerNIDFrontLayout, R.string.capture_front_side_of_nid)
+      binding.scrollView.smoothScrollTo(0, binding.ownerNIDFrontLayout.y.toInt())
+      return
+    }
+    if (ownerNIDBack == null) {
+      shortSnack(binding.ownerNIDBackLayout, R.string.capture_back_side_of_nid)
+      binding.scrollView.smoothScrollTo(0, binding.ownerNIDBackLayout.y.toInt())
+      return
+    }
+
+    submitStep1Data()
+  }
+
+  private fun submitStep1Data() {
+    goToNextStep()
+  }
+
+  private fun validateStep2Inputs() {
+    val nid = binding.step2NIDLayout.editText?.text.toString()
+    val dob = binding.step2DOBLayout.editText?.text.toString()
+
+    if (nid.isEmpty()) {
+      binding.step2NIDLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.step2NIDLayout.y.toInt())
+      return
+    } else {
+      binding.step2NIDLayout.error = null
+    }
+    if (nid.length != 10 && nid.length != 13 && nid.length != 17) {
+      binding.step2NIDLayout.error = getString(R.string.nid_is_invalid)
+      binding.scrollView.smoothScrollTo(0, binding.step2NIDLayout.y.toInt())
+      return
+    } else {
+      binding.step2NIDLayout.error = null
+    }
+    if (dob.isEmpty()) {
+      binding.step2DOBLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.step2DOBLayout.y.toInt())
+      return
+    } else {
+      binding.step2DOBLayout.error = null
+    }
+
+    submitStep2Data()
+  }
+
+  private fun submitStep2Data() {
+    goToNextStep()
   }
 
   private fun validateInputs() {
@@ -321,25 +383,35 @@ class PersonalInfoFragment : BaseFragment() {
     } else {
       binding.dobLayout.error = null
     }
-    if (ownerImage == null) {
-      shortSnack(binding.ownerImageLayout, R.string.capture_shop_owner_image)
-      binding.scrollView.smoothScrollTo(0, binding.ownerImageLayout.y.toInt())
-      return
-    }
-    if (ownerNIDFront == null) {
-      shortSnack(binding.ownerNIDFrontLayout, R.string.capture_front_side_of_nid)
-      binding.scrollView.smoothScrollTo(0, binding.ownerNIDFrontLayout.y.toInt())
-      return
-    }
-    if (ownerNIDBack == null) {
-      shortSnack(binding.ownerNIDBackLayout, R.string.capture_back_side_of_nid)
-      binding.scrollView.smoothScrollTo(0, binding.ownerNIDBackLayout.y.toInt())
-      return
-    }
     if (ownerSignature == null) {
       shortSnack(binding.ownerSignatureLayout, R.string.capture_shop_owner_signature)
       binding.scrollView.smoothScrollTo(0, binding.ownerSignatureLayout.y.toInt())
       return
+    }
+
+    submitPersonalInfo()
+  }
+
+  private fun submitPersonalInfo() {
+    goToNextStep()
+  }
+
+  private fun goToNextStep() {
+    when(currentStep) {
+      1 -> {
+        currentStep = 2
+        binding.step1Layout.visibility = View.GONE
+        binding.step2Layout.visibility = View.VISIBLE
+        binding.step3Layout.visibility = View.GONE
+      }
+      2 -> {
+        currentStep = 3
+        binding.step1Layout.visibility = View.GONE
+        binding.step2Layout.visibility = View.GONE
+        binding.step3Layout.visibility = View.VISIBLE
+        binding.saveNextButton.text = getString(R.string.save_next)
+      }
+      3 -> (activity as NewMerchantActivity).goToNextStep()
     }
   }
 
