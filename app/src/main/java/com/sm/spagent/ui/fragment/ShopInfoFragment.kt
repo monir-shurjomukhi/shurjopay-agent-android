@@ -8,11 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.sm.spagent.databinding.FragmentShopInfoBinding
 import com.sm.spagent.ui.activity.NewMerchantActivity
-import com.sm.spagent.ui.viewmodel.DashboardViewModel
+import com.sm.spagent.ui.viewmodel.ShopInfoViewModel
 
 class ShopInfoFragment : Fragment() {
 
-  private lateinit var dashboardViewModel: DashboardViewModel
+  private lateinit var viewModel: ShopInfoViewModel
   private var _binding: FragmentShopInfoBinding? = null
 
   // This property is only valid between onCreateView and
@@ -24,7 +24,7 @@ class ShopInfoFragment : Fragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    dashboardViewModel = ViewModelProvider(this)[DashboardViewModel::class.java]
+    viewModel = ViewModelProvider(this)[ShopInfoViewModel::class.java]
 
     _binding = FragmentShopInfoBinding.inflate(inflater, container, false)
     val root: View = binding.root
