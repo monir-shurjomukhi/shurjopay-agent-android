@@ -1,6 +1,5 @@
 package com.sm.spagent.ui.fragment
 
-import android.R
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
@@ -12,20 +11,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageView
 import com.canhub.cropper.options
+import com.sm.spagent.R
 import com.sm.spagent.databinding.FragmentShopInfoBinding
 import com.sm.spagent.model.ImageType
+import com.sm.spagent.ui.activity.NewMerchantActivity
 import com.sm.spagent.ui.viewmodel.ShopInfoViewModel
 import java.io.ByteArrayOutputStream
 
-class ShopInfoFragment : Fragment() {
+class ShopInfoFragment : BaseFragment() {
 
   private lateinit var viewModel: ShopInfoViewModel
   private var _binding: FragmentShopInfoBinding? = null
+
   // This property is only valid between onCreateView and
   // onDestroyView.
   private val binding get() = _binding!!
@@ -107,7 +108,7 @@ class ShopInfoFragment : Fragment() {
 
     context?.let {
       ArrayAdapter(
-        it, R.layout.simple_list_item_1,
+        it, android.R.layout.simple_list_item_1,
         shopSizes
       ).also { adapter ->
         binding.shopSizeTextView.setAdapter(adapter)
@@ -133,20 +134,20 @@ class ShopInfoFragment : Fragment() {
     }
 
     binding.saveNextButton.setOnClickListener {
-      //validateInputs()
+      validateInputs()
     }
   }
 
   private fun observeData() {
     viewModel.businessType.observe(viewLifecycleOwner, { businessType ->
       businessTypes.clear()
-      for(data in businessType.business_type_names!!) {
+      for (data in businessType.business_type_names!!) {
         businessTypes[data.business_type_name.toString()] = data.id!!
       }
 
       context?.let {
         ArrayAdapter(
-          it, R.layout.simple_list_item_1,
+          it, android.R.layout.simple_list_item_1,
           businessTypes.keys.toList()
         ).also { adapter ->
           binding.businessTypeTextView.setAdapter(adapter)
@@ -156,13 +157,13 @@ class ShopInfoFragment : Fragment() {
 
     viewModel.division.observe(viewLifecycleOwner, { division ->
       divisions.clear()
-      for(data in division.divisions!!) {
+      for (data in division.divisions!!) {
         divisions[data.division_name.toString()] = data.id!!
       }
 
       context?.let {
         ArrayAdapter(
-          it, R.layout.simple_list_item_1,
+          it, android.R.layout.simple_list_item_1,
           divisions.keys.toList()
         ).also { adapter ->
           binding.divisionTextView.setAdapter(adapter)
@@ -172,13 +173,13 @@ class ShopInfoFragment : Fragment() {
 
     viewModel.district.observe(viewLifecycleOwner, { district ->
       districts.clear()
-      for(data in district.districts!!) {
+      for (data in district.districts!!) {
         districts[data.district_name.toString()] = data.id!!
       }
 
       context?.let {
         ArrayAdapter(
-          it, R.layout.simple_list_item_1,
+          it, android.R.layout.simple_list_item_1,
           districts.keys.toList()
         ).also { adapter ->
           binding.districtTextView.setAdapter(adapter)
@@ -188,13 +189,13 @@ class ShopInfoFragment : Fragment() {
 
     viewModel.policeStation.observe(viewLifecycleOwner, { policeStation ->
       policeStations.clear()
-      for(data in policeStation.police_stations!!) {
+      for (data in policeStation.police_stations!!) {
         policeStations[data.police_station_name.toString()] = data.id!!
       }
 
       context?.let {
         ArrayAdapter(
-          it, R.layout.simple_list_item_1,
+          it, android.R.layout.simple_list_item_1,
           policeStations.keys.toList()
         ).also { adapter ->
           binding.policeStationTextView.setAdapter(adapter)
@@ -212,7 +213,7 @@ class ShopInfoFragment : Fragment() {
           includeCamera = true
         )
         setGuidelines(CropImageView.Guidelines.ON_TOUCH)
-        when(imageType) {
+        when (imageType) {
           ImageType.TRADE_LICENSE -> setAspectRatio(3, 4)
           ImageType.SHOP_FRONT -> setAspectRatio(4, 3)
           else -> setAspectRatio(3, 4)
@@ -220,6 +221,92 @@ class ShopInfoFragment : Fragment() {
         setFixAspectRatio(true)
       }
     )
+  }
+
+  private fun validateInputs() {
+    val shopName = binding.shopNameLayout.editText?.text.toString()
+    val tin = binding.tinLayout.editText?.text.toString()
+    val tradeLicenseNo = binding.tradeLicenseNoLayout.editText?.text.toString()
+    val businessType = binding.businessTypeTextView.text.toString()
+    val shopSize = binding.shopSizeTextView.text.toString()
+    val shopAddress = binding.shopAddressLayout.editText?.text.toString()
+    val division = binding.divisionTextView.text.toString()
+    val district = binding.districtTextView.text.toString()
+    val policeStation = binding.policeStationTextView.text.toString()
+    val shopLocation = binding.locationLayout.editText?.text.toString()
+
+    if (shopName.isEmpty()) {
+      binding.shopNameLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.shopNameLayout.y.toInt())
+      return
+    } else {
+      binding.shopNameLayout.error = null
+    }
+    if (businessType.isEmpty()) {
+      binding.businessTypeLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.businessTypeLayout.y.toInt())
+      return
+    } else {
+      binding.businessTypeLayout.error = null
+    }
+    if (shopSize.isEmpty()) {
+      binding.shopSizeLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.shopSizeLayout.y.toInt())
+      return
+    } else {
+      binding.shopSizeLayout.error = null
+    }
+    if (shopAddress.isEmpty()) {
+      binding.shopAddressLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.shopAddressLayout.y.toInt())
+      return
+    } else {
+      binding.shopAddressLayout.error = null
+    }
+    if (division.isEmpty()) {
+      binding.divisionLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.divisionLayout.y.toInt())
+      return
+    } else {
+      binding.divisionLayout.error = null
+    }
+    if (district.isEmpty()) {
+      binding.districtLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.districtLayout.y.toInt())
+      return
+    } else {
+      binding.districtLayout.error = null
+    }
+    if (policeStation.isEmpty()) {
+      binding.policeStationLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.policeStationLayout.y.toInt())
+      return
+    } else {
+      binding.policeStationLayout.error = null
+    }
+    if (shopLocation.isEmpty()) {
+      binding.locationLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.locationLayout.y.toInt())
+      return
+    } else {
+      binding.locationLayout.error = null
+    }
+    if (tradeLicenseImage == null) {
+      shortSnack(binding.tradeLicenseLayout, R.string.capture_trade_license_image)
+      binding.scrollView.smoothScrollTo(0, binding.tradeLicenseLayout.y.toInt())
+      return
+    }
+    if (shopFrontImage == null) {
+      shortSnack(binding.shopFrontLayout, R.string.capture_shop_front_image)
+      binding.scrollView.smoothScrollTo(0, binding.shopFrontLayout.y.toInt())
+      return
+    }
+
+    submitShopInfo()
+  }
+
+  private fun submitShopInfo() {
+    (activity as NewMerchantActivity).goToNextStep()
   }
 
   companion object {
