@@ -24,10 +24,9 @@ interface ApiInterface {
     @Path("district_id") districtId: Int
   ): Response<PoliceStation>
 
-  /*@GET("counterNumbers/createCounterNumber/")
-  fun createCounterNumber(
-    @Header("Authorization") token: String
-  ): Call<CounterNumber>*/
+  @GET("qr-business-type-names")
+  suspend fun getBusinessTypes(): Response<BusinessType>
+
 
   //////////////////// POST ///////////////////
 

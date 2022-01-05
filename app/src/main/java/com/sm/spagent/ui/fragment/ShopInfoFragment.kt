@@ -83,6 +83,7 @@ class ShopInfoFragment : Fragment() {
     setupViews()
     observeData()
 
+    viewModel.getBusinessTypes()
     viewModel.getDivisions()
 
     return root
@@ -103,6 +104,15 @@ class ShopInfoFragment : Fragment() {
 
     binding.tradeLicensePickerLayout.setOnClickListener { startImageCrop(ImageType.TRADE_LICENSE) }
     binding.shopFrontPickerLayout.setOnClickListener { startImageCrop(ImageType.SHOP_FRONT) }
+
+    context?.let {
+      ArrayAdapter(
+        it, R.layout.simple_list_item_1,
+        shopSizes
+      ).also { adapter ->
+        binding.shopSizeTextView.setAdapter(adapter)
+      }
+    }
 
     binding.divisionTextView.doAfterTextChanged { text ->
       binding.districtTextView.text = null
@@ -128,6 +138,22 @@ class ShopInfoFragment : Fragment() {
   }
 
   private fun observeData() {
+    viewModel.businessType.observe(viewLifecycleOwner, { businessType ->
+      businessTypes.clear()
+      for(data in businessType.business_type_names!!) {
+        businessTypes[data.business_type_name.toString()] = data.id!!
+      }
+
+      context?.let {
+        ArrayAdapter(
+          it, R.layout.simple_list_item_1,
+          businessTypes.keys.toList()
+        ).also { adapter ->
+          binding.businessTypeTextView.setAdapter(adapter)
+        }
+      }
+    })
+
     viewModel.division.observe(viewLifecycleOwner, { division ->
       divisions.clear()
       for(data in division.divisions!!) {

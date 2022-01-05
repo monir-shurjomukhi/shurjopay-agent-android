@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.sm.spagent.R
+import com.sm.spagent.model.BusinessType
 import com.sm.spagent.model.District
 import com.sm.spagent.model.Division
 import com.sm.spagent.model.PoliceStation
@@ -14,6 +15,10 @@ import retrofit2.HttpException
 import java.io.IOException
 
 class ShopInfoViewModel(application: Application) : BaseViewModel(application) {
+
+  private val _businessType = MutableLiveData<BusinessType>()
+  val businessType: LiveData<BusinessType>
+    get() = _businessType
 
   private val _division = MutableLiveData<Division>()
   val division: LiveData<Division>
@@ -26,6 +31,28 @@ class ShopInfoViewModel(application: Application) : BaseViewModel(application) {
   private val _policeStation = MutableLiveData<PoliceStation>()
   val policeStation: LiveData<PoliceStation>
     get() = _policeStation
+
+  fun getBusinessTypes() {
+    viewModelScope.launch {
+      val response = try {
+        authApiClient.getBusinessTypes()
+      } catch (e: IOException) {
+        Log.e(TAG, "getBusinessTypes: ${e.message}", e)
+        message.value = R.string.unable_to_connect
+        return@launch
+      } catch (e: HttpException) {
+        Log.e(TAG, "getBusinessTypes: ${e.message}", e)
+        message.value = R.string.unable_to_connect
+        return@launch
+      }
+
+      if (response.isSuccessful && response.body() != null) {
+        _businessType.value = response.body()
+      } else {
+        message.value = R.string.unable_to_connect
+      }
+    }
+  }
 
   fun getDivisions() {
     viewModelScope.launch {
