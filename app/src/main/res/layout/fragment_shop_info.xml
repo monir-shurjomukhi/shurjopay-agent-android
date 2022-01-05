@@ -230,7 +230,6 @@
 
         <ImageView
             android:contentDescription="@string/trade_license"
-            android:id="@+id/tradeLicensePickerImageView"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:padding="8dp"
@@ -270,7 +269,7 @@
 
         <ImageView
             android:contentDescription="@string/shop_front"
-            android:id="@+id/ownerNIDFrontImageView"
+            android:id="@+id/shopFrontImageView"
             android:layout_width="320dp"
             android:layout_height="240dp"
             android:src="@drawable/ic_baseline_storefront_24" />
@@ -289,7 +288,6 @@
 
         <ImageView
             android:contentDescription="@string/shop_front"
-            android:id="@+id/ownerNIDFrontPickerImageView"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:padding="8dp"
