@@ -3,27 +3,36 @@ package com.sm.spagent.networking
 import com.sm.spagent.model.*
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiInterface {
 
   ///////////////////// GET ///////////////////
 
-  /*@GET("insertcheck/{mobile_number}")
-  fun insertCheck(
-    @Path("mobile_number") mobileNumber: String
-  ): Call<InsertCheck>
+  @GET("qr-division-names")
+  suspend fun getDivisions(): Response<Division>
 
-  @GET("counterNumbers/createCounterNumber/")
-  fun createCounterNumber(
-    @Header("Authorization") token: String
-  ): Call<CounterNumber>
+  @GET("qr-district-names/{division_id}")
+  suspend fun getDistricts(
+    @Path("division_id") divisionId: Int
+  ): Response<District>
 
-  @GET("customers/getByMobileNumber/{mobile_number}")
-  fun getCustomer(
-    @Header("Authorization") token: String,
-    @Path("mobile_number") mobileNumber: String
-  ): Call<Customer>*/
+  @GET("qr-police-station-names/{district_id}")
+  suspend fun getPoliceStations(
+    @Path("district_id") districtId: Int
+  ): Response<PoliceStation>
+
+  @GET("qr-business-type-names")
+  suspend fun getBusinessTypes(): Response<BusinessType>
+
+  @GET("qr-relation-names")
+  suspend fun getRelations(): Response<Relation>
+
+  @GET("qr-occupation-names")
+  suspend fun getOccupations(): Response<Occupation>
+
 
   //////////////////// POST ///////////////////
 

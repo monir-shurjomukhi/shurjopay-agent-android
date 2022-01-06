@@ -60,5 +60,19 @@
   <string name="username">Username</string>
   <string name="this_field_is_required">This field is required</string>
   <string name="mobile_number_is_invalid">Mobile number is invalid</string>
+  <string name="contact_number_is_invalid">Contact number is invalid</string>
+  <string name="email_is_invalid">Email is invalid</string>
+  <string name="nid_is_invalid">NID is invalid</string>
   <string name="mobile_number_or_password_did_not_match">Mobile number or password did not match!</string>
+  <string name="capture_shop_owner_image">Capture shop owner image</string>
+  <string name="capture_front_side_of_nid">Capture front side of NID</string>
+  <string name="capture_back_side_of_nid">Capture back side of NID</string>
+  <string name="capture_shop_owner_signature">Capture shop owner signature</string>
+  <string name="capture_trade_license_image">Capture trade license image</string>
+  <string name="capture_shop_front_image">Capture shop front image</string>
+  <string name="next">Next</string>
+  <string name="business_type">Business Type</string>
+  <string name="shop_size">Shop Size</string>
+  <string name="father_husband_s_name">Father/Husband\'s Name</string>
+  <string name="occupation">Occupation</string>
 </resources>

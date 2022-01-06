@@ -4,23 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/scrollView"
     tools:context=".ui.fragment.ShopInfoFragment">
 
-  <androidx.constraintlayout.widget.ConstraintLayout
+  <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:orientation="vertical"
       android:padding="16dp">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/shopNameLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/shop_business_name"
-        app:errorEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:errorEnabled="true">
 
       <com.google.android.material.textfield.TextInputEditText
           android:layout_width="match_parent"
@@ -32,14 +31,11 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tinLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="@string/tin"
-        app:errorEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/shopNameLayout">
+        app:errorEnabled="true">
 
       <com.google.android.material.textfield.TextInputEditText
           android:layout_width="match_parent"
@@ -50,35 +46,13 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/shopAddressLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="@string/shop_address"
-        app:errorEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tinLayout">
-
-      <com.google.android.material.textfield.TextInputEditText
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:inputType="textPostalAddress"
-          android:textSize="16sp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tradeLicenseNoLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="@string/trade_license_no"
-        app:errorEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/shopAddressLayout">
+        app:errorEnabled="true">
 
       <com.google.android.material.textfield.TextInputEditText
           android:layout_width="match_parent"
@@ -88,54 +62,49 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/locationLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-        android:layout_width="0dp"
+        android:id="@+id/businessTypeLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="@string/shop_location"
-        app:errorEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tradeLicenseNoLayout">
+        android:hint="@string/business_type"
+        android:labelFor="@id/businessTypeTextView"
+        app:errorEnabled="true">
 
-      <com.google.android.material.textfield.TextInputEditText
+      <AutoCompleteTextView
+          android:id="@+id/businessTypeTextView"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:inputType="text"
+          android:inputType="textPostalAddress"
           android:textSize="16sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/divisionLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-        android:layout_width="0dp"
+        android:id="@+id/shopSizeLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="@string/division"
-        app:errorEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/locationLayout">
+        android:hint="@string/shop_size"
+        android:labelFor="@id/shopSizeLayout"
+        app:errorEnabled="true">
 
-      <com.google.android.material.textfield.TextInputEditText
+      <AutoCompleteTextView
+          android:id="@+id/shopSizeTextView"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:inputType="text"
+          android:inputType="textPostalAddress"
           android:textSize="16sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/districtLayout"
+        android:id="@+id/shopAddressLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="@string/district"
-        app:errorEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divisionLayout">
+        android:hint="@string/shop_address"
+        app:errorEnabled="true">
 
       <com.google.android.material.textfield.TextInputEditText
           android:layout_width="match_parent"
@@ -144,23 +113,88 @@
           android:textSize="16sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/tradeLicenseLayout"
-        android:layout_width="0dp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/divisionLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:background="#DDDDDD"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/districtLayout">
+        android:hint="@string/division"
+        android:labelFor="@id/divisionTextView"
+        app:errorEnabled="true">
+
+      <AutoCompleteTextView
+          android:id="@+id/divisionTextView"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:inputType="textPostalAddress"
+          android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/districtLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/district"
+        app:errorEnabled="true">
+
+      <AutoCompleteTextView
+          android:id="@+id/districtTextView"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:inputType="textPostalAddress"
+          android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/policeStationLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/police_station"
+        app:errorEnabled="true">
+
+      <AutoCompleteTextView
+          android:id="@+id/policeStationTextView"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:inputType="textPostalAddress"
+          android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/locationLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/shop_location"
+        app:errorEnabled="true">
+
+      <com.google.android.material.textfield.TextInputEditText
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:inputType="text"
+          android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/tradeLicenseLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="#DDDDDD">
 
       <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:layout_marginStart="16dp"
+          android:layout_marginTop="16dp"
           android:text="@string/trade_license"
           android:textSize="16sp"
-          android:layout_marginTop="16dp"
-          android:layout_marginStart="16dp"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent" />
 
@@ -174,9 +208,10 @@
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/ownerImagePickerLayout">
+          app:layout_constraintTop_toBottomOf="@id/tradeLicensePickerLayout">
 
         <ImageView
+            android:contentDescription="@string/trade_license"
             android:id="@+id/tradeLicenseImageView"
             android:layout_width="240dp"
             android:layout_height="320dp"
@@ -184,7 +219,7 @@
       </com.google.android.material.card.MaterialCardView>
 
       <com.google.android.material.card.MaterialCardView
-          android:id="@+id/ownerImagePickerLayout"
+          android:id="@+id/tradeLicensePickerLayout"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="16dp"
@@ -195,32 +230,29 @@
           app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:padding="8dp"
-            android:id="@+id/ownerImagePickerImageView"
-            android:src="@drawable/ic_baseline_add_a_photo_24"
+            android:contentDescription="@string/trade_license"
             android:layout_width="48dp"
-            android:layout_height="48dp" />
+            android:layout_height="48dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_baseline_add_a_photo_24" />
       </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/shopFrontLayout"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="#DDDDDD"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tradeLicenseLayout">
+        android:background="#DDDDDD">
 
       <TextView
           android:id="@+id/ownerNIDFrontTextView"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:layout_marginStart="16dp"
+          android:layout_marginTop="16dp"
           android:text="@string/shop_front"
           android:textSize="16sp"
-          android:layout_marginTop="16dp"
-          android:layout_marginStart="16dp"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent" />
 
@@ -237,7 +269,8 @@
           app:layout_constraintTop_toBottomOf="@id/shopFrontPickerLayout">
 
         <ImageView
-            android:id="@+id/ownerNIDFrontImageView"
+            android:contentDescription="@string/shop_front"
+            android:id="@+id/shopFrontImageView"
             android:layout_width="320dp"
             android:layout_height="240dp"
             android:src="@drawable/ic_baseline_storefront_24" />
@@ -255,27 +288,23 @@
           app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:padding="8dp"
-            android:id="@+id/ownerNIDFrontPickerImageView"
-            android:src="@drawable/ic_baseline_add_a_photo_24"
+            android:contentDescription="@string/shop_front"
             android:layout_width="48dp"
-            android:layout_height="48dp" />
+            android:layout_height="48dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_baseline_add_a_photo_24" />
       </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/saveNextButton"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:padding="16dp"
         android:text="@string/save_next"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/shopFrontLayout" />
-  </androidx.constraintlayout.widget.ConstraintLayout>
+        android:textSize="16sp" />
+  </LinearLayout>
 </ScrollView>

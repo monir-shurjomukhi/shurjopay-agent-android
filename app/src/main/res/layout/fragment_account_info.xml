@@ -48,19 +48,19 @@
             android:textSize="16sp" />
 
         <RadioButton
-            android:id="@+id/newAccountRadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="@string/new_"
-            android:textSize="16sp" />
-
-        <RadioButton
             android:id="@+id/mfsAccountRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="@string/mfs"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/newAccountRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/new_"
             android:textSize="16sp" />
       </RadioGroup>
     </LinearLayout>
@@ -70,6 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/accountCategoryLayout">
@@ -193,7 +194,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/accountInfoLayout">
@@ -222,7 +223,7 @@
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_marginTop="8dp"
-          android:hint="@string/father_s_name"
+          android:hint="@string/father_husband_s_name"
           app:errorEnabled="true"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
@@ -256,17 +257,118 @@
 
       <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/relationLayout"
-          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_marginTop="8dp"
           android:hint="@string/relation"
           app:errorEnabled="true"
+          android:labelFor="@id/relationTextView"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@id/mothersNameLayout">
 
+        <AutoCompleteTextView
+            android:id="@+id/relationTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textSize="16sp" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/contactLayout"
+          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:hint="@string/contact_no"
+          app:errorEnabled="true"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/relationLayout">
+
         <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPostalAddress"
+            android:textSize="16sp" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/emailLayout"
+          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:hint="@string/email"
+          app:errorEnabled="true"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/contactLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:textSize="16sp" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/dobLayout"
+          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:hint="@string/date_of_birth"
+          app:errorEnabled="true"
+          app:endIconMode="custom"
+          app:endIconDrawable="@drawable/ic_baseline_calendar_month_24"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/emailLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textSize="16sp" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/nidLayout"
+          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:hint="@string/nid_no"
+          app:errorEnabled="true"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/dobLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:textSize="16sp" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/occupationLayout"
+          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:hint="@string/occupation"
+          android:labelFor="@id/divisionTextView"
+          app:errorEnabled="true"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/nidLayout">
+
+        <AutoCompleteTextView
+            android:id="@+id/occupationTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
@@ -283,7 +385,7 @@
           app:errorEnabled="true"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/relationLayout">
+          app:layout_constraintTop_toBottomOf="@id/occupationLayout">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -293,37 +395,60 @@
       </com.google.android.material.textfield.TextInputLayout>
 
       <com.google.android.material.textfield.TextInputLayout
-          android:id="@+id/nidLayout"
-          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-          android:layout_width="0dp"
+          android:id="@+id/divisionLayout"
+          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginTop="8dp"
-          android:hint="@string/nid_no"
+          android:hint="@string/division"
+          android:labelFor="@id/divisionTextView"
           app:errorEnabled="true"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@id/addressLayout">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <AutoCompleteTextView
+            android:id="@+id/divisionTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
+            android:inputType="textPostalAddress"
             android:textSize="16sp" />
       </com.google.android.material.textfield.TextInputLayout>
 
       <com.google.android.material.textfield.TextInputLayout
-          android:id="@+id/contactLayout"
-          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-          android:layout_width="0dp"
+          android:id="@+id/districtLayout"
+          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginTop="8dp"
-          android:hint="@string/contact_no"
+          android:hint="@string/district"
           app:errorEnabled="true"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/nidLayout">
+          app:layout_constraintTop_toBottomOf="@id/divisionLayout">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <AutoCompleteTextView
+            android:id="@+id/districtTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPostalAddress"
+            android:textSize="16sp" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/policeStationLayout"
+          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:hint="@string/police_station"
+          app:errorEnabled="true"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/districtLayout">
+
+        <AutoCompleteTextView
+            android:id="@+id/policeStationTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPostalAddress"
@@ -338,7 +463,7 @@
           android:background="#DDDDDD"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/contactLayout">
+          app:layout_constraintTop_toBottomOf="@id/policeStationLayout">
 
         <TextView
             android:layout_width="wrap_content"
