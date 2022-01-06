@@ -73,4 +73,6 @@
   <string name="next">Next</string>
   <string name="business_type">Business Type</string>
   <string name="shop_size">Shop Size</string>
+  <string name="father_husband_s_name">Father/Husband\'s Name</string>
+  <string name="occupation">Occupation</string>
 </resources>
