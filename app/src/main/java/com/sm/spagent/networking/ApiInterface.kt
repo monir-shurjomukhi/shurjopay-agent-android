@@ -30,6 +30,9 @@ interface ApiInterface {
   @GET("qr-relation-names")
   suspend fun getRelations(): Response<Relation>
 
+  @GET("qr-occupation-names")
+  suspend fun getOccupations(): Response<Occupation>
+
 
   //////////////////// POST ///////////////////
 

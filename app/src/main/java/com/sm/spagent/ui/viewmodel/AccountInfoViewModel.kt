@@ -6,10 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.sm.spagent.R
-import com.sm.spagent.model.District
-import com.sm.spagent.model.Division
-import com.sm.spagent.model.PoliceStation
-import com.sm.spagent.model.Relation
+import com.sm.spagent.model.*
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -19,6 +16,10 @@ class AccountInfoViewModel(application: Application) : BaseViewModel(application
   private val _relation = MutableLiveData<Relation>()
   val relation: LiveData<Relation>
     get() = _relation
+
+  private val _occupation = MutableLiveData<Occupation>()
+  val occupation: LiveData<Occupation>
+    get() = _occupation
 
   private val _division = MutableLiveData<Division>()
   val division: LiveData<Division>
@@ -48,6 +49,28 @@ class AccountInfoViewModel(application: Application) : BaseViewModel(application
 
       if (response.isSuccessful && response.body() != null) {
         _relation.value = response.body()
+      } else {
+        message.value = R.string.unable_to_connect
+      }
+    }
+  }
+
+  fun getOccupations() {
+    viewModelScope.launch {
+      val response = try {
+        authApiClient.getOccupations()
+      } catch (e: IOException) {
+        Log.e(TAG, "getOccupations: ${e.message}", e)
+        message.value = R.string.unable_to_connect
+        return@launch
+      } catch (e: HttpException) {
+        Log.e(TAG, "getOccupations: ${e.message}", e)
+        message.value = R.string.unable_to_connect
+        return@launch
+      }
+
+      if (response.isSuccessful && response.body() != null) {
+        _occupation.value = response.body()
       } else {
         message.value = R.string.unable_to_connect
       }

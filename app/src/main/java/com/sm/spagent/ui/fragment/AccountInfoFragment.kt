@@ -35,6 +35,7 @@ class AccountInfoFragment : Fragment() {
   private var nomineeNIDBackImage: String? = null
 
   private val relations = mutableMapOf<String, Int>()
+  private val occupations = mutableMapOf<String, Int>()
   private val divisions = mutableMapOf<String, Int>()
   private val districts = mutableMapOf<String, Int>()
   private val policeStations = mutableMapOf<String, Int>()
@@ -110,6 +111,7 @@ class AccountInfoFragment : Fragment() {
     observeData()
 
     viewModel.getRelations()
+    viewModel.getOccupations()
     viewModel.getDivisions()
 
     return root
@@ -133,6 +135,22 @@ class AccountInfoFragment : Fragment() {
           relations.keys.toList()
         ).also { adapter ->
           binding.relationTextView.setAdapter(adapter)
+        }
+      }
+    })
+
+    viewModel.occupation.observe(viewLifecycleOwner, { occupation ->
+      occupations.clear()
+      for(data in occupation.occupation_names!!) {
+        occupations[data.occupation_name.toString()] = data.id!!
+      }
+
+      context?.let {
+        ArrayAdapter(
+          it, android.R.layout.simple_list_item_1,
+          occupations.keys.toList()
+        ).also { adapter ->
+          binding.occupationTextView.setAdapter(adapter)
         }
       }
     })
