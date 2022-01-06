@@ -34,6 +34,7 @@ class AccountInfoFragment : Fragment() {
   private var nomineeNIDFrontImage: String? = null
   private var nomineeNIDBackImage: String? = null
 
+  private val relations = mutableMapOf<String, Int>()
   private val divisions = mutableMapOf<String, Int>()
   private val districts = mutableMapOf<String, Int>()
   private val policeStations = mutableMapOf<String, Int>()
@@ -106,6 +107,11 @@ class AccountInfoFragment : Fragment() {
       (activity as NewMerchantActivity).goToNextStep()
     }
 
+    observeData()
+
+    viewModel.getRelations()
+    viewModel.getDivisions()
+
     return root
   }
 
@@ -115,6 +121,22 @@ class AccountInfoFragment : Fragment() {
   }
 
   private fun observeData() {
+    viewModel.relation.observe(viewLifecycleOwner, { relation ->
+      relations.clear()
+      for(data in relation.relation_names!!) {
+        relations[data.relation_name.toString()] = data.id!!
+      }
+
+      context?.let {
+        ArrayAdapter(
+          it, android.R.layout.simple_list_item_1,
+          relations.keys.toList()
+        ).also { adapter ->
+          binding.relationTextView.setAdapter(adapter)
+        }
+      }
+    })
+
     viewModel.division.observe(viewLifecycleOwner, { division ->
       divisions.clear()
       for(data in division.divisions!!) {

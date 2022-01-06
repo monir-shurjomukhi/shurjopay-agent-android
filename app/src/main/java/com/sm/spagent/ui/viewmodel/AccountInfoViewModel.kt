@@ -9,11 +9,16 @@ import com.sm.spagent.R
 import com.sm.spagent.model.District
 import com.sm.spagent.model.Division
 import com.sm.spagent.model.PoliceStation
+import com.sm.spagent.model.Relation
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
 class AccountInfoViewModel(application: Application) : BaseViewModel(application) {
+
+  private val _relation = MutableLiveData<Relation>()
+  val relation: LiveData<Relation>
+    get() = _relation
 
   private val _division = MutableLiveData<Division>()
   val division: LiveData<Division>
@@ -26,6 +31,28 @@ class AccountInfoViewModel(application: Application) : BaseViewModel(application
   private val _policeStation = MutableLiveData<PoliceStation>()
   val policeStation: LiveData<PoliceStation>
     get() = _policeStation
+
+  fun getRelations() {
+    viewModelScope.launch {
+      val response = try {
+        authApiClient.getRelations()
+      } catch (e: IOException) {
+        Log.e(TAG, "getRelations: ${e.message}", e)
+        message.value = R.string.unable_to_connect
+        return@launch
+      } catch (e: HttpException) {
+        Log.e(TAG, "getRelations: ${e.message}", e)
+        message.value = R.string.unable_to_connect
+        return@launch
+      }
+
+      if (response.isSuccessful && response.body() != null) {
+        _relation.value = response.body()
+      } else {
+        message.value = R.string.unable_to_connect
+      }
+    }
+  }
 
   fun getDivisions() {
     viewModelScope.launch {

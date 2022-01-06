@@ -27,6 +27,9 @@ interface ApiInterface {
   @GET("qr-business-type-names")
   suspend fun getBusinessTypes(): Response<BusinessType>
 
+  @GET("qr-relation-names")
+  suspend fun getRelations(): Response<Relation>
+
 
   //////////////////// POST ///////////////////
 
