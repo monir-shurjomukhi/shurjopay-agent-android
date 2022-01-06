@@ -48,19 +48,19 @@
             android:textSize="16sp" />
 
         <RadioButton
-            android:id="@+id/newAccountRadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="@string/new_"
-            android:textSize="16sp" />
-
-        <RadioButton
             android:id="@+id/mfsAccountRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="@string/mfs"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/newAccountRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/new_"
             android:textSize="16sp" />
       </RadioGroup>
     </LinearLayout>

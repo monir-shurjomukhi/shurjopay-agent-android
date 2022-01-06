@@ -134,7 +134,8 @@ class ShopInfoFragment : BaseFragment() {
     }
 
     binding.saveNextButton.setOnClickListener {
-      validateInputs()
+      //validateInputs()
+      submitShopInfo()
     }
   }
 
