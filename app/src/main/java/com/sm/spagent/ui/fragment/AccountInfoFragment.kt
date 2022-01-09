@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageView
@@ -25,7 +24,7 @@ import com.sm.spagent.ui.viewmodel.AccountInfoViewModel
 import java.io.ByteArrayOutputStream
 import java.util.*
 
-class AccountInfoFragment : Fragment() {
+class AccountInfoFragment : BaseFragment() {
 
   private lateinit var viewModel: AccountInfoViewModel
   private var _binding: FragmentAccountInfoBinding? = null
@@ -381,7 +380,7 @@ class AccountInfoFragment : Fragment() {
   }
 
   private fun validateMfsInputs() {
-    val accountCategory = binding.existingAccountRadioButton.text.toString()
+    val accountCategory = binding.mfsAccountRadioButton.text.toString()
     val accountType = binding.mfsAccountTypeTextView.text.toString()
     val accountName = binding.mfsAccountNameLayout.editText?.text.toString()
     val accountNumber = binding.mfsAccountNumberLayout.editText?.text.toString()
@@ -418,7 +417,120 @@ class AccountInfoFragment : Fragment() {
   }
 
   private fun validateNomineeInputs() {
+    val accountCategory = binding.newAccountRadioButton.text.toString()
+    val nomineeName = binding.nomineeNameLayout.editText?.text.toString()
+    val fatherHusbandsName = binding.fathersNameLayout.editText?.text.toString()
+    val mothersName = binding.mothersNameLayout.editText?.text.toString()
+    val relation = binding.relationTextView.text.toString()
+    val contactNo = binding.contactLayout.editText?.text.toString()
+    val email = binding.emailLayout.editText?.text.toString()
+    val dob = binding.dobLayout.editText?.text.toString()
+    val nidNo = binding.nidLayout.editText?.text.toString()
+    val occupation = binding.occupationTextView.text.toString()
+    val address = binding.addressLayout.editText?.text.toString()
+    val division = binding.divisionLayout.editText?.text.toString()
+    val district = binding.districtLayout.editText?.text.toString()
+    val policeStation = binding.policeStationLayout.editText?.text.toString()
 
+    if (nomineeName.isEmpty()) {
+      binding.nomineeNameLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.nomineeNameLayout.y.toInt())
+      return
+    } else {
+      binding.nomineeNameLayout.error = null
+    }
+    if (fatherHusbandsName.isEmpty()) {
+      binding.fathersNameLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.fathersNameLayout.y.toInt())
+      return
+    } else {
+      binding.fathersNameLayout.error = null
+    }
+    if (mothersName.isEmpty()) {
+      binding.mothersNameLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.mothersNameLayout.y.toInt())
+      return
+    } else {
+      binding.mothersNameLayout.error = null
+    }
+    if (relation.isEmpty()) {
+      binding.relationLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.relationLayout.y.toInt())
+      return
+    } else {
+      binding.relationLayout.error = null
+    }
+    if (contactNo.isEmpty()) {
+      binding.contactLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.contactLayout.y.toInt())
+      return
+    } else {
+      binding.contactLayout.error = null
+    }
+    if (dob.isEmpty()) {
+      binding.dobLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.dobLayout.y.toInt())
+      return
+    } else {
+      binding.dobLayout.error = null
+    }
+    if (nidNo.isEmpty()) {
+      binding.nidLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.nidLayout.y.toInt())
+      return
+    } else {
+      binding.nidLayout.error = null
+    }
+    if (occupation.isEmpty()) {
+      binding.occupationLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.occupationLayout.y.toInt())
+      return
+    } else {
+      binding.occupationLayout.error = null
+    }
+    if (address.isEmpty()) {
+      binding.addressLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.addressLayout.y.toInt())
+      return
+    } else {
+      binding.addressLayout.error = null
+    }
+    if (division.isEmpty()) {
+      binding.divisionLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.divisionLayout.y.toInt())
+      return
+    } else {
+      binding.divisionLayout.error = null
+    }
+    if (district.isEmpty()) {
+      binding.districtLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.districtLayout.y.toInt())
+      return
+    } else {
+      binding.districtLayout.error = null
+    }
+    if (policeStation.isEmpty()) {
+      binding.policeStationLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.policeStationLayout.y.toInt())
+      return
+    } else {
+      binding.policeStationLayout.error = null
+    }
+    if (nomineeImage == null) {
+      shortSnack(binding.nomineeImageLayout, R.string.capture_nominee_image)
+      binding.scrollView.smoothScrollTo(0, binding.nomineeImageLayout.y.toInt())
+      return
+    }
+    if (nomineeNIDFrontImage == null) {
+      shortSnack(binding.nomineeNIDFrontLayout, R.string.capture_front_side_of_nid)
+      binding.scrollView.smoothScrollTo(0, binding.nomineeNIDFrontLayout.y.toInt())
+      return
+    }
+    if (nomineeNIDBackImage == null) {
+      shortSnack(binding.nomineeNIDBackLayout, R.string.capture_back_side_of_nid)
+      binding.scrollView.smoothScrollTo(0, binding.nomineeNIDBackLayout.y.toInt())
+      return
+    }
   }
 
   companion object {
