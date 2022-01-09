@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -467,6 +468,13 @@ class AccountInfoFragment : BaseFragment() {
     } else {
       binding.contactLayout.error = null
     }
+    if (email.isNotEmpty() && !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+      binding.emailLayout.error = getString(R.string.email_is_invalid)
+      binding.scrollView.smoothScrollTo(0, binding.emailLayout.y.toInt())
+      return
+    } else {
+      binding.emailLayout.error = null
+    }
     if (dob.isEmpty()) {
       binding.dobLayout.error = getString(R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.dobLayout.y.toInt())
@@ -476,6 +484,13 @@ class AccountInfoFragment : BaseFragment() {
     }
     if (nidNo.isEmpty()) {
       binding.nidLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.nidLayout.y.toInt())
+      return
+    } else {
+      binding.nidLayout.error = null
+    }
+    if (nidNo.length != 10 && nidNo.length != 13 && nidNo.length != 17) {
+      binding.nidLayout.error = getString(R.string.nid_is_invalid)
       binding.scrollView.smoothScrollTo(0, binding.nidLayout.y.toInt())
       return
     } else {
