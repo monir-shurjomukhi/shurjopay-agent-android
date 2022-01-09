@@ -41,6 +41,8 @@ class AccountInfoFragment : Fragment() {
 
   private val accountTypes = listOf("Current", "Savings")
   private val mfsAccountTypes = listOf("Personal", "Agent", "Merchant")
+  private val banks = mutableMapOf<String, Int>()
+  private val mfsList = mutableMapOf<String, Int>()
   private val relations = mutableMapOf<String, Int>()
   private val occupations = mutableMapOf<String, Int>()
   private val divisions = mutableMapOf<String, Int>()
@@ -91,9 +93,10 @@ class AccountInfoFragment : Fragment() {
     _binding = FragmentAccountInfoBinding.inflate(inflater, container, false)
     val root: View = binding.root
 
-    observeData()
     setupViews()
+    observeData()
 
+    viewModel.getBanks()
     viewModel.getRelations()
     viewModel.getOccupations()
     viewModel.getDivisions()
@@ -189,6 +192,22 @@ class AccountInfoFragment : Fragment() {
   }
 
   private fun observeData() {
+    viewModel.bank.observe(viewLifecycleOwner, { bank ->
+      banks.clear()
+      for(data in bank.bank_names!!) {
+        banks[data.bank_name.toString()] = data.id!!
+      }
+
+      context?.let {
+        ArrayAdapter(
+          it, android.R.layout.simple_list_item_1,
+          banks.keys.toList()
+        ).also { adapter ->
+          binding.bankNameTextView.setAdapter(adapter)
+        }
+      }
+    })
+
     viewModel.relation.observe(viewLifecycleOwner, { relation ->
       relations.clear()
       for(data in relation.relation_names!!) {

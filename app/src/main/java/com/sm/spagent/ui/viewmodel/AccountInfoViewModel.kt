@@ -13,6 +13,10 @@ import java.io.IOException
 
 class AccountInfoViewModel(application: Application) : BaseViewModel(application) {
 
+  private val _bank = MutableLiveData<Bank>()
+  val bank: LiveData<Bank>
+    get() = _bank
+
   private val _relation = MutableLiveData<Relation>()
   val relation: LiveData<Relation>
     get() = _relation
@@ -32,6 +36,28 @@ class AccountInfoViewModel(application: Application) : BaseViewModel(application
   private val _policeStation = MutableLiveData<PoliceStation>()
   val policeStation: LiveData<PoliceStation>
     get() = _policeStation
+
+  fun getBanks() {
+    viewModelScope.launch {
+      val response = try {
+        authApiClient.getBanks()
+      } catch (e: IOException) {
+        Log.e(TAG, "getBanks: ${e.message}", e)
+        message.value = R.string.unable_to_connect
+        return@launch
+      } catch (e: HttpException) {
+        Log.e(TAG, "getBanks: ${e.message}", e)
+        message.value = R.string.unable_to_connect
+        return@launch
+      }
+
+      if (response.isSuccessful && response.body() != null) {
+        _bank.value = response.body()
+      } else {
+        message.value = R.string.unable_to_connect
+      }
+    }
+  }
 
   fun getRelations() {
     viewModelScope.launch {
