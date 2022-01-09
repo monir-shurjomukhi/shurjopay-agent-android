@@ -65,6 +65,7 @@
   <string name="nid_is_invalid">NID is invalid</string>
   <string name="mobile_number_or_password_did_not_match">Mobile number or password did not match!</string>
   <string name="capture_shop_owner_image">Capture shop owner image</string>
+  <string name="capture_nominee_image">Capture nominee image</string>
   <string name="capture_front_side_of_nid">Capture front side of NID</string>
   <string name="capture_back_side_of_nid">Capture back side of NID</string>
   <string name="capture_shop_owner_signature">Capture shop owner signature</string>
