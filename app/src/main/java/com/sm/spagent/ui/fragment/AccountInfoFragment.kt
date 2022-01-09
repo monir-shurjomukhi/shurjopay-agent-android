@@ -29,6 +29,7 @@ class AccountInfoFragment : Fragment() {
 
   private lateinit var viewModel: AccountInfoViewModel
   private var _binding: FragmentAccountInfoBinding? = null
+
   // This property is only valid between onCreateView and
   // onDestroyView.
   private val binding get() = _binding!!
@@ -42,7 +43,7 @@ class AccountInfoFragment : Fragment() {
   private val accountTypes = listOf("Current", "Savings")
   private val mfsAccountTypes = listOf("Personal", "Agent", "Merchant")
   private val banks = mutableMapOf<String, Int>()
-  private val mfsList = mutableMapOf<String, Int>()
+  private val mfss = mutableMapOf<String, Int>()
   private val relations = mutableMapOf<String, Int>()
   private val occupations = mutableMapOf<String, Int>()
   private val divisions = mutableMapOf<String, Int>()
@@ -97,6 +98,7 @@ class AccountInfoFragment : Fragment() {
     observeData()
 
     viewModel.getBanks()
+    viewModel.getMfss()
     viewModel.getRelations()
     viewModel.getOccupations()
     viewModel.getDivisions()
@@ -130,7 +132,7 @@ class AccountInfoFragment : Fragment() {
 
     binding.dobLayout.editText?.showSoftInputOnFocus = false
     binding.dobLayout.editText?.setOnTouchListener { _, event ->
-      if(event.action == MotionEvent.ACTION_UP) {
+      if (event.action == MotionEvent.ACTION_UP) {
         showDatePickerDialog()
         true
       }
@@ -183,7 +185,7 @@ class AccountInfoFragment : Fragment() {
     }
 
     binding.saveNextButton.setOnClickListener {
-      when(accountCategory) {
+      when (accountCategory) {
         AccountCategory.EXISTING_BANK -> validateExistingBankInputs()
         AccountCategory.MFS -> validateMfsInputs()
         AccountCategory.NEW -> validateNomineeInputs()
@@ -194,7 +196,7 @@ class AccountInfoFragment : Fragment() {
   private fun observeData() {
     viewModel.bank.observe(viewLifecycleOwner, { bank ->
       banks.clear()
-      for(data in bank.bank_names!!) {
+      for (data in bank.bank_names!!) {
         banks[data.bank_name.toString()] = data.id!!
       }
 
@@ -208,9 +210,25 @@ class AccountInfoFragment : Fragment() {
       }
     })
 
+    viewModel.mfs.observe(viewLifecycleOwner, { mfs ->
+      mfss.clear()
+      for (data in mfs.mfs_names!!) {
+        mfss[data.bank_name.toString()] = data.id!!
+      }
+
+      context?.let {
+        ArrayAdapter(
+          it, android.R.layout.simple_list_item_1,
+          mfss.keys.toList()
+        ).also { adapter ->
+          binding.mfsNameTextView.setAdapter(adapter)
+        }
+      }
+    })
+
     viewModel.relation.observe(viewLifecycleOwner, { relation ->
       relations.clear()
-      for(data in relation.relation_names!!) {
+      for (data in relation.relation_names!!) {
         relations[data.relation_name.toString()] = data.id!!
       }
 
@@ -226,7 +244,7 @@ class AccountInfoFragment : Fragment() {
 
     viewModel.occupation.observe(viewLifecycleOwner, { occupation ->
       occupations.clear()
-      for(data in occupation.occupation_names!!) {
+      for (data in occupation.occupation_names!!) {
         occupations[data.occupation_name.toString()] = data.id!!
       }
 
@@ -242,7 +260,7 @@ class AccountInfoFragment : Fragment() {
 
     viewModel.division.observe(viewLifecycleOwner, { division ->
       divisions.clear()
-      for(data in division.divisions!!) {
+      for (data in division.divisions!!) {
         divisions[data.division_name.toString()] = data.id!!
       }
 
@@ -258,7 +276,7 @@ class AccountInfoFragment : Fragment() {
 
     viewModel.district.observe(viewLifecycleOwner, { district ->
       districts.clear()
-      for(data in district.districts!!) {
+      for (data in district.districts!!) {
         districts[data.district_name.toString()] = data.id!!
       }
 
@@ -274,7 +292,7 @@ class AccountInfoFragment : Fragment() {
 
     viewModel.policeStation.observe(viewLifecycleOwner, { policeStation ->
       policeStations.clear()
-      for(data in policeStation.police_stations!!) {
+      for (data in policeStation.police_stations!!) {
         policeStations[data.police_station_name.toString()] = data.id!!
       }
 
@@ -296,7 +314,7 @@ class AccountInfoFragment : Fragment() {
     val d = c.get(Calendar.DAY_OF_MONTH)
 
     val dialog = DatePickerDialog(requireContext(), { _, year, monthOfYear, dayOfMonth ->
-      val date = "$year-${monthOfYear+1}-$dayOfMonth"
+      val date = "$year-${monthOfYear + 1}-$dayOfMonth"
       binding.dobLayout.editText?.setText(date)
     }, y, m, d)
 
@@ -312,7 +330,7 @@ class AccountInfoFragment : Fragment() {
           includeCamera = true
         )
         setGuidelines(CropImageView.Guidelines.ON_TOUCH)
-        when(imageType) {
+        when (imageType) {
           ImageType.NOMINEE -> setAspectRatio(3, 4)
           ImageType.NOMINEE_NID_FRONT -> setAspectRatio(4, 3)
           ImageType.NOMINEE_NID_BACK -> setAspectRatio(4, 3)

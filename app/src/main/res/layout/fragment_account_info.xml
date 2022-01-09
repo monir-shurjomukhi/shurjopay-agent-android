@@ -14,27 +14,27 @@
     <LinearLayout
         android:id="@+id/accountCategoryLayout"
         android:layout_width="0dp"
-        android:orientation="vertical"
-        android:background="#DDDDDD"
         android:layout_height="wrap_content"
+        android:background="#DDDDDD"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
       <TextView
-          android:text="@string/account_category"
-          android:textSize="16sp"
-          android:layout_marginTop="16dp"
-          android:layout_marginStart="16dp"
           android:layout_width="wrap_content"
-          android:layout_height="wrap_content"/>
+          android:layout_height="wrap_content"
+          android:layout_marginStart="16dp"
+          android:layout_marginTop="16dp"
+          android:text="@string/account_category"
+          android:textSize="16sp" />
 
       <RadioGroup
           android:id="@+id/accountRadioGroup"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
           android:layout_marginStart="16dp"
+          android:layout_marginTop="16dp"
           android:layout_marginEnd="16dp"
           android:layout_marginBottom="16dp"
           android:orientation="horizontal">
@@ -81,8 +81,8 @@
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:hint="@string/account_type"
-          app:errorEnabled="true"
           android:labelFor="@id/accountTypeTextView"
+          app:errorEnabled="true"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent">
@@ -265,8 +265,8 @@
           android:layout_height="wrap_content"
           android:layout_marginTop="8dp"
           android:hint="@string/relation"
-          app:errorEnabled="true"
           android:labelFor="@id/relationTextView"
+          app:errorEnabled="true"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@id/mothersNameLayout">
@@ -324,9 +324,9 @@
           android:layout_height="wrap_content"
           android:layout_marginTop="8dp"
           android:hint="@string/date_of_birth"
-          app:errorEnabled="true"
-          app:endIconMode="custom"
           app:endIconDrawable="@drawable/ic_baseline_calendar_month_24"
+          app:endIconMode="custom"
+          app:errorEnabled="true"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@id/emailLayout">
@@ -639,10 +639,10 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mfsInfoLayout"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/nomineeInfoLayout">
@@ -706,7 +706,7 @@
 
       <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/mfsNameLayout"
-          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_marginTop="8dp"
@@ -716,10 +716,11 @@
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@id/mfsAccountNumberLayout">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <AutoCompleteTextView
+            android:id="@+id/mfsNameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
+            android:inputType="none"
             android:textSize="16sp" />
       </com.google.android.material.textfield.TextInputLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
