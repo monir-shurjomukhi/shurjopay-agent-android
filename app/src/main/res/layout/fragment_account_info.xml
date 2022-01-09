@@ -71,7 +71,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/accountCategoryLayout">
@@ -194,6 +194,94 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mfsInfoLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/accountInfoLayout">
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/mfsAccountTypeLayout"
+          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:hint="@string/account_type"
+          app:errorEnabled="true"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent">
+
+        <AutoCompleteTextView
+            android:id="@+id/mfsAccountTypeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:textSize="16sp" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/mfsAccountNameLayout"
+          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:hint="@string/account_name"
+          app:errorEnabled="true"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/mfsAccountTypeLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:textSize="16sp" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/mfsAccountNumberLayout"
+          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:hint="@string/account_number"
+          app:errorEnabled="true"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/mfsAccountNameLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:textSize="16sp" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/mfsNameLayout"
+          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:hint="@string/mfs_name"
+          app:errorEnabled="true"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/mfsAccountNumberLayout">
+
+        <AutoCompleteTextView
+            android:id="@+id/mfsNameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:textSize="16sp" />
+      </com.google.android.material.textfield.TextInputLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/nomineeInfoLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -201,7 +289,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/accountInfoLayout">
+        app:layout_constraintTop_toBottomOf="@id/mfsInfoLayout">
 
       <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/nomineeNameLayout"
@@ -638,94 +726,6 @@
       </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/mfsInfoLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nomineeInfoLayout">
-
-      <com.google.android.material.textfield.TextInputLayout
-          android:id="@+id/mfsAccountTypeLayout"
-          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:hint="@string/account_type"
-          app:errorEnabled="true"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent">
-
-        <AutoCompleteTextView
-            android:id="@+id/mfsAccountTypeTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="none"
-            android:textSize="16sp" />
-      </com.google.android.material.textfield.TextInputLayout>
-
-      <com.google.android.material.textfield.TextInputLayout
-          android:id="@+id/mfsAccountNameLayout"
-          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
-          android:hint="@string/account_name"
-          app:errorEnabled="true"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/mfsAccountTypeLayout">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:textSize="16sp" />
-      </com.google.android.material.textfield.TextInputLayout>
-
-      <com.google.android.material.textfield.TextInputLayout
-          android:id="@+id/mfsAccountNumberLayout"
-          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
-          android:hint="@string/account_number"
-          app:errorEnabled="true"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/mfsAccountNameLayout">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:textSize="16sp" />
-      </com.google.android.material.textfield.TextInputLayout>
-
-      <com.google.android.material.textfield.TextInputLayout
-          android:id="@+id/mfsNameLayout"
-          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
-          android:hint="@string/mfs_name"
-          app:errorEnabled="true"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/mfsAccountNumberLayout">
-
-        <AutoCompleteTextView
-            android:id="@+id/mfsNameTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="none"
-            android:textSize="16sp" />
-      </com.google.android.material.textfield.TextInputLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/saveNextButton"
         android:layout_width="0dp"
@@ -739,6 +739,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mfsInfoLayout" />
+        app:layout_constraintTop_toBottomOf="@id/nomineeInfoLayout" />
   </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

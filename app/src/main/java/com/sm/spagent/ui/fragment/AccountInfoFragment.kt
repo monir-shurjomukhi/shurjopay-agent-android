@@ -378,17 +378,43 @@ class AccountInfoFragment : Fragment() {
     } else {
       binding.bankNameLayout.error = null
     }
-    if (bankName.isEmpty()) {
-      binding.bankNameLayout.error = getString(R.string.this_field_is_required)
-      binding.scrollView.smoothScrollTo(0, binding.bankNameLayout.y.toInt())
-      return
-    } else {
-      binding.bankNameLayout.error = null
-    }
   }
 
   private fun validateMfsInputs() {
+    val accountCategory = binding.existingAccountRadioButton.text.toString()
+    val accountType = binding.mfsAccountTypeTextView.text.toString()
+    val accountName = binding.mfsAccountNameLayout.editText?.text.toString()
+    val accountNumber = binding.mfsAccountNumberLayout.editText?.text.toString()
+    val mfsName = binding.mfsNameTextView.text.toString()
 
+    if (accountType.isEmpty()) {
+      binding.mfsAccountTypeLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.mfsAccountTypeLayout.y.toInt())
+      return
+    } else {
+      binding.mfsAccountTypeLayout.error = null
+    }
+    if (accountName.isEmpty()) {
+      binding.mfsAccountNameLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.mfsAccountNameLayout.y.toInt())
+      return
+    } else {
+      binding.mfsAccountNameLayout.error = null
+    }
+    if (accountNumber.isEmpty()) {
+      binding.mfsAccountNumberLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.mfsAccountNumberLayout.y.toInt())
+      return
+    } else {
+      binding.mfsAccountNumberLayout.error = null
+    }
+    if (mfsName.isEmpty()) {
+      binding.mfsNameLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.mfsNameLayout.y.toInt())
+      return
+    } else {
+      binding.mfsNameLayout.error = null
+    }
   }
 
   private fun validateNomineeInputs() {
