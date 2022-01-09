@@ -70,26 +70,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/accountCategoryLayout">
 
       <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/accountTypeLayout"
-          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:hint="@string/account_type"
           app:errorEnabled="true"
+          android:labelFor="@id/accountTypeTextView"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <AutoCompleteTextView
+            android:id="@+id/accountTypeTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
+            android:inputType="none"
             android:textSize="16sp" />
       </com.google.android.material.textfield.TextInputLayout>
 
@@ -194,7 +196,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/accountInfoLayout">
@@ -646,7 +648,7 @@
 
       <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/mfsAccountTypeLayout"
-          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:hint="@string/account_type"
@@ -655,10 +657,11 @@
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <AutoCompleteTextView
+            android:id="@+id/mfsAccountTypeTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
+            android:inputType="none"
             android:textSize="16sp" />
       </com.google.android.material.textfield.TextInputLayout>
 

@@ -19,9 +19,8 @@ import com.canhub.cropper.CropImageView
 import com.canhub.cropper.options
 import com.sm.spagent.R
 import com.sm.spagent.databinding.FragmentAccountInfoBinding
-import com.sm.spagent.model.AccountType
+import com.sm.spagent.model.AccountCategory
 import com.sm.spagent.model.ImageType
-import com.sm.spagent.ui.activity.NewMerchantActivity
 import com.sm.spagent.ui.viewmodel.AccountInfoViewModel
 import java.io.ByteArrayOutputStream
 import java.util.*
@@ -35,11 +34,13 @@ class AccountInfoFragment : Fragment() {
   private val binding get() = _binding!!
 
   private var imageType = ImageType.NOMINEE
-  private var accountType = AccountType.EXISTING_BANK
+  private var accountCategory = AccountCategory.EXISTING_BANK
   private var nomineeImage: String? = null
   private var nomineeNIDFrontImage: String? = null
   private var nomineeNIDBackImage: String? = null
 
+  private val accountTypes = listOf("Current", "Savings")
+  private val mfsAccountTypes = listOf("Personal", "Agent", "Merchant")
   private val relations = mutableMapOf<String, Int>()
   private val occupations = mutableMapOf<String, Int>()
   private val divisions = mutableMapOf<String, Int>()
@@ -106,6 +107,24 @@ class AccountInfoFragment : Fragment() {
   }
 
   private fun setupViews() {
+    context?.let {
+      ArrayAdapter(
+        it, android.R.layout.simple_list_item_1,
+        accountTypes
+      ).also { adapter ->
+        binding.accountTypeTextView.setAdapter(adapter)
+      }
+    }
+
+    context?.let {
+      ArrayAdapter(
+        it, android.R.layout.simple_list_item_1,
+        mfsAccountTypes
+      ).also { adapter ->
+        binding.mfsAccountTypeTextView.setAdapter(adapter)
+      }
+    }
+
     binding.dobLayout.editText?.showSoftInputOnFocus = false
     binding.dobLayout.editText?.setOnTouchListener { _, event ->
       if(event.action == MotionEvent.ACTION_UP) {
@@ -140,19 +159,19 @@ class AccountInfoFragment : Fragment() {
     binding.accountRadioGroup.setOnCheckedChangeListener { _, checkedId ->
       when (checkedId) {
         R.id.existingAccountRadioButton -> {
-          accountType = AccountType.EXISTING_BANK
+          accountCategory = AccountCategory.EXISTING_BANK
           binding.accountInfoLayout.visibility = View.VISIBLE
           binding.nomineeInfoLayout.visibility = View.GONE
           binding.mfsInfoLayout.visibility = View.GONE
         }
         R.id.newAccountRadioButton -> {
-          accountType = AccountType.NEW
+          accountCategory = AccountCategory.NEW
           binding.accountInfoLayout.visibility = View.GONE
           binding.nomineeInfoLayout.visibility = View.VISIBLE
           binding.mfsInfoLayout.visibility = View.GONE
         }
         R.id.mfsAccountRadioButton -> {
-          accountType = AccountType.MFS
+          accountCategory = AccountCategory.MFS
           binding.accountInfoLayout.visibility = View.GONE
           binding.nomineeInfoLayout.visibility = View.GONE
           binding.mfsInfoLayout.visibility = View.VISIBLE
@@ -161,7 +180,11 @@ class AccountInfoFragment : Fragment() {
     }
 
     binding.saveNextButton.setOnClickListener {
-      (activity as NewMerchantActivity).goToNextStep()
+      when(accountCategory) {
+        AccountCategory.EXISTING_BANK -> validateExistingBankInputs()
+        AccountCategory.MFS -> validateMfsInputs()
+        AccountCategory.NEW -> validateNomineeInputs()
+      }
     }
   }
 
@@ -279,6 +302,18 @@ class AccountInfoFragment : Fragment() {
         setFixAspectRatio(true)
       }
     )
+  }
+
+  private fun validateExistingBankInputs() {
+
+  }
+
+  private fun validateMfsInputs() {
+
+  }
+
+  private fun validateNomineeInputs() {
+
   }
 
   companion object {
