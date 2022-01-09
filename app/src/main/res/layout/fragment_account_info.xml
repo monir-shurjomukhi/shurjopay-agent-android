@@ -272,7 +272,7 @@
             android:id="@+id/relationTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
+            android:inputType="none"
             android:textSize="16sp" />
       </com.google.android.material.textfield.TextInputLayout>
 
@@ -371,7 +371,7 @@
             android:id="@+id/occupationTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
+            android:inputType="none"
             android:textSize="16sp" />
       </com.google.android.material.textfield.TextInputLayout>
 
@@ -411,7 +411,7 @@
             android:id="@+id/divisionTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPostalAddress"
+            android:inputType="none"
             android:textSize="16sp" />
       </com.google.android.material.textfield.TextInputLayout>
 
@@ -431,7 +431,7 @@
             android:id="@+id/districtTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPostalAddress"
+            android:inputType="none"
             android:textSize="16sp" />
       </com.google.android.material.textfield.TextInputLayout>
 
@@ -451,7 +451,7 @@
             android:id="@+id/policeStationTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPostalAddress"
+            android:inputType="none"
             android:textSize="16sp" />
       </com.google.android.material.textfield.TextInputLayout>
 

@@ -1,17 +1,22 @@
 package com.sm.spagent.ui.fragment
 
+import android.app.DatePickerDialog
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageView
+import com.canhub.cropper.options
 import com.sm.spagent.R
 import com.sm.spagent.databinding.FragmentAccountInfoBinding
 import com.sm.spagent.model.AccountType
@@ -19,6 +24,7 @@ import com.sm.spagent.model.ImageType
 import com.sm.spagent.ui.activity.NewMerchantActivity
 import com.sm.spagent.ui.viewmodel.AccountInfoViewModel
 import java.io.ByteArrayOutputStream
+import java.util.*
 
 class AccountInfoFragment : Fragment() {
 
@@ -84,31 +90,8 @@ class AccountInfoFragment : Fragment() {
     _binding = FragmentAccountInfoBinding.inflate(inflater, container, false)
     val root: View = binding.root
 
-    binding.accountRadioGroup.setOnCheckedChangeListener { _, checkedId ->
-      when (checkedId) {
-        R.id.existingAccountRadioButton -> {
-          binding.accountInfoLayout.visibility = View.VISIBLE
-          binding.nomineeInfoLayout.visibility = View.GONE
-          binding.mfsInfoLayout.visibility = View.GONE
-        }
-        R.id.newAccountRadioButton -> {
-          binding.accountInfoLayout.visibility = View.GONE
-          binding.nomineeInfoLayout.visibility = View.VISIBLE
-          binding.mfsInfoLayout.visibility = View.GONE
-        }
-        R.id.mfsAccountRadioButton -> {
-          binding.accountInfoLayout.visibility = View.GONE
-          binding.nomineeInfoLayout.visibility = View.GONE
-          binding.mfsInfoLayout.visibility = View.VISIBLE
-        }
-      }
-    }
-
-    binding.saveNextButton.setOnClickListener {
-      (activity as NewMerchantActivity).goToNextStep()
-    }
-
     observeData()
+    setupViews()
 
     viewModel.getRelations()
     viewModel.getOccupations()
@@ -120,6 +103,66 @@ class AccountInfoFragment : Fragment() {
   override fun onDestroyView() {
     super.onDestroyView()
     _binding = null
+  }
+
+  private fun setupViews() {
+    binding.dobLayout.editText?.showSoftInputOnFocus = false
+    binding.dobLayout.editText?.setOnTouchListener { _, event ->
+      if(event.action == MotionEvent.ACTION_UP) {
+        showDatePickerDialog()
+        true
+      }
+      false
+    }
+
+    binding.nomineeImagePickerLayout.setOnClickListener { startImageCrop(ImageType.NOMINEE) }
+    binding.nomineeNIDFrontPickerLayout.setOnClickListener { startImageCrop(ImageType.NOMINEE_NID_FRONT) }
+    binding.nomineeNIDBackPickerLayout.setOnClickListener { startImageCrop(ImageType.NOMINEE_NID_BACK) }
+
+    binding.divisionTextView.doAfterTextChanged { text ->
+      binding.districtTextView.text = null
+      binding.districtTextView.setAdapter(null)
+      if (text?.isNotEmpty() == true) {
+        val divisionId = divisions[text.toString()]
+        viewModel.getDistricts(divisionId!!)
+      }
+    }
+
+    binding.districtTextView.doAfterTextChanged { text ->
+      binding.policeStationTextView.text = null
+      binding.policeStationTextView.setAdapter(null)
+      if (text?.isNotEmpty() == true) {
+        val districtId = districts[text.toString()]
+        viewModel.getPoliceStations(districtId!!)
+      }
+    }
+
+    binding.accountRadioGroup.setOnCheckedChangeListener { _, checkedId ->
+      when (checkedId) {
+        R.id.existingAccountRadioButton -> {
+          accountType = AccountType.EXISTING_BANK
+          binding.accountInfoLayout.visibility = View.VISIBLE
+          binding.nomineeInfoLayout.visibility = View.GONE
+          binding.mfsInfoLayout.visibility = View.GONE
+        }
+        R.id.newAccountRadioButton -> {
+          accountType = AccountType.NEW
+          binding.accountInfoLayout.visibility = View.GONE
+          binding.nomineeInfoLayout.visibility = View.VISIBLE
+          binding.mfsInfoLayout.visibility = View.GONE
+        }
+        R.id.mfsAccountRadioButton -> {
+          accountType = AccountType.MFS
+          binding.accountInfoLayout.visibility = View.GONE
+          binding.nomineeInfoLayout.visibility = View.GONE
+          binding.mfsInfoLayout.visibility = View.VISIBLE
+        }
+      }
+    }
+
+    binding.saveNextButton.setOnClickListener {
+      (activity as NewMerchantActivity).goToNextStep()
+    }
   }
 
   private fun observeData() {
@@ -202,6 +245,40 @@ class AccountInfoFragment : Fragment() {
         }
       }
     })
+  }
+
+  private fun showDatePickerDialog() {
+    val c = Calendar.getInstance()
+    val y = c.get(Calendar.YEAR)
+    val m = c.get(Calendar.MONTH)
+    val d = c.get(Calendar.DAY_OF_MONTH)
+
+    val dialog = DatePickerDialog(requireContext(), { _, year, monthOfYear, dayOfMonth ->
+      val date = "$year-${monthOfYear+1}-$dayOfMonth"
+      binding.dobLayout.editText?.setText(date)
+    }, y, m, d)
+
+    dialog.show()
+  }
+
+  private fun startImageCrop(type: ImageType) {
+    imageType = type
+    cropImage.launch(
+      options {
+        setImageSource(
+          includeGallery = false,
+          includeCamera = true
+        )
+        setGuidelines(CropImageView.Guidelines.ON_TOUCH)
+        when(imageType) {
+          ImageType.NOMINEE -> setAspectRatio(3, 4)
+          ImageType.NOMINEE_NID_FRONT -> setAspectRatio(4, 3)
+          ImageType.NOMINEE_NID_BACK -> setAspectRatio(4, 3)
+          else -> setAspectRatio(3, 4)
+        }
+        setFixAspectRatio(true)
+      }
+    )
   }
 
   companion object {
