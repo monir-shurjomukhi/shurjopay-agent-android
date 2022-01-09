@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
-import android.text.InputType
 import android.util.Base64
 import android.util.Log
 import android.util.Patterns
@@ -107,10 +106,6 @@ class PersonalInfoFragment : BaseFragment() {
   }
 
   private fun setupViews() {
-    binding.divisionTextView.inputType = InputType.TYPE_NULL
-    binding.districtTextView.inputType = InputType.TYPE_NULL
-    binding.policeStationTextView.inputType = InputType.TYPE_NULL
-
     binding.step2DOBLayout.editText?.showSoftInputOnFocus = false
     binding.step2DOBLayout.editText?.setOnTouchListener { _, event ->
       if(event.action == MotionEvent.ACTION_UP) {

@@ -96,13 +96,6 @@ class ShopInfoFragment : BaseFragment() {
   }
 
   private fun setupViews() {
-    binding.businessTypeTextView.inputType = InputType.TYPE_NULL
-    binding.shopSizeTextView.inputType = InputType.TYPE_NULL
-    binding.divisionTextView.inputType = InputType.TYPE_NULL
-    binding.divisionTextView.inputType = InputType.TYPE_NULL
-    binding.districtTextView.inputType = InputType.TYPE_NULL
-    binding.policeStationTextView.inputType = InputType.TYPE_NULL
-
     binding.tradeLicensePickerLayout.setOnClickListener { startImageCrop(ImageType.TRADE_LICENSE) }
     binding.shopFrontPickerLayout.setOnClickListener { startImageCrop(ImageType.SHOP_FRONT) }
 
