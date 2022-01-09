@@ -33,6 +33,12 @@ interface ApiInterface {
   @GET("qr-occupation-names")
   suspend fun getOccupations(): Response<Occupation>
 
+  @GET("qr-bank-names")
+  suspend fun getBanks(): Response<Bank>
+
+  @GET("qr-mfs-names")
+  suspend fun getMfs(): Response<Mfs>
+
 
   //////////////////// POST ///////////////////
 
