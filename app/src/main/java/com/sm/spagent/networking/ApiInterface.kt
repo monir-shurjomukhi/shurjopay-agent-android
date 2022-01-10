@@ -47,7 +47,7 @@ interface ApiInterface {
     @Body login: Login
   ): Response<Login>
 
-  @POST("nid_ocr_predict")
+  @POST("nid_ocr_predict/")
   suspend fun ocrNid(
     @Body ocr: Ocr
   ): Response<Ocr>
