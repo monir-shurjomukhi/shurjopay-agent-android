@@ -140,16 +140,23 @@ class PersonalInfoFragment : BaseFragment() {
     }
 
     binding.saveNextButton.setOnClickListener {
-      /*when(currentStep) {
+      when(currentStep) {
         1 -> validateStep1Inputs()
         2 -> validateStep2Inputs()
         3 -> validateInputs()
-      }*/
-      goToNextStep()
+      }
     }
   }
 
   private fun observeData() {
+    viewModel.progress.observe(viewLifecycleOwner, {
+      if (it) {
+        showProgress()
+      } else {
+        hideProgress()
+      }
+    })
+
     viewModel.division.observe(viewLifecycleOwner, { division ->
       divisions.clear()
       for(data in division.divisions!!) {
@@ -196,6 +203,13 @@ class PersonalInfoFragment : BaseFragment() {
           binding.policeStationTextView.setAdapter(adapter)
         }
       }
+    })
+
+    viewModel.ocr.observe(viewLifecycleOwner, { ocr ->
+      Log.d(TAG, "ocr: $ocr")
+      if (ocr.nid != null) binding.step2NIDLayout.editText?.setText(ocr.nid.toString())
+      binding.step2DOBLayout.editText?.setText(ocr.dob)
+      goToNextStep()
     })
   }
 
@@ -255,7 +269,7 @@ class PersonalInfoFragment : BaseFragment() {
   }
 
   private fun submitStep1Data() {
-    goToNextStep()
+    viewModel.ocrNid(ownerNIDFront.toString())
   }
 
   private fun validateStep2Inputs() {
