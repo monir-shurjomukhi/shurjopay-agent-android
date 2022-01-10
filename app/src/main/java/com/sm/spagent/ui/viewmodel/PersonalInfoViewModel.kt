@@ -6,10 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.sm.spagent.R
-import com.sm.spagent.model.District
-import com.sm.spagent.model.Division
-import com.sm.spagent.model.Ocr
-import com.sm.spagent.model.PoliceStation
+import com.sm.spagent.model.*
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -31,6 +28,10 @@ class PersonalInfoViewModel(application: Application) : BaseViewModel(applicatio
   private val _ocr = MutableLiveData<Ocr>()
   val ocr: LiveData<Ocr>
     get() = _ocr
+
+  private val _nid = MutableLiveData<Nid>()
+  val nid: LiveData<Nid>
+    get() = _nid
 
   fun getDivisions() {
     viewModelScope.launch {
@@ -119,6 +120,33 @@ class PersonalInfoViewModel(application: Application) : BaseViewModel(applicatio
       progress.value = false
       if (response.isSuccessful && response.body() != null) {
         _ocr.value = response.body()
+      } else {
+        message.value = R.string.unable_to_connect
+      }
+    }
+  }
+
+  fun getNidInfo(image: String, nidNo: Long, dob: String) {
+    viewModelScope.launch {
+      progress.value = true
+      val nid = Nid(image, nidNo, dob, null, null, null, null, null)
+      val response = try {
+        ocrApiClient.getNidInfo(nid)
+      } catch (e: IOException) {
+        Log.e(TAG, "getNidInfo: ${e.message}", e)
+        progress.value = false
+        message.value = R.string.unable_to_connect
+        return@launch
+      } catch (e: HttpException) {
+        Log.e(TAG, "getNidInfo: ${e.message}", e)
+        progress.value = false
+        message.value = R.string.unable_to_connect
+        return@launch
+      }
+
+      progress.value = false
+      if (response.isSuccessful && response.body() != null) {
+        _nid.value = response.body()
       } else {
         message.value = R.string.unable_to_connect
       }

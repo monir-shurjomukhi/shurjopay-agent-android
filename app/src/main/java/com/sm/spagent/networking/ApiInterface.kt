@@ -52,6 +52,11 @@ interface ApiInterface {
     @Body ocr: Ocr
   ): Response<Ocr>
 
+  @POST("qr-nid-information")
+  suspend fun getNidInfo(
+    @Body nid: Nid
+  ): Response<Nid>
+
   @POST("info")
   suspend fun getHtml(
     @Body qrCode: QrCode
