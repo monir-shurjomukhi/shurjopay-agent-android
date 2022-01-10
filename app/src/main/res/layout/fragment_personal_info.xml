@@ -224,9 +224,9 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginTop="8dp"
-          app:endIconMode="custom"
-          app:endIconDrawable="@drawable/ic_baseline_calendar_month_24"
           android:hint="@string/date_of_birth"
+          app:endIconDrawable="@drawable/ic_baseline_calendar_month_24"
+          app:endIconMode="custom"
           app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -238,11 +238,11 @@
     </LinearLayout>
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/step3Layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/step2Layout">
@@ -253,6 +253,38 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:hint="@string/shop_owner_name"
+          app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:textSize="16sp" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/fathersNameLayout"
+          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:hint="@string/father_husband_s_name"
+          app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:textSize="16sp" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/mothersNameLayout"
+          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:hint="@string/mother_s_name"
           app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
