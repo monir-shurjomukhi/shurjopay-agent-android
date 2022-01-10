@@ -23,6 +23,7 @@ import com.sm.spagent.model.ImageType
 import com.sm.spagent.ui.activity.NewMerchantActivity
 import com.sm.spagent.ui.viewmodel.PersonalInfoViewModel
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.util.*
 
 
@@ -59,6 +60,10 @@ class PersonalInfoFragment : BaseFragment() {
           binding.ownerImageView.setImageBitmap(bitmap)
           ownerImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
 //          Log.d(TAG, "ownerImage: $ownerImage")
+          var file = File("image.txt")
+          file.printWriter().use { out ->
+            out.print(ownerImage.toString())
+          }
         }
         ImageType.OWNER_NID_FRONT -> {
           binding.ownerNIDFrontImageView.setImageBitmap(bitmap)
@@ -208,8 +213,27 @@ class PersonalInfoFragment : BaseFragment() {
     viewModel.ocr.observe(viewLifecycleOwner, { ocr ->
       Log.d(TAG, "ocr: $ocr")
       if (ocr.nid != null) binding.step2NIDLayout.editText?.setText(ocr.nid.toString())
-      binding.step2DOBLayout.editText?.setText(ocr.dob)
+      if (ocr.dob != null) binding.step2DOBLayout.editText?.setText(ocr.dob)
       goToNextStep()
+    })
+
+    viewModel.nid.observe(viewLifecycleOwner, { nid ->
+      Log.d(TAG, "nid: $nid")
+      when (nid.sp_code) {
+        "1" -> {
+          binding.nameLayout.editText?.setText(nid.nid_response?.name)
+          binding.fathersNameLayout.editText?.setText(nid.nid_response?.father)
+          binding.mothersNameLayout.editText?.setText(nid.nid_response?.mother)
+          binding.dobLayout.editText?.setText(nid.nid_response?.dob)
+          goToNextStep()
+        }
+        "400" -> {
+          shortToast(nid.errors?.get(0).toString())
+        }
+        else -> {
+          shortToast(R.string.something_went_wrong)
+        }
+      }
     })
   }
 
@@ -298,15 +322,17 @@ class PersonalInfoFragment : BaseFragment() {
       binding.step2DOBLayout.error = null
     }
 
-    submitStep2Data()
+    submitStep2Data(nid, dob)
   }
 
-  private fun submitStep2Data() {
-    goToNextStep()
+  private fun submitStep2Data(nid: String, dob: String) {
+    viewModel.getNidInfo(ownerImage.toString(), nid.toLong(), dob)
   }
 
   private fun validateInputs() {
     val name = binding.nameLayout.editText?.text.toString()
+    val fathersName = binding.fathersNameLayout.editText?.text.toString()
+    val mothersName = binding.mothersNameLayout.editText?.text.toString()
     val contactNo = binding.contactLayout.editText?.text.toString()
     val email = binding.emailLayout.editText?.text.toString()
     val nid = binding.nidLayout.editText?.text.toString()
@@ -323,6 +349,20 @@ class PersonalInfoFragment : BaseFragment() {
       return
     } else {
       binding.nameLayout.error = null
+    }
+    if (fathersName.isEmpty()) {
+      binding.fathersNameLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.fathersNameLayout.y.toInt())
+      return
+    } else {
+      binding.fathersNameLayout.error = null
+    }
+    if (mothersName.isEmpty()) {
+      binding.mothersNameLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.mothersNameLayout.y.toInt())
+      return
+    } else {
+      binding.mothersNameLayout.error = null
     }
     if (contactNo.isEmpty()) {
       binding.contactLayout.error = getString(R.string.this_field_is_required)

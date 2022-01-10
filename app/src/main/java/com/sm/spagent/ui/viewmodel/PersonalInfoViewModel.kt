@@ -131,7 +131,7 @@ class PersonalInfoViewModel(application: Application) : BaseViewModel(applicatio
       progress.value = true
       val nid = Nid(image, nidNo, dob, null, null, null, null, null)
       val response = try {
-        ocrApiClient.getNidInfo(nid)
+        authApiClient.getNidInfo(nid)
       } catch (e: IOException) {
         Log.e(TAG, "getNidInfo: ${e.message}", e)
         progress.value = false
