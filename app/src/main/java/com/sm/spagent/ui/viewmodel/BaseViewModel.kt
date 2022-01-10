@@ -15,6 +15,9 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
   val apiClient: ApiInterface =
     ApiClient().getApiClient("https://stagingapp.engine.shurjopayment.com/api/")
       .create(ApiInterface::class.java)
+  val ocrApiClient: ApiInterface =
+    ApiClient().getOcrApiClient("http://192.168.0.36:8000/api/v1/")
+      .create(ApiInterface::class.java)
   val authApiClient: ApiInterface =
     ApiClient().getAuthApiClient(
       "https://stagingapp.engine.shurjopayment.com/api/",

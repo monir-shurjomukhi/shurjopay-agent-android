@@ -42,6 +42,16 @@ interface ApiInterface {
 
   //////////////////// POST ///////////////////
 
+  @POST("qr-login")
+  suspend fun login(
+    @Body login: Login
+  ): Response<Login>
+
+  @POST("nid_ocr_predict")
+  suspend fun ocrNid(
+    @Body ocr: Ocr
+  ): Response<Ocr>
+
   @POST("info")
   suspend fun getHtml(
     @Body qrCode: QrCode
@@ -61,11 +71,6 @@ interface ApiInterface {
   suspend fun verifyAccount(
     @Body otp: Otp
   ): Response<Otp>
-
-  @POST("qr-login")
-  suspend fun login(
-    @Body login: Login
-  ): Response<Login>
 
   @POST("customer-forgot-pass")
   suspend fun forgotPassword(
