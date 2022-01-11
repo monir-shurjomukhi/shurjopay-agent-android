@@ -111,7 +111,7 @@
           <ImageView
               android:id="@+id/ownerNIDFrontImageView"
               android:layout_width="320dp"
-              android:layout_height="240dp"
+              android:layout_height="200dp"
               android:src="@drawable/ic_baseline_credit_card_24" />
         </com.google.android.material.card.MaterialCardView>
 
@@ -168,7 +168,7 @@
           <ImageView
               android:id="@+id/ownerNIDBackImageView"
               android:layout_width="320dp"
-              android:layout_height="240dp"
+              android:layout_height="200dp"
               android:src="@drawable/ic_baseline_credit_card_24" />
         </com.google.android.material.card.MaterialCardView>
 

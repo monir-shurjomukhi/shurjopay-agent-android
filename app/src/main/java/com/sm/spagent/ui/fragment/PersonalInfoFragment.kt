@@ -197,7 +197,7 @@ class PersonalInfoFragment : BaseFragment() {
       }
     })
 
-    viewModel.message.observe(this, {
+    viewModel.message.observe(viewLifecycleOwner, {
       shortSnack(binding.root, it)
     })
 
@@ -301,8 +301,8 @@ class PersonalInfoFragment : BaseFragment() {
         setGuidelines(CropImageView.Guidelines.ON_TOUCH)
         when(imageType) {
           ImageType.OWNER -> setAspectRatio(3, 4)
-          ImageType.OWNER_NID_FRONT -> setAspectRatio(4, 3)
-          ImageType.OWNER_NID_BACK -> setAspectRatio(4, 3)
+          ImageType.OWNER_NID_FRONT -> setAspectRatio(8, 5)
+          ImageType.OWNER_NID_BACK -> setAspectRatio(8, 5)
           ImageType.OWNER_SIGNATURE -> setAspectRatio(2, 1)
           else -> setAspectRatio(3, 4)
         }

@@ -332,8 +332,8 @@ class AccountInfoFragment : BaseFragment() {
         setGuidelines(CropImageView.Guidelines.ON_TOUCH)
         when (imageType) {
           ImageType.NOMINEE -> setAspectRatio(3, 4)
-          ImageType.NOMINEE_NID_FRONT -> setAspectRatio(4, 3)
-          ImageType.NOMINEE_NID_BACK -> setAspectRatio(4, 3)
+          ImageType.NOMINEE_NID_FRONT -> setAspectRatio(8, 5)
+          ImageType.NOMINEE_NID_BACK -> setAspectRatio(8, 5)
           else -> setAspectRatio(3, 4)
         }
         setFixAspectRatio(true)
