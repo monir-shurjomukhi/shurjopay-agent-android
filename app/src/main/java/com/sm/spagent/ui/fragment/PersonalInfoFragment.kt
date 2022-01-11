@@ -2,8 +2,8 @@ package com.sm.spagent.ui.fragment
 
 import android.app.DatePickerDialog
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
 import android.util.Patterns
@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageView
 import com.canhub.cropper.options
@@ -22,6 +23,8 @@ import com.sm.spagent.databinding.FragmentPersonalInfoBinding
 import com.sm.spagent.model.ImageType
 import com.sm.spagent.ui.activity.NewMerchantActivity
 import com.sm.spagent.ui.viewmodel.PersonalInfoViewModel
+import id.zelory.compressor.Compressor
+import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.*
@@ -50,8 +53,44 @@ class PersonalInfoFragment : BaseFragment() {
     if (result.isSuccessful) {
       // use the returned uri
       val uriContent = result.uriContent
+      Log.d(TAG, "uriContent: $uriContent")
       val uriFilePath = result.getUriFilePath(requireContext()) // optional usage
-      val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, uriContent)
+      Log.d(TAG, "uriFilePath: $uriFilePath")
+      lifecycleScope.launch {
+        val file = File(uriFilePath)
+        Log.d(TAG, "file size (KB): ${file.length() / 1024}")
+        val compressedImageFile = Compressor.compress(requireContext(), file)
+        Log.d(TAG, "compressedImageFile size (KB): ${compressedImageFile.length() / 1024}")
+        val bitmap = BitmapFactory.decodeFile(compressedImageFile.absolutePath)
+        val outputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+        val byteArray: ByteArray = outputStream.toByteArray()
+
+        when (imageType) {
+          ImageType.OWNER -> {
+            binding.ownerImageView.setImageBitmap(bitmap)
+            ownerImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
+//          Log.d(TAG, "ownerImage: $ownerImage")
+          }
+          ImageType.OWNER_NID_FRONT -> {
+            binding.ownerNIDFrontImageView.setImageBitmap(bitmap)
+            ownerNIDFront = Base64.encodeToString(byteArray, Base64.DEFAULT)
+          }
+          ImageType.OWNER_NID_BACK -> {
+            binding.ownerNIDBackImageView.setImageBitmap(bitmap)
+            ownerNIDBack = Base64.encodeToString(byteArray, Base64.DEFAULT)
+          }
+          ImageType.OWNER_SIGNATURE -> {
+            binding.ownerSignatureImageView.setImageBitmap(bitmap)
+            ownerSignature = Base64.encodeToString(byteArray, Base64.DEFAULT)
+          }
+          else -> {
+            binding.ownerImageView.setImageBitmap(bitmap)
+            ownerImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
+          }
+        }
+      }
+      /*val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, uriContent)
       val outputStream = ByteArrayOutputStream()
       bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
       val byteArray: ByteArray = outputStream.toByteArray()
@@ -60,10 +99,6 @@ class PersonalInfoFragment : BaseFragment() {
           binding.ownerImageView.setImageBitmap(bitmap)
           ownerImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
 //          Log.d(TAG, "ownerImage: $ownerImage")
-          var file = File("image.txt")
-          file.printWriter().use { out ->
-            out.print(ownerImage.toString())
-          }
         }
         ImageType.OWNER_NID_FRONT -> {
           binding.ownerNIDFrontImageView.setImageBitmap(bitmap)
@@ -81,7 +116,7 @@ class PersonalInfoFragment : BaseFragment() {
           binding.ownerImageView.setImageBitmap(bitmap)
           ownerImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
         }
-      }
+      }*/
     } else {
       // an error occurred
       val exception = result.error
@@ -160,6 +195,10 @@ class PersonalInfoFragment : BaseFragment() {
       } else {
         hideProgress()
       }
+    })
+
+    viewModel.message.observe(this, {
+      shortSnack(binding.root, it)
     })
 
     viewModel.division.observe(viewLifecycleOwner, { division ->
