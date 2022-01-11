@@ -181,7 +181,7 @@ class PersonalInfoFragment : BaseFragment() {
 
     binding.saveNextButton.setOnClickListener {
       when(currentStep) {
-        1 -> validateStep1Inputs()
+        1 -> /*validateStep1Inputs()*/ goToNextStep()
         2 -> validateStep2Inputs()
         3 -> validateInputs()
       }
@@ -259,7 +259,7 @@ class PersonalInfoFragment : BaseFragment() {
     viewModel.nid.observe(viewLifecycleOwner, { nid ->
       Log.d(TAG, "nid: $nid")
       when (nid.sp_code) {
-        "1" -> {
+        "1", "2" -> {
           binding.nameLayout.editText?.setText(nid.nid_response?.name)
           binding.fathersNameLayout.editText?.setText(nid.nid_response?.father)
           binding.mothersNameLayout.editText?.setText(nid.nid_response?.mother)
