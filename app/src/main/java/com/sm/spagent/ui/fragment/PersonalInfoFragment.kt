@@ -23,9 +23,11 @@ import com.sm.spagent.databinding.FragmentPersonalInfoBinding
 import com.sm.spagent.model.ImageType
 import com.sm.spagent.model.Nid
 import com.sm.spagent.model.Ocr
+import com.sm.spagent.model.OwnerInfo
 import com.sm.spagent.ui.activity.NewMerchantActivity
 import com.sm.spagent.ui.viewmodel.PersonalInfoViewModel
 import id.zelory.compressor.Compressor
+import id.zelory.compressor.constraint.quality
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -62,7 +64,7 @@ class PersonalInfoFragment : BaseFragment() {
       lifecycleScope.launch {
         val file = File(uriFilePath)
         Log.d(TAG, "file size (KB): ${file.length() / 1024}")
-        val compressedImageFile = Compressor.compress(requireContext(), file)
+        val compressedImageFile = Compressor.compress(requireContext(), file) { quality(80) }
         Log.d(TAG, "compressedImageFile size (KB): ${compressedImageFile.length() / 1024}")
         val bitmap = BitmapFactory.decodeFile(compressedImageFile.absolutePath)
         val outputStream = ByteArrayOutputStream()
@@ -73,6 +75,13 @@ class PersonalInfoFragment : BaseFragment() {
           ImageType.OWNER -> {
             binding.ownerImageView.setImageBitmap(bitmap)
             ownerImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
+            Log.e(
+              TAG, "ownerImage:=====================================================\n" +
+                  "===========================================================================\n" +
+                  "$ownerImage\n" +
+                  "===============================================================================\n" +
+                  "================================================================================"
+            )
 //          Log.d(TAG, "ownerImage: $ownerImage")
           }
           ImageType.OWNER_NID_FRONT -> {
@@ -266,15 +275,36 @@ class PersonalInfoFragment : BaseFragment() {
           binding.nameLayout.editText?.setText(nid.nid_response?.name)
           binding.fathersNameLayout.editText?.setText(nid.nid_response?.father)
           binding.mothersNameLayout.editText?.setText(nid.nid_response?.mother)
+          binding.nidLayout.editText?.setText(nid.nid_response?.nationalId)
           if (nid.nid_response?.dob != null) {
             val dob = "${nid.nid_response.dob.substring(6)}-${
-              nid.nid_response.dob.substring(0, 2)}-${nid.nid_response.dob.substring(3, 5)}"
+              nid.nid_response.dob.substring(0, 2)
+            }-${nid.nid_response.dob.substring(3, 5)}"
             binding.dobLayout.editText?.setText(dob)
           }
           goToNextStep()
         }
         "400" -> {
           shortToast(nid.errors?.get(0).toString())
+        }
+        else -> {
+          shortToast(R.string.something_went_wrong)
+        }
+      }
+    })
+
+    viewModel.ownerInfo.observe(viewLifecycleOwner, { ownerInfo ->
+      Log.d(TAG, "ownerInfo: $ownerInfo")
+      when (ownerInfo.sp_code) {
+        "1" -> {
+          (activity as NewMerchantActivity).setShopOwnerId(ownerInfo.shop_owner_id!!)
+          goToNextStep()
+        }
+        "2" -> {
+          shortToast(ownerInfo.message.toString())
+        }
+        "3" -> {
+          shortToast(ownerInfo.message.toString())
         }
         else -> {
           shortToast(R.string.something_went_wrong)
@@ -488,11 +518,34 @@ class PersonalInfoFragment : BaseFragment() {
       return
     }
 
-    submitPersonalInfo()
+    val ownerInfo = OwnerInfo(
+      name,
+      fathersName,
+      mothersName,
+      contactNo,
+      email,
+      nid,
+      dob,
+      tin,
+      address,
+      divisions[division]!!,
+      districts[district]!!,
+      policeStations[policeStation]!!,
+      ownerImage!!,
+      ownerNIDFront!!,
+      ownerNIDBack!!,
+      ownerSignature!!,
+      null,
+      null,
+      null,
+      null,
+      null,
+    )
+    submitPersonalInfo(ownerInfo)
   }
 
-  private fun submitPersonalInfo() {
-    goToNextStep()
+  private fun submitPersonalInfo(ownerInfo: OwnerInfo) {
+    viewModel.submitOwnerInfo(ownerInfo)
   }
 
   private fun goToNextStep() {
