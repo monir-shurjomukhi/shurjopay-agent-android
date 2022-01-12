@@ -2,9 +2,8 @@ package com.sm.spagent.ui.fragment
 
 import android.app.DatePickerDialog
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.provider.MediaStore
-import android.text.InputType
 import android.util.Base64
 import android.util.Log
 import android.util.Patterns
@@ -15,15 +14,23 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageView
 import com.canhub.cropper.options
 import com.sm.spagent.R
 import com.sm.spagent.databinding.FragmentPersonalInfoBinding
 import com.sm.spagent.model.ImageType
+import com.sm.spagent.model.Nid
+import com.sm.spagent.model.Ocr
+import com.sm.spagent.model.OwnerInfo
 import com.sm.spagent.ui.activity.NewMerchantActivity
 import com.sm.spagent.ui.viewmodel.PersonalInfoViewModel
+import id.zelory.compressor.Compressor
+import id.zelory.compressor.constraint.quality
+import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.util.*
 
 
@@ -31,6 +38,7 @@ class PersonalInfoFragment : BaseFragment() {
 
   private lateinit var viewModel: PersonalInfoViewModel
   private var _binding: FragmentPersonalInfoBinding? = null
+
   // This property is only valid between onCreateView and
   // onDestroyView.
   private val binding get() = _binding!!
@@ -50,8 +58,44 @@ class PersonalInfoFragment : BaseFragment() {
     if (result.isSuccessful) {
       // use the returned uri
       val uriContent = result.uriContent
+      Log.d(TAG, "uriContent: $uriContent")
       val uriFilePath = result.getUriFilePath(requireContext()) // optional usage
-      val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, uriContent)
+      Log.d(TAG, "uriFilePath: $uriFilePath")
+      lifecycleScope.launch {
+        val file = File(uriFilePath)
+        Log.d(TAG, "file size (KB): ${file.length() / 1024}")
+        val compressedImageFile = Compressor.compress(requireContext(), file) { quality(80) }
+        Log.d(TAG, "compressedImageFile size (KB): ${compressedImageFile.length() / 1024}")
+        val bitmap = BitmapFactory.decodeFile(compressedImageFile.absolutePath)
+        val outputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+        val byteArray: ByteArray = outputStream.toByteArray()
+
+        when (imageType) {
+          ImageType.OWNER -> {
+            binding.ownerImageView.setImageBitmap(bitmap)
+            ownerImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
+//          Log.d(TAG, "ownerImage: $ownerImage")
+          }
+          ImageType.OWNER_NID_FRONT -> {
+            binding.ownerNIDFrontImageView.setImageBitmap(bitmap)
+            ownerNIDFront = Base64.encodeToString(byteArray, Base64.DEFAULT)
+          }
+          ImageType.OWNER_NID_BACK -> {
+            binding.ownerNIDBackImageView.setImageBitmap(bitmap)
+            ownerNIDBack = Base64.encodeToString(byteArray, Base64.DEFAULT)
+          }
+          ImageType.OWNER_SIGNATURE -> {
+            binding.ownerSignatureImageView.setImageBitmap(bitmap)
+            ownerSignature = Base64.encodeToString(byteArray, Base64.DEFAULT)
+          }
+          else -> {
+            binding.ownerImageView.setImageBitmap(bitmap)
+            ownerImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
+          }
+        }
+      }
+      /*val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, uriContent)
       val outputStream = ByteArrayOutputStream()
       bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
       val byteArray: ByteArray = outputStream.toByteArray()
@@ -59,6 +103,7 @@ class PersonalInfoFragment : BaseFragment() {
         ImageType.OWNER -> {
           binding.ownerImageView.setImageBitmap(bitmap)
           ownerImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
+//          Log.d(TAG, "ownerImage: $ownerImage")
         }
         ImageType.OWNER_NID_FRONT -> {
           binding.ownerNIDFrontImageView.setImageBitmap(bitmap)
@@ -76,7 +121,7 @@ class PersonalInfoFragment : BaseFragment() {
           binding.ownerImageView.setImageBitmap(bitmap)
           ownerImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
         }
-      }
+      }*/
     } else {
       // an error occurred
       val exception = result.error
@@ -107,13 +152,9 @@ class PersonalInfoFragment : BaseFragment() {
   }
 
   private fun setupViews() {
-    binding.divisionTextView.inputType = InputType.TYPE_NULL
-    binding.districtTextView.inputType = InputType.TYPE_NULL
-    binding.policeStationTextView.inputType = InputType.TYPE_NULL
-
     binding.step2DOBLayout.editText?.showSoftInputOnFocus = false
     binding.step2DOBLayout.editText?.setOnTouchListener { _, event ->
-      if(event.action == MotionEvent.ACTION_UP) {
+      if (event.action == MotionEvent.ACTION_UP) {
         showDatePickerDialog()
         true
       }
@@ -144,19 +185,30 @@ class PersonalInfoFragment : BaseFragment() {
     }
 
     binding.saveNextButton.setOnClickListener {
-      /*when(currentStep) {
-        1 -> validateStep1Inputs()
+      when (currentStep) {
+        1 -> validateStep1Inputs() /*goToNextStep()*/
         2 -> validateStep2Inputs()
         3 -> validateInputs()
-      }*/
-      goToNextStep()
+      }
     }
   }
 
   private fun observeData() {
+    viewModel.progress.observe(viewLifecycleOwner, {
+      if (it) {
+        showProgress()
+      } else {
+        hideProgress()
+      }
+    })
+
+    viewModel.message.observe(viewLifecycleOwner, {
+      shortSnack(binding.root, it)
+    })
+
     viewModel.division.observe(viewLifecycleOwner, { division ->
       divisions.clear()
-      for(data in division.divisions!!) {
+      for (data in division.divisions!!) {
         divisions[data.division_name.toString()] = data.id!!
       }
 
@@ -172,7 +224,7 @@ class PersonalInfoFragment : BaseFragment() {
 
     viewModel.district.observe(viewLifecycleOwner, { district ->
       districts.clear()
-      for(data in district.districts!!) {
+      for (data in district.districts!!) {
         districts[data.district_name.toString()] = data.id!!
       }
 
@@ -188,7 +240,7 @@ class PersonalInfoFragment : BaseFragment() {
 
     viewModel.policeStation.observe(viewLifecycleOwner, { policeStation ->
       policeStations.clear()
-      for(data in policeStation.police_stations!!) {
+      for (data in policeStation.police_stations!!) {
         policeStations[data.police_station_name.toString()] = data.id!!
       }
 
@@ -201,6 +253,57 @@ class PersonalInfoFragment : BaseFragment() {
         }
       }
     })
+
+    viewModel.ocr.observe(viewLifecycleOwner, { ocr ->
+      Log.d(TAG, "ocr: $ocr")
+      if (ocr.nid != null) binding.step2NIDLayout.editText?.setText(ocr.nid.toString())
+      if (ocr.dob != null) binding.step2DOBLayout.editText?.setText(ocr.dob)
+      goToNextStep()
+    })
+
+    viewModel.nid.observe(viewLifecycleOwner, { nid ->
+      Log.d(TAG, "nid: $nid")
+      when (nid.sp_code) {
+        "1" -> {
+          binding.nameLayout.editText?.setText(nid.nid_response?.name)
+          binding.fathersNameLayout.editText?.setText(nid.nid_response?.father)
+          binding.mothersNameLayout.editText?.setText(nid.nid_response?.mother)
+          binding.nidLayout.editText?.setText(nid.nid_response?.nationalId)
+          if (nid.nid_response?.dob != null) {
+            val dob = "${nid.nid_response.dob.substring(6)}-${
+              nid.nid_response.dob.substring(0, 2)
+            }-${nid.nid_response.dob.substring(3, 5)}"
+            binding.dobLayout.editText?.setText(dob)
+          }
+          goToNextStep()
+        }
+        "400" -> {
+          shortToast(nid.errors?.get(0).toString())
+        }
+        else -> {
+          shortToast(R.string.something_went_wrong)
+        }
+      }
+    })
+
+    viewModel.ownerInfo.observe(viewLifecycleOwner, { ownerInfo ->
+      Log.d(TAG, "ownerInfo: $ownerInfo")
+      when (ownerInfo.sp_code) {
+        "1" -> {
+          (activity as NewMerchantActivity).setShopOwnerId(ownerInfo.shop_owner_id!!)
+          goToNextStep()
+        }
+        "2" -> {
+          shortToast(ownerInfo.message.toString())
+        }
+        "3" -> {
+          shortToast(ownerInfo.message.toString())
+        }
+        else -> {
+          shortToast(R.string.something_went_wrong)
+        }
+      }
+    })
   }
 
   private fun showDatePickerDialog() {
@@ -210,7 +313,7 @@ class PersonalInfoFragment : BaseFragment() {
     val d = c.get(Calendar.DAY_OF_MONTH)
 
     val dialog = DatePickerDialog(requireContext(), { _, year, monthOfYear, dayOfMonth ->
-      val date = "$year-${monthOfYear+1}-$dayOfMonth"
+      val date = "$year-${monthOfYear + 1}-$dayOfMonth"
       binding.step2DOBLayout.editText?.setText(date)
     }, y, m, d)
 
@@ -226,10 +329,10 @@ class PersonalInfoFragment : BaseFragment() {
           includeCamera = true
         )
         setGuidelines(CropImageView.Guidelines.ON_TOUCH)
-        when(imageType) {
+        when (imageType) {
           ImageType.OWNER -> setAspectRatio(3, 4)
-          ImageType.OWNER_NID_FRONT -> setAspectRatio(4, 3)
-          ImageType.OWNER_NID_BACK -> setAspectRatio(4, 3)
+          ImageType.OWNER_NID_FRONT -> setAspectRatio(8, 5)
+          ImageType.OWNER_NID_BACK -> setAspectRatio(8, 5)
           ImageType.OWNER_SIGNATURE -> setAspectRatio(2, 1)
           else -> setAspectRatio(3, 4)
         }
@@ -259,21 +362,22 @@ class PersonalInfoFragment : BaseFragment() {
   }
 
   private fun submitStep1Data() {
-    goToNextStep()
+    val ocr = Ocr(ownerNIDFront.toString(), null, null)
+    viewModel.ocrNid(ocr)
   }
 
   private fun validateStep2Inputs() {
-    val nid = binding.step2NIDLayout.editText?.text.toString()
+    val nidNo = binding.step2NIDLayout.editText?.text.toString()
     val dob = binding.step2DOBLayout.editText?.text.toString()
 
-    if (nid.isEmpty()) {
+    if (nidNo.isEmpty()) {
       binding.step2NIDLayout.error = getString(R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.step2NIDLayout.y.toInt())
       return
     } else {
       binding.step2NIDLayout.error = null
     }
-    if (nid.length != 10 && nid.length != 13 && nid.length != 17) {
+    if (nidNo.length != 10 && nidNo.length != 13 && nidNo.length != 17) {
       binding.step2NIDLayout.error = getString(R.string.nid_is_invalid)
       binding.scrollView.smoothScrollTo(0, binding.step2NIDLayout.y.toInt())
       return
@@ -288,15 +392,18 @@ class PersonalInfoFragment : BaseFragment() {
       binding.step2DOBLayout.error = null
     }
 
-    submitStep2Data()
+    submitStep2Data(nidNo, dob)
   }
 
-  private fun submitStep2Data() {
-    goToNextStep()
+  private fun submitStep2Data(nidNo: String, dob: String) {
+    val nid = Nid(ownerImage.toString(), nidNo.toLong(), dob, null, null, null, null, null)
+    viewModel.getNidInfo(nid)
   }
 
   private fun validateInputs() {
     val name = binding.nameLayout.editText?.text.toString()
+    val fathersName = binding.fathersNameLayout.editText?.text.toString()
+    val mothersName = binding.mothersNameLayout.editText?.text.toString()
     val contactNo = binding.contactLayout.editText?.text.toString()
     val email = binding.emailLayout.editText?.text.toString()
     val nid = binding.nidLayout.editText?.text.toString()
@@ -313,6 +420,20 @@ class PersonalInfoFragment : BaseFragment() {
       return
     } else {
       binding.nameLayout.error = null
+    }
+    if (fathersName.isEmpty()) {
+      binding.fathersNameLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.fathersNameLayout.y.toInt())
+      return
+    } else {
+      binding.fathersNameLayout.error = null
+    }
+    if (mothersName.isEmpty()) {
+      binding.mothersNameLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.mothersNameLayout.y.toInt())
+      return
+    } else {
+      binding.mothersNameLayout.error = null
     }
     if (contactNo.isEmpty()) {
       binding.contactLayout.error = getString(R.string.this_field_is_required)
@@ -349,6 +470,13 @@ class PersonalInfoFragment : BaseFragment() {
     } else {
       binding.nidLayout.error = null
     }
+    if (dob.isEmpty()) {
+      binding.dobLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.dobLayout.y.toInt())
+      return
+    } else {
+      binding.dobLayout.error = null
+    }
     if (address.isEmpty()) {
       binding.addressLayout.error = getString(R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.addressLayout.y.toInt())
@@ -377,28 +505,44 @@ class PersonalInfoFragment : BaseFragment() {
     } else {
       binding.policeStationLayout.error = null
     }
-    if (dob.isEmpty()) {
-      binding.dobLayout.error = getString(R.string.this_field_is_required)
-      binding.scrollView.smoothScrollTo(0, binding.dobLayout.y.toInt())
-      return
-    } else {
-      binding.dobLayout.error = null
-    }
     if (ownerSignature == null) {
       shortSnack(binding.ownerSignatureLayout, R.string.capture_shop_owner_signature)
       binding.scrollView.smoothScrollTo(0, binding.ownerSignatureLayout.y.toInt())
       return
     }
 
-    submitPersonalInfo()
+    val ownerInfo = OwnerInfo(
+      name,
+      fathersName,
+      mothersName,
+      contactNo,
+      email,
+      nid,
+      dob,
+      tin,
+      address,
+      divisions[division]!!,
+      districts[district]!!,
+      policeStations[policeStation]!!,
+      ownerImage!!,
+      ownerNIDFront!!,
+      ownerNIDBack!!,
+      ownerSignature!!,
+      null,
+      null,
+      null,
+      null,
+      null,
+    )
+    submitPersonalInfo(ownerInfo)
   }
 
-  private fun submitPersonalInfo() {
-    goToNextStep()
+  private fun submitPersonalInfo(ownerInfo: OwnerInfo) {
+    viewModel.submitOwnerInfo(ownerInfo)
   }
 
   private fun goToNextStep() {
-    when(currentStep) {
+    when (currentStep) {
       1 -> {
         currentStep = 2
         binding.step1Layout.visibility = View.GONE

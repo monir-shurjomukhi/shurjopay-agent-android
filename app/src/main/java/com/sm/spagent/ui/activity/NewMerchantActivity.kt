@@ -13,6 +13,8 @@ class NewMerchantActivity : AppCompatActivity(), StepperNavListener {
 
   private lateinit var binding: ActivityNewMerchantBinding
 
+  private var shopOwnerId: Int = -1
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     binding = ActivityNewMerchantBinding.inflate(layoutInflater)
@@ -24,6 +26,14 @@ class NewMerchantActivity : AppCompatActivity(), StepperNavListener {
 
     binding.stepper.setupWithNavController(findNavController(R.id.frame_stepper))
     binding.stepper.stepperNavListener = this
+  }
+
+  fun setShopOwnerId(id: Int) {
+    shopOwnerId = id
+  }
+
+  fun getShopOwnerId(): Int {
+    return shopOwnerId
   }
 
   fun goToNextStep() {

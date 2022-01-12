@@ -6,10 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.sm.spagent.R
-import com.sm.spagent.model.BusinessType
-import com.sm.spagent.model.District
-import com.sm.spagent.model.Division
-import com.sm.spagent.model.PoliceStation
+import com.sm.spagent.model.*
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -31,6 +28,10 @@ class ShopInfoViewModel(application: Application) : BaseViewModel(application) {
   private val _policeStation = MutableLiveData<PoliceStation>()
   val policeStation: LiveData<PoliceStation>
     get() = _policeStation
+
+  private val _shopInfo = MutableLiveData<ShopInfo>()
+  val shopInfo: LiveData<ShopInfo>
+    get() = _shopInfo
 
   fun getBusinessTypes() {
     viewModelScope.launch {
@@ -114,6 +115,32 @@ class ShopInfoViewModel(application: Application) : BaseViewModel(application) {
 
       if (response.isSuccessful && response.body() != null) {
         _policeStation.value = response.body()
+      } else {
+        message.value = R.string.unable_to_connect
+      }
+    }
+  }
+
+  fun submitShopInfo(shopInfo: ShopInfo) {
+    viewModelScope.launch {
+      progress.value = true
+      val response = try {
+        authApiClient.submitShopInfo(shopInfo)
+      } catch (e: IOException) {
+        Log.e(TAG, "submitShopInfo: ${e.message}", e)
+        progress.value = false
+        message.value = R.string.unable_to_connect
+        return@launch
+      } catch (e: HttpException) {
+        Log.e(TAG, "submitShopInfo: ${e.message}", e)
+        progress.value = false
+        message.value = R.string.unable_to_connect
+        return@launch
+      }
+
+      progress.value = false
+      if (response.isSuccessful && response.body() != null) {
+        _shopInfo.value = response.body()
       } else {
         message.value = R.string.unable_to_connect
       }

@@ -33,8 +33,39 @@ interface ApiInterface {
   @GET("qr-occupation-names")
   suspend fun getOccupations(): Response<Occupation>
 
+  @GET("qr-bank-names")
+  suspend fun getBanks(): Response<Bank>
+
+  @GET("qr-mfs-names")
+  suspend fun getMfs(): Response<Mfs>
+
 
   //////////////////// POST ///////////////////
+
+  @POST("qr-login")
+  suspend fun login(
+    @Body login: Login
+  ): Response<Login>
+
+  @POST("nid_ocr_predict/")
+  suspend fun ocrNid(
+    @Body ocr: Ocr
+  ): Response<Ocr>
+
+  @POST("qr-nid-information")
+  suspend fun getNidInfo(
+    @Body nid: Nid
+  ): Response<Nid>
+
+  @POST("qr-store-shop-owner-info")
+  suspend fun submitOwnerInfo(
+    @Body ownerInfo: OwnerInfo
+  ): Response<OwnerInfo>
+
+  @POST("qr-store-shop-info")
+  suspend fun submitShopInfo(
+    @Body shopInfo: ShopInfo
+  ): Response<ShopInfo>
 
   @POST("info")
   suspend fun getHtml(
@@ -55,11 +86,6 @@ interface ApiInterface {
   suspend fun verifyAccount(
     @Body otp: Otp
   ): Response<Otp>
-
-  @POST("qr-login")
-  suspend fun login(
-    @Body login: Login
-  ): Response<Login>
 
   @POST("customer-forgot-pass")
   suspend fun forgotPassword(

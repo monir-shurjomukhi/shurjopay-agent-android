@@ -1,6 +1,6 @@
 package com.sm.spagent.model
 
-enum class AccountType {
+enum class AccountCategory {
   EXISTING_BANK,
   MFS,
   NEW
