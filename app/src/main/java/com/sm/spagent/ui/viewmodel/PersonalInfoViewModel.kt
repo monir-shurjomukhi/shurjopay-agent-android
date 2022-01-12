@@ -33,6 +33,10 @@ class PersonalInfoViewModel(application: Application) : BaseViewModel(applicatio
   val nid: LiveData<Nid>
     get() = _nid
 
+  private val _ownerInfo = MutableLiveData<OwnerInfo>()
+  val ownerInfo: LiveData<OwnerInfo>
+    get() = _ownerInfo
+
   fun getDivisions() {
     viewModelScope.launch {
       val response = try {
@@ -99,10 +103,9 @@ class PersonalInfoViewModel(application: Application) : BaseViewModel(applicatio
     }
   }
 
-  fun ocrNid(image: String) {
+  fun ocrNid(ocr: Ocr) {
     viewModelScope.launch {
       progress.value = true
-      val ocr = Ocr(image,null, null)
       val response = try {
         ocrApiClient.ocrNid(ocr)
       } catch (e: IOException) {
@@ -126,10 +129,9 @@ class PersonalInfoViewModel(application: Application) : BaseViewModel(applicatio
     }
   }
 
-  fun getNidInfo(image: String, nidNo: Long, dob: String) {
+  fun getNidInfo(nid: Nid) {
     viewModelScope.launch {
       progress.value = true
-      val nid = Nid(image, nidNo, dob, null, null, null, null, null)
       val response = try {
         authApiClient.getNidInfo(nid)
       } catch (e: IOException) {
@@ -147,6 +149,32 @@ class PersonalInfoViewModel(application: Application) : BaseViewModel(applicatio
       progress.value = false
       if (response.isSuccessful && response.body() != null) {
         _nid.value = response.body()
+      } else {
+        message.value = R.string.unable_to_connect
+      }
+    }
+  }
+
+  fun submitOwnerInfo(ownerInfo: OwnerInfo) {
+    viewModelScope.launch {
+      progress.value = true
+      val response = try {
+        authApiClient.submitOwnerInfo(ownerInfo)
+      } catch (e: IOException) {
+        Log.e(TAG, "submitOwnerInfo: ${e.message}", e)
+        progress.value = false
+        message.value = R.string.unable_to_connect
+        return@launch
+      } catch (e: HttpException) {
+        Log.e(TAG, "submitOwnerInfo: ${e.message}", e)
+        progress.value = false
+        message.value = R.string.unable_to_connect
+        return@launch
+      }
+
+      progress.value = false
+      if (response.isSuccessful && response.body() != null) {
+        _ownerInfo.value = response.body()
       } else {
         message.value = R.string.unable_to_connect
       }
