@@ -34,6 +34,7 @@ class PersonalInfoFragment : BaseFragment() {
 
   private lateinit var viewModel: PersonalInfoViewModel
   private var _binding: FragmentPersonalInfoBinding? = null
+
   // This property is only valid between onCreateView and
   // onDestroyView.
   private val binding get() = _binding!!
@@ -149,7 +150,7 @@ class PersonalInfoFragment : BaseFragment() {
   private fun setupViews() {
     binding.step2DOBLayout.editText?.showSoftInputOnFocus = false
     binding.step2DOBLayout.editText?.setOnTouchListener { _, event ->
-      if(event.action == MotionEvent.ACTION_UP) {
+      if (event.action == MotionEvent.ACTION_UP) {
         showDatePickerDialog()
         true
       }
@@ -180,8 +181,8 @@ class PersonalInfoFragment : BaseFragment() {
     }
 
     binding.saveNextButton.setOnClickListener {
-      when(currentStep) {
-        1 -> /*validateStep1Inputs()*/ goToNextStep()
+      when (currentStep) {
+        1 -> validateStep1Inputs() /*goToNextStep()*/
         2 -> validateStep2Inputs()
         3 -> validateInputs()
       }
@@ -203,7 +204,7 @@ class PersonalInfoFragment : BaseFragment() {
 
     viewModel.division.observe(viewLifecycleOwner, { division ->
       divisions.clear()
-      for(data in division.divisions!!) {
+      for (data in division.divisions!!) {
         divisions[data.division_name.toString()] = data.id!!
       }
 
@@ -219,7 +220,7 @@ class PersonalInfoFragment : BaseFragment() {
 
     viewModel.district.observe(viewLifecycleOwner, { district ->
       districts.clear()
-      for(data in district.districts!!) {
+      for (data in district.districts!!) {
         districts[data.district_name.toString()] = data.id!!
       }
 
@@ -235,7 +236,7 @@ class PersonalInfoFragment : BaseFragment() {
 
     viewModel.policeStation.observe(viewLifecycleOwner, { policeStation ->
       policeStations.clear()
-      for(data in policeStation.police_stations!!) {
+      for (data in policeStation.police_stations!!) {
         policeStations[data.police_station_name.toString()] = data.id!!
       }
 
@@ -259,11 +260,15 @@ class PersonalInfoFragment : BaseFragment() {
     viewModel.nid.observe(viewLifecycleOwner, { nid ->
       Log.d(TAG, "nid: $nid")
       when (nid.sp_code) {
-        "1", "2" -> {
+        "1" -> {
           binding.nameLayout.editText?.setText(nid.nid_response?.name)
           binding.fathersNameLayout.editText?.setText(nid.nid_response?.father)
           binding.mothersNameLayout.editText?.setText(nid.nid_response?.mother)
-          binding.dobLayout.editText?.setText(nid.nid_response?.dob)
+          if (nid.nid_response?.dob != null) {
+            val dob = "${nid.nid_response.dob.substring(6)}-${
+              nid.nid_response.dob.substring(0, 2)}-${nid.nid_response.dob.substring(3, 5)}"
+            binding.dobLayout.editText?.setText(dob)
+          }
           goToNextStep()
         }
         "400" -> {
@@ -283,7 +288,7 @@ class PersonalInfoFragment : BaseFragment() {
     val d = c.get(Calendar.DAY_OF_MONTH)
 
     val dialog = DatePickerDialog(requireContext(), { _, year, monthOfYear, dayOfMonth ->
-      val date = "$year-${monthOfYear+1}-$dayOfMonth"
+      val date = "$year-${monthOfYear + 1}-$dayOfMonth"
       binding.step2DOBLayout.editText?.setText(date)
     }, y, m, d)
 
@@ -299,7 +304,7 @@ class PersonalInfoFragment : BaseFragment() {
           includeCamera = true
         )
         setGuidelines(CropImageView.Guidelines.ON_TOUCH)
-        when(imageType) {
+        when (imageType) {
           ImageType.OWNER -> setAspectRatio(3, 4)
           ImageType.OWNER_NID_FRONT -> setAspectRatio(8, 5)
           ImageType.OWNER_NID_BACK -> setAspectRatio(8, 5)
@@ -487,7 +492,7 @@ class PersonalInfoFragment : BaseFragment() {
   }
 
   private fun goToNextStep() {
-    when(currentStep) {
+    when (currentStep) {
       1 -> {
         currentStep = 2
         binding.step1Layout.visibility = View.GONE
