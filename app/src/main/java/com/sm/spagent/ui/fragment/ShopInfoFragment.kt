@@ -17,6 +17,7 @@ import com.canhub.cropper.options
 import com.sm.spagent.R
 import com.sm.spagent.databinding.FragmentShopInfoBinding
 import com.sm.spagent.model.ImageType
+import com.sm.spagent.model.ShopInfo
 import com.sm.spagent.ui.activity.NewMerchantActivity
 import com.sm.spagent.ui.viewmodel.ShopInfoViewModel
 import java.io.ByteArrayOutputStream
@@ -126,8 +127,7 @@ class ShopInfoFragment : BaseFragment() {
     }
 
     binding.saveNextButton.setOnClickListener {
-      //validateInputs()
-      submitShopInfo()
+      validateInputs()
     }
   }
 
@@ -192,6 +192,21 @@ class ShopInfoFragment : BaseFragment() {
           policeStations.keys.toList()
         ).also { adapter ->
           binding.policeStationTextView.setAdapter(adapter)
+        }
+      }
+    })
+
+    viewModel.shopInfo.observe(viewLifecycleOwner, { shopInfo ->
+      Log.d(TAG, "shopInfo: $shopInfo")
+      when (shopInfo.sp_code) {
+        "1" -> {
+          (activity as NewMerchantActivity).goToNextStep()
+        }
+        "2" -> {
+          shortToast(shopInfo.message.toString())
+        }
+        else -> {
+          shortToast(R.string.something_went_wrong)
         }
       }
     })
@@ -295,11 +310,29 @@ class ShopInfoFragment : BaseFragment() {
       return
     }
 
-    submitShopInfo()
+    val shopInfo = ShopInfo(
+      shopName,
+      tin,
+      businessTypes[businessType]!!,
+      shopSize,
+      shopAddress,
+      divisions[division]!!,
+      districts[district]!!,
+      policeStations[policeStation]!!,
+      shopLocation,
+      tradeLicenseImage,
+      shopFrontImage!!,
+      (activity as NewMerchantActivity).getShopOwnerId(),
+      null,
+      null,
+      null,
+      null
+    )
+    submitShopInfo(shopInfo)
   }
 
-  private fun submitShopInfo() {
-    (activity as NewMerchantActivity).goToNextStep()
+  private fun submitShopInfo(shopInfo: ShopInfo) {
+    viewModel.submitShopInfo(shopInfo)
   }
 
   companion object {
