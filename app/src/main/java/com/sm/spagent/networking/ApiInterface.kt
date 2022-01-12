@@ -62,6 +62,11 @@ interface ApiInterface {
     @Body ownerInfo: OwnerInfo
   ): Response<OwnerInfo>
 
+  @POST("qr-store-shop-info")
+  suspend fun submitShopInfo(
+    @Body shopInfo: ShopInfo
+  ): Response<ShopInfo>
+
   @POST("info")
   suspend fun getHtml(
     @Body qrCode: QrCode

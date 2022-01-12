@@ -75,13 +75,6 @@ class PersonalInfoFragment : BaseFragment() {
           ImageType.OWNER -> {
             binding.ownerImageView.setImageBitmap(bitmap)
             ownerImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
-            Log.e(
-              TAG, "ownerImage:=====================================================\n" +
-                  "===========================================================================\n" +
-                  "$ownerImage\n" +
-                  "===============================================================================\n" +
-                  "================================================================================"
-            )
 //          Log.d(TAG, "ownerImage: $ownerImage")
           }
           ImageType.OWNER_NID_FRONT -> {
