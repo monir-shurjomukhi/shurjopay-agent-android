@@ -3,7 +3,6 @@ package com.sm.spagent.ui.fragment
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
-import android.text.InputType
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
@@ -285,11 +284,11 @@ class ShopInfoFragment : BaseFragment() {
     } else {
       binding.locationLayout.error = null
     }
-    if (tradeLicenseImage == null) {
+    /*if (tradeLicenseImage == null) {
       shortSnack(binding.tradeLicenseLayout, R.string.capture_trade_license_image)
       binding.scrollView.smoothScrollTo(0, binding.tradeLicenseLayout.y.toInt())
       return
-    }
+    }*/
     if (shopFrontImage == null) {
       shortSnack(binding.shopFrontLayout, R.string.capture_shop_front_image)
       binding.scrollView.smoothScrollTo(0, binding.shopFrontLayout.y.toInt())
