@@ -21,6 +21,8 @@ import com.canhub.cropper.options
 import com.sm.spagent.R
 import com.sm.spagent.databinding.FragmentPersonalInfoBinding
 import com.sm.spagent.model.ImageType
+import com.sm.spagent.model.Nid
+import com.sm.spagent.model.Ocr
 import com.sm.spagent.ui.activity.NewMerchantActivity
 import com.sm.spagent.ui.viewmodel.PersonalInfoViewModel
 import id.zelory.compressor.Compressor
@@ -337,21 +339,22 @@ class PersonalInfoFragment : BaseFragment() {
   }
 
   private fun submitStep1Data() {
-    viewModel.ocrNid(ownerNIDFront.toString())
+    val ocr = Ocr(ownerNIDFront.toString(), null, null)
+    viewModel.ocrNid(ocr)
   }
 
   private fun validateStep2Inputs() {
-    val nid = binding.step2NIDLayout.editText?.text.toString()
+    val nidNo = binding.step2NIDLayout.editText?.text.toString()
     val dob = binding.step2DOBLayout.editText?.text.toString()
 
-    if (nid.isEmpty()) {
+    if (nidNo.isEmpty()) {
       binding.step2NIDLayout.error = getString(R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.step2NIDLayout.y.toInt())
       return
     } else {
       binding.step2NIDLayout.error = null
     }
-    if (nid.length != 10 && nid.length != 13 && nid.length != 17) {
+    if (nidNo.length != 10 && nidNo.length != 13 && nidNo.length != 17) {
       binding.step2NIDLayout.error = getString(R.string.nid_is_invalid)
       binding.scrollView.smoothScrollTo(0, binding.step2NIDLayout.y.toInt())
       return
@@ -366,11 +369,12 @@ class PersonalInfoFragment : BaseFragment() {
       binding.step2DOBLayout.error = null
     }
 
-    submitStep2Data(nid, dob)
+    submitStep2Data(nidNo, dob)
   }
 
-  private fun submitStep2Data(nid: String, dob: String) {
-    viewModel.getNidInfo(ownerImage.toString(), nid.toLong(), dob)
+  private fun submitStep2Data(nidNo: String, dob: String) {
+    val nid = Nid(ownerImage.toString(), nidNo.toLong(), dob, null, null, null, null, null)
+    viewModel.getNidInfo(nid)
   }
 
   private fun validateInputs() {
@@ -443,6 +447,13 @@ class PersonalInfoFragment : BaseFragment() {
     } else {
       binding.nidLayout.error = null
     }
+    if (dob.isEmpty()) {
+      binding.dobLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.dobLayout.y.toInt())
+      return
+    } else {
+      binding.dobLayout.error = null
+    }
     if (address.isEmpty()) {
       binding.addressLayout.error = getString(R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.addressLayout.y.toInt())
@@ -470,13 +481,6 @@ class PersonalInfoFragment : BaseFragment() {
       return
     } else {
       binding.policeStationLayout.error = null
-    }
-    if (dob.isEmpty()) {
-      binding.dobLayout.error = getString(R.string.this_field_is_required)
-      binding.scrollView.smoothScrollTo(0, binding.dobLayout.y.toInt())
-      return
-    } else {
-      binding.dobLayout.error = null
     }
     if (ownerSignature == null) {
       shortSnack(binding.ownerSignatureLayout, R.string.capture_shop_owner_signature)
