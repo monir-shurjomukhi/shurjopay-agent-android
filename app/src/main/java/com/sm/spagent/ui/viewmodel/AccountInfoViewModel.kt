@@ -49,7 +49,7 @@ class AccountInfoViewModel(application: Application) : BaseViewModel(application
   val nomineeInfo: LiveData<NomineeInfo>
     get() = _nomineeInfo
 
-  fun getBanks() {
+  fun getBankNames() {
     viewModelScope.launch {
       val response = try {
         authApiClient.getBanks()
@@ -71,7 +71,7 @@ class AccountInfoViewModel(application: Application) : BaseViewModel(application
     }
   }
 
-  fun getMfss() {
+  fun getMfsNames() {
     viewModelScope.launch {
       val response = try {
         authApiClient.getMfs()

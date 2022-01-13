@@ -23,6 +23,7 @@ import com.sm.spagent.databinding.FragmentAccountInfoBinding
 import com.sm.spagent.model.AccountCategory
 import com.sm.spagent.model.AccountInfo
 import com.sm.spagent.model.ImageType
+import com.sm.spagent.model.NomineeInfo
 import com.sm.spagent.ui.activity.NewMerchantActivity
 import com.sm.spagent.ui.viewmodel.AccountInfoViewModel
 import id.zelory.compressor.Compressor
@@ -49,8 +50,8 @@ class AccountInfoFragment : BaseFragment() {
 
   private val accountTypes = listOf("Current", "Savings")
   private val mfsAccountTypes = listOf("Personal", "Agent", "Merchant")
-  private val banks = mutableMapOf<String, Int>()
-  private val mfss = mutableMapOf<String, Int>()
+  private val bankNames = mutableMapOf<String, Int>()
+  private val mfsNames = mutableMapOf<String, Int>()
   private val relations = mutableMapOf<String, Int>()
   private val occupations = mutableMapOf<String, Int>()
   private val divisions = mutableMapOf<String, Int>()
@@ -113,8 +114,8 @@ class AccountInfoFragment : BaseFragment() {
     setupViews()
     observeData()
 
-    viewModel.getBanks()
-    viewModel.getMfss()
+    viewModel.getBankNames()
+    viewModel.getMfsNames()
     viewModel.getRelations()
     viewModel.getOccupations()
     viewModel.getDivisions()
@@ -223,15 +224,15 @@ class AccountInfoFragment : BaseFragment() {
     })
 
     viewModel.bank.observe(viewLifecycleOwner, { bank ->
-      banks.clear()
+      bankNames.clear()
       for (data in bank.bank_names!!) {
-        banks[data.bank_name.toString()] = data.id!!
+        bankNames[data.bank_name.toString()] = data.id!!
       }
 
       context?.let {
         ArrayAdapter(
           it, android.R.layout.simple_list_item_1,
-          banks.keys.toList()
+          bankNames.keys.toList()
         ).also { adapter ->
           binding.bankNameTextView.setAdapter(adapter)
         }
@@ -239,15 +240,15 @@ class AccountInfoFragment : BaseFragment() {
     })
 
     viewModel.mfs.observe(viewLifecycleOwner, { mfs ->
-      mfss.clear()
+      mfsNames.clear()
       for (data in mfs.mfs_names!!) {
-        mfss[data.bank_name.toString()] = data.id!!
+        mfsNames[data.bank_name.toString()] = data.id!!
       }
 
       context?.let {
         ArrayAdapter(
           it, android.R.layout.simple_list_item_1,
-          mfss.keys.toList()
+          mfsNames.keys.toList()
         ).also { adapter ->
           binding.mfsNameTextView.setAdapter(adapter)
         }
@@ -348,6 +349,21 @@ class AccountInfoFragment : BaseFragment() {
         }
       }
     })
+
+    viewModel.nomineeInfo.observe(viewLifecycleOwner, { nomineeInfo ->
+      Log.d(TAG, "nomineeInfo: $nomineeInfo")
+      when (nomineeInfo.sp_code) {
+        "1" -> {
+          shortToast(nomineeInfo.message.toString())
+        }
+        "2" -> {
+          shortToast(nomineeInfo.message.toString())
+        }
+        else -> {
+          shortToast(R.string.something_went_wrong)
+        }
+      }
+    })
   }
 
   private fun showDatePickerDialog() {
@@ -427,7 +443,7 @@ class AccountInfoFragment : BaseFragment() {
       accountType,
       accountName,
       accountNumber,
-      banks[bankName]!!,
+      bankNames[bankName]!!,
       branchName,
       routingNumber,
       null,
@@ -486,7 +502,7 @@ class AccountInfoFragment : BaseFragment() {
       accountType,
       accountName,
       accountNumber,
-      mfss[mfsName]!!,
+      mfsNames[mfsName]!!,
       null,
       null,
       1,
@@ -633,6 +649,36 @@ class AccountInfoFragment : BaseFragment() {
       binding.scrollView.smoothScrollTo(0, binding.nomineeNIDBackLayout.y.toInt())
       return
     }
+
+    val nomineeInfo = NomineeInfo(
+      nomineeName,
+      fatherHusbandsName,
+      mothersName,
+      relations[relation]!!,
+      contactNo,
+      email,
+      dob,
+      nidNo,
+      occupations[occupation]!!,
+      address,
+      divisions[division]!!,
+      districts[district]!!,
+      policeStations[policeStation]!!,
+      (activity as NewMerchantActivity).getShopOwnerId(),
+      nomineeImage!!,
+      nomineeNIDFrontImage!!,
+      nomineeNIDBackImage!!,
+      null,
+      null,
+      null,
+      null
+    )
+
+    submitNomineeInfo(nomineeInfo)
+  }
+
+  private fun submitNomineeInfo(nomineeInfo: NomineeInfo) {
+    viewModel.submitNomineeInfo(nomineeInfo)
   }
 
   companion object {
