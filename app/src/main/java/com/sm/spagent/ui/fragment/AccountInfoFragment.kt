@@ -21,7 +21,9 @@ import com.canhub.cropper.options
 import com.sm.spagent.R
 import com.sm.spagent.databinding.FragmentAccountInfoBinding
 import com.sm.spagent.model.AccountCategory
+import com.sm.spagent.model.AccountInfo
 import com.sm.spagent.model.ImageType
+import com.sm.spagent.ui.activity.NewMerchantActivity
 import com.sm.spagent.ui.viewmodel.AccountInfoViewModel
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.quality
@@ -331,6 +333,21 @@ class AccountInfoFragment : BaseFragment() {
         }
       }
     })
+
+    viewModel.accountInfo.observe(viewLifecycleOwner, { accountInfo ->
+      Log.d(TAG, "accountInfo: $accountInfo")
+      when (accountInfo.sp_code) {
+        "1" -> {
+          shortToast(accountInfo.message.toString())
+        }
+        "2" -> {
+          shortToast(accountInfo.message.toString())
+        }
+        else -> {
+          shortToast(R.string.something_went_wrong)
+        }
+      }
+    })
   }
 
   private fun showDatePickerDialog() {
@@ -404,6 +421,28 @@ class AccountInfoFragment : BaseFragment() {
     } else {
       binding.bankNameLayout.error = null
     }
+
+    val accountInfo = AccountInfo(
+      accountCategory,
+      accountType,
+      accountName,
+      accountNumber,
+      banks[bankName]!!,
+      branchName,
+      routingNumber,
+      null,
+      (activity as NewMerchantActivity).getShopOwnerId(),
+      null,
+      null,
+      null,
+      null
+    )
+
+    submitExistingBankInfo(accountInfo)
+  }
+
+  private fun submitExistingBankInfo(accountInfo: AccountInfo) {
+    viewModel.submitAccountInfo(accountInfo)
   }
 
   private fun validateMfsInputs() {
