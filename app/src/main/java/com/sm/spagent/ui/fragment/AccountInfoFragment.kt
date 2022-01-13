@@ -480,6 +480,28 @@ class AccountInfoFragment : BaseFragment() {
     } else {
       binding.mfsNameLayout.error = null
     }
+
+    val accountInfo = AccountInfo(
+      accountCategory,
+      accountType,
+      accountName,
+      accountNumber,
+      mfss[mfsName]!!,
+      null,
+      null,
+      1,
+      (activity as NewMerchantActivity).getShopOwnerId(),
+      null,
+      null,
+      null,
+      null
+    )
+
+    submitMfsInfo(accountInfo)
+  }
+
+  private fun submitMfsInfo(accountInfo: AccountInfo) {
+    viewModel.submitAccountInfo(accountInfo)
   }
 
   private fun validateNomineeInputs() {
