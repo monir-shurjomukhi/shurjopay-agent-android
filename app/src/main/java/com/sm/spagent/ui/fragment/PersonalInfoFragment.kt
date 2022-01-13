@@ -64,7 +64,7 @@ class PersonalInfoFragment : BaseFragment() {
       lifecycleScope.launch {
         val file = File(uriFilePath)
         Log.d(TAG, "file size (KB): ${file.length() / 1024}")
-        val compressedImageFile = Compressor.compress(requireContext(), file) { quality(80) }
+        val compressedImageFile = Compressor.compress(requireContext(), file) { quality(50) }
         Log.d(TAG, "compressedImageFile size (KB): ${compressedImageFile.length() / 1024}")
         val bitmap = BitmapFactory.decodeFile(compressedImageFile.absolutePath)
         val outputStream = ByteArrayOutputStream()
@@ -265,9 +265,9 @@ class PersonalInfoFragment : BaseFragment() {
       Log.d(TAG, "nid: $nid")
       when (nid.sp_code) {
         "1" -> {
-          binding.nameLayout.editText?.setText(nid.nid_response?.name)
-          binding.fathersNameLayout.editText?.setText(nid.nid_response?.father)
-          binding.mothersNameLayout.editText?.setText(nid.nid_response?.mother)
+          binding.nameLayout.editText?.setText(nid.nid_response?.nameEn)
+          binding.fathersNameLayout.editText?.setText(nid.nid_response?.fatherEn)
+          binding.mothersNameLayout.editText?.setText(nid.nid_response?.motherEn)
           binding.nidLayout.editText?.setText(nid.nid_response?.nationalId)
           if (nid.nid_response?.dob != null) {
             val dob = "${nid.nid_response.dob.substring(6)}-${
@@ -290,6 +290,7 @@ class PersonalInfoFragment : BaseFragment() {
       Log.d(TAG, "ownerInfo: $ownerInfo")
       when (ownerInfo.sp_code) {
         "1" -> {
+          shortToast(ownerInfo.message.toString())
           (activity as NewMerchantActivity).setShopOwnerId(ownerInfo.shop_owner_id!!)
           goToNextStep()
         }
@@ -298,6 +299,8 @@ class PersonalInfoFragment : BaseFragment() {
         }
         "3" -> {
           shortToast(ownerInfo.message.toString())
+          (activity as NewMerchantActivity).setShopOwnerId(ownerInfo.shop_owner_id!!)
+          goToNextStep()
         }
         else -> {
           shortToast(R.string.something_went_wrong)
