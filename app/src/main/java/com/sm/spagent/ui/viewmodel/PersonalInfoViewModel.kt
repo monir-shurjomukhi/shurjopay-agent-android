@@ -150,7 +150,7 @@ class PersonalInfoViewModel(application: Application) : BaseViewModel(applicatio
       if (response.isSuccessful && response.body() != null) {
         _nid.value = response.body()
       } else {
-        message.value = R.string.unable_to_connect
+        message.value = R.string.unable_to_connect_please_try_again
       }
     }
   }

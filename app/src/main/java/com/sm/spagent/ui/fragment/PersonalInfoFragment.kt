@@ -64,7 +64,7 @@ class PersonalInfoFragment : BaseFragment() {
       lifecycleScope.launch {
         val file = File(uriFilePath)
         Log.d(TAG, "file size (KB): ${file.length() / 1024}")
-        val compressedImageFile = Compressor.compress(requireContext(), file) { quality(80) }
+        val compressedImageFile = Compressor.compress(requireContext(), file) { quality(50) }
         Log.d(TAG, "compressedImageFile size (KB): ${compressedImageFile.length() / 1024}")
         val bitmap = BitmapFactory.decodeFile(compressedImageFile.absolutePath)
         val outputStream = ByteArrayOutputStream()
@@ -290,6 +290,7 @@ class PersonalInfoFragment : BaseFragment() {
       Log.d(TAG, "ownerInfo: $ownerInfo")
       when (ownerInfo.sp_code) {
         "1" -> {
+          shortToast(ownerInfo.message.toString())
           (activity as NewMerchantActivity).setShopOwnerId(ownerInfo.shop_owner_id!!)
           goToNextStep()
         }
@@ -298,6 +299,8 @@ class PersonalInfoFragment : BaseFragment() {
         }
         "3" -> {
           shortToast(ownerInfo.message.toString())
+          (activity as NewMerchantActivity).setShopOwnerId(ownerInfo.shop_owner_id!!)
+          goToNextStep()
         }
         else -> {
           shortToast(R.string.something_went_wrong)
@@ -358,7 +361,8 @@ class PersonalInfoFragment : BaseFragment() {
       return
     }
 
-    submitStep1Data()
+    //submitStep1Data()
+    goToNextStep()
   }
 
   private fun submitStep1Data() {

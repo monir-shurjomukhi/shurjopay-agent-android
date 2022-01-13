@@ -41,7 +41,15 @@ class AccountInfoViewModel(application: Application) : BaseViewModel(application
   val policeStation: LiveData<PoliceStation>
     get() = _policeStation
 
-  fun getBanks() {
+  private val _accountInfo = MutableLiveData<AccountInfo>()
+  val accountInfo: LiveData<AccountInfo>
+    get() = _accountInfo
+
+  private val _nomineeInfo = MutableLiveData<NomineeInfo>()
+  val nomineeInfo: LiveData<NomineeInfo>
+    get() = _nomineeInfo
+
+  fun getBankNames() {
     viewModelScope.launch {
       val response = try {
         authApiClient.getBanks()
@@ -63,7 +71,7 @@ class AccountInfoViewModel(application: Application) : BaseViewModel(application
     }
   }
 
-  fun getMfss() {
+  fun getMfsNames() {
     viewModelScope.launch {
       val response = try {
         authApiClient.getMfs()
@@ -189,6 +197,58 @@ class AccountInfoViewModel(application: Application) : BaseViewModel(application
 
       if (response.isSuccessful && response.body() != null) {
         _policeStation.value = response.body()
+      } else {
+        message.value = R.string.unable_to_connect
+      }
+    }
+  }
+
+  fun submitAccountInfo(accountInfo: AccountInfo) {
+    viewModelScope.launch {
+      progress.value = true
+      val response = try {
+        authApiClient.submitAccountInfo(accountInfo)
+      } catch (e: IOException) {
+        Log.e(TAG, "submitAccountInfo: ${e.message}", e)
+        progress.value = false
+        message.value = R.string.unable_to_connect
+        return@launch
+      } catch (e: HttpException) {
+        Log.e(TAG, "submitAccountInfo: ${e.message}", e)
+        progress.value = false
+        message.value = R.string.unable_to_connect
+        return@launch
+      }
+
+      progress.value = false
+      if (response.isSuccessful && response.body() != null) {
+        _accountInfo.value = response.body()
+      } else {
+        message.value = R.string.unable_to_connect
+      }
+    }
+  }
+
+  fun submitNomineeInfo(nomineeInfo: NomineeInfo) {
+    viewModelScope.launch {
+      progress.value = true
+      val response = try {
+        authApiClient.submitNomineeInfo(nomineeInfo)
+      } catch (e: IOException) {
+        Log.e(TAG, "submitNomineeInfo: ${e.message}", e)
+        progress.value = false
+        message.value = R.string.unable_to_connect
+        return@launch
+      } catch (e: HttpException) {
+        Log.e(TAG, "submitNomineeInfo: ${e.message}", e)
+        progress.value = false
+        message.value = R.string.unable_to_connect
+        return@launch
+      }
+
+      progress.value = false
+      if (response.isSuccessful && response.body() != null) {
+        _nomineeInfo.value = response.body()
       } else {
         message.value = R.string.unable_to_connect
       }

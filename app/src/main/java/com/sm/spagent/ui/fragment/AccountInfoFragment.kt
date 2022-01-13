@@ -2,8 +2,8 @@ package com.sm.spagent.ui.fragment
 
 import android.app.DatePickerDialog
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
 import android.util.Patterns
@@ -14,15 +14,23 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageView
 import com.canhub.cropper.options
 import com.sm.spagent.R
 import com.sm.spagent.databinding.FragmentAccountInfoBinding
 import com.sm.spagent.model.AccountCategory
+import com.sm.spagent.model.AccountInfo
 import com.sm.spagent.model.ImageType
+import com.sm.spagent.model.NomineeInfo
+import com.sm.spagent.ui.activity.NewMerchantActivity
 import com.sm.spagent.ui.viewmodel.AccountInfoViewModel
+import id.zelory.compressor.Compressor
+import id.zelory.compressor.constraint.quality
+import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.util.*
 
 class AccountInfoFragment : BaseFragment() {
@@ -42,8 +50,8 @@ class AccountInfoFragment : BaseFragment() {
 
   private val accountTypes = listOf("Current", "Savings")
   private val mfsAccountTypes = listOf("Personal", "Agent", "Merchant")
-  private val banks = mutableMapOf<String, Int>()
-  private val mfss = mutableMapOf<String, Int>()
+  private val bankNames = mutableMapOf<String, Int>()
+  private val mfsNames = mutableMapOf<String, Int>()
   private val relations = mutableMapOf<String, Int>()
   private val occupations = mutableMapOf<String, Int>()
   private val divisions = mutableMapOf<String, Int>()
@@ -54,27 +62,36 @@ class AccountInfoFragment : BaseFragment() {
     if (result.isSuccessful) {
       // use the returned uri
       val uriContent = result.uriContent
+      Log.d(TAG, "uriContent: $uriContent")
       val uriFilePath = result.getUriFilePath(requireContext()) // optional usage
-      val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, uriContent)
-      val outputStream = ByteArrayOutputStream()
-      bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-      val byteArray: ByteArray = outputStream.toByteArray()
-      when (imageType) {
-        ImageType.NOMINEE -> {
-          binding.nomineeImageView.setImageBitmap(bitmap)
-          nomineeImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
-        }
-        ImageType.NOMINEE_NID_FRONT -> {
-          binding.nomineeNIDFrontImageView.setImageBitmap(bitmap)
-          nomineeNIDFrontImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
-        }
-        ImageType.NOMINEE_NID_BACK -> {
-          binding.nomineeNIDBackImageView.setImageBitmap(bitmap)
-          nomineeNIDBackImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
-        }
-        else -> {
-          binding.nomineeImageView.setImageBitmap(bitmap)
-          nomineeImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
+      Log.d(TAG, "uriFilePath: $uriFilePath")
+      lifecycleScope.launch {
+        val file = File(uriFilePath)
+        Log.d(TAG, "file size (KB): ${file.length() / 1024}")
+        val compressedImageFile = Compressor.compress(requireContext(), file) { quality(50) }
+        Log.d(TAG, "compressedImageFile size (KB): ${compressedImageFile.length() / 1024}")
+        val bitmap = BitmapFactory.decodeFile(compressedImageFile.absolutePath)
+        val outputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+        val byteArray: ByteArray = outputStream.toByteArray()
+
+        when (imageType) {
+          ImageType.NOMINEE -> {
+            binding.nomineeImageView.setImageBitmap(bitmap)
+            nomineeImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
+          }
+          ImageType.NOMINEE_NID_FRONT -> {
+            binding.nomineeNIDFrontImageView.setImageBitmap(bitmap)
+            nomineeNIDFrontImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
+          }
+          ImageType.NOMINEE_NID_BACK -> {
+            binding.nomineeNIDBackImageView.setImageBitmap(bitmap)
+            nomineeNIDBackImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
+          }
+          else -> {
+            binding.nomineeImageView.setImageBitmap(bitmap)
+            nomineeImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
+          }
         }
       }
     } else {
@@ -97,8 +114,8 @@ class AccountInfoFragment : BaseFragment() {
     setupViews()
     observeData()
 
-    viewModel.getBanks()
-    viewModel.getMfss()
+    viewModel.getBankNames()
+    viewModel.getMfsNames()
     viewModel.getRelations()
     viewModel.getOccupations()
     viewModel.getDivisions()
@@ -194,16 +211,28 @@ class AccountInfoFragment : BaseFragment() {
   }
 
   private fun observeData() {
+    viewModel.progress.observe(viewLifecycleOwner, {
+      if (it) {
+        showProgress()
+      } else {
+        hideProgress()
+      }
+    })
+
+    viewModel.message.observe(viewLifecycleOwner, {
+      shortSnack(binding.root, it)
+    })
+
     viewModel.bank.observe(viewLifecycleOwner, { bank ->
-      banks.clear()
+      bankNames.clear()
       for (data in bank.bank_names!!) {
-        banks[data.bank_name.toString()] = data.id!!
+        bankNames[data.bank_name.toString()] = data.id!!
       }
 
       context?.let {
         ArrayAdapter(
           it, android.R.layout.simple_list_item_1,
-          banks.keys.toList()
+          bankNames.keys.toList()
         ).also { adapter ->
           binding.bankNameTextView.setAdapter(adapter)
         }
@@ -211,15 +240,15 @@ class AccountInfoFragment : BaseFragment() {
     })
 
     viewModel.mfs.observe(viewLifecycleOwner, { mfs ->
-      mfss.clear()
+      mfsNames.clear()
       for (data in mfs.mfs_names!!) {
-        mfss[data.bank_name.toString()] = data.id!!
+        mfsNames[data.bank_name.toString()] = data.id!!
       }
 
       context?.let {
         ArrayAdapter(
           it, android.R.layout.simple_list_item_1,
-          mfss.keys.toList()
+          mfsNames.keys.toList()
         ).also { adapter ->
           binding.mfsNameTextView.setAdapter(adapter)
         }
@@ -305,6 +334,36 @@ class AccountInfoFragment : BaseFragment() {
         }
       }
     })
+
+    viewModel.accountInfo.observe(viewLifecycleOwner, { accountInfo ->
+      Log.d(TAG, "accountInfo: $accountInfo")
+      when (accountInfo.sp_code) {
+        "1" -> {
+          shortToast(accountInfo.message.toString())
+        }
+        "2" -> {
+          shortToast(accountInfo.message.toString())
+        }
+        else -> {
+          shortToast(R.string.something_went_wrong)
+        }
+      }
+    })
+
+    viewModel.nomineeInfo.observe(viewLifecycleOwner, { nomineeInfo ->
+      Log.d(TAG, "nomineeInfo: $nomineeInfo")
+      when (nomineeInfo.sp_code) {
+        "1" -> {
+          shortToast(nomineeInfo.message.toString())
+        }
+        "2" -> {
+          shortToast(nomineeInfo.message.toString())
+        }
+        else -> {
+          shortToast(R.string.something_went_wrong)
+        }
+      }
+    })
   }
 
   private fun showDatePickerDialog() {
@@ -378,6 +437,28 @@ class AccountInfoFragment : BaseFragment() {
     } else {
       binding.bankNameLayout.error = null
     }
+
+    val accountInfo = AccountInfo(
+      accountCategory,
+      accountType,
+      accountName,
+      accountNumber,
+      bankNames[bankName]!!,
+      branchName,
+      routingNumber,
+      null,
+      (activity as NewMerchantActivity).getShopOwnerId(),
+      null,
+      null,
+      null,
+      null
+    )
+
+    submitExistingBankInfo(accountInfo)
+  }
+
+  private fun submitExistingBankInfo(accountInfo: AccountInfo) {
+    viewModel.submitAccountInfo(accountInfo)
   }
 
   private fun validateMfsInputs() {
@@ -415,6 +496,28 @@ class AccountInfoFragment : BaseFragment() {
     } else {
       binding.mfsNameLayout.error = null
     }
+
+    val accountInfo = AccountInfo(
+      accountCategory,
+      accountType,
+      accountName,
+      accountNumber,
+      mfsNames[mfsName]!!,
+      null,
+      null,
+      1,
+      (activity as NewMerchantActivity).getShopOwnerId(),
+      null,
+      null,
+      null,
+      null
+    )
+
+    submitMfsInfo(accountInfo)
+  }
+
+  private fun submitMfsInfo(accountInfo: AccountInfo) {
+    viewModel.submitAccountInfo(accountInfo)
   }
 
   private fun validateNomineeInputs() {
@@ -546,6 +649,36 @@ class AccountInfoFragment : BaseFragment() {
       binding.scrollView.smoothScrollTo(0, binding.nomineeNIDBackLayout.y.toInt())
       return
     }
+
+    val nomineeInfo = NomineeInfo(
+      nomineeName,
+      fatherHusbandsName,
+      mothersName,
+      relations[relation]!!,
+      contactNo,
+      email,
+      dob,
+      nidNo,
+      occupations[occupation]!!,
+      address,
+      divisions[division]!!,
+      districts[district]!!,
+      policeStations[policeStation]!!,
+      (activity as NewMerchantActivity).getShopOwnerId(),
+      nomineeImage!!,
+      nomineeNIDFrontImage!!,
+      nomineeNIDBackImage!!,
+      null,
+      null,
+      null,
+      null
+    )
+
+    submitNomineeInfo(nomineeInfo)
+  }
+
+  private fun submitNomineeInfo(nomineeInfo: NomineeInfo) {
+    viewModel.submitNomineeInfo(nomineeInfo)
   }
 
   companion object {
