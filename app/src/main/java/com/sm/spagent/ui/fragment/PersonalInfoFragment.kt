@@ -186,7 +186,7 @@ class PersonalInfoFragment : BaseFragment() {
 
     binding.saveNextButton.setOnClickListener {
       when (currentStep) {
-        1 -> /*validateStep1Inputs()*/ goToNextStep()
+        1 -> validateStep1Inputs() /*goToNextStep()*/
         2 -> validateStep2Inputs()
         3 -> validateInputs()
       }
@@ -361,7 +361,8 @@ class PersonalInfoFragment : BaseFragment() {
       return
     }
 
-    submitStep1Data()
+    //submitStep1Data()
+    goToNextStep()
   }
 
   private fun submitStep1Data() {
