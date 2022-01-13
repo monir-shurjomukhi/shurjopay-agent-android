@@ -188,7 +188,7 @@ class PersonalInfoFragment : BaseFragment() {
 
     binding.saveNextButton.setOnClickListener {
       when (currentStep) {
-        1 -> /*validateStep1Inputs()*/ goToNextStep()
+        1 -> validateStep1Inputs() /*goToNextStep()*/
         2 -> validateStep2Inputs()
         3 -> validateInputs()
       }
