@@ -41,6 +41,10 @@ class AccountInfoViewModel(application: Application) : BaseViewModel(application
   val policeStation: LiveData<PoliceStation>
     get() = _policeStation
 
+  private val _accountInfo = MutableLiveData<AccountInfo>()
+  val accountInfo: LiveData<AccountInfo>
+    get() = _accountInfo
+
   fun getBanks() {
     viewModelScope.launch {
       val response = try {
@@ -189,6 +193,32 @@ class AccountInfoViewModel(application: Application) : BaseViewModel(application
 
       if (response.isSuccessful && response.body() != null) {
         _policeStation.value = response.body()
+      } else {
+        message.value = R.string.unable_to_connect
+      }
+    }
+  }
+
+  fun submitAccountInfo(accountInfo: AccountInfo) {
+    viewModelScope.launch {
+      progress.value = true
+      val response = try {
+        authApiClient.submitAccountInfo(accountInfo)
+      } catch (e: IOException) {
+        Log.e(TAG, "submitAccountInfo: ${e.message}", e)
+        progress.value = false
+        message.value = R.string.unable_to_connect
+        return@launch
+      } catch (e: HttpException) {
+        Log.e(TAG, "submitAccountInfo: ${e.message}", e)
+        progress.value = false
+        message.value = R.string.unable_to_connect
+        return@launch
+      }
+
+      progress.value = false
+      if (response.isSuccessful && response.body() != null) {
+        _accountInfo.value = response.body()
       } else {
         message.value = R.string.unable_to_connect
       }
