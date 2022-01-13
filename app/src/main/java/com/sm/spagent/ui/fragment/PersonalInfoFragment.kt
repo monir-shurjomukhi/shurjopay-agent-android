@@ -265,9 +265,9 @@ class PersonalInfoFragment : BaseFragment() {
       Log.d(TAG, "nid: $nid")
       when (nid.sp_code) {
         "1" -> {
-          binding.nameLayout.editText?.setText(nid.nid_response?.nameEn)
-          binding.fathersNameLayout.editText?.setText(nid.nid_response?.fatherEn)
-          binding.mothersNameLayout.editText?.setText(nid.nid_response?.motherEn)
+          binding.nameLayout.editText?.setText(nid.nid_response?.name)
+          binding.fathersNameLayout.editText?.setText(nid.nid_response?.father)
+          binding.mothersNameLayout.editText?.setText(nid.nid_response?.mother)
           binding.nidLayout.editText?.setText(nid.nid_response?.nationalId)
           if (nid.nid_response?.dob != null) {
             val dob = "${nid.nid_response.dob.substring(6)}-${

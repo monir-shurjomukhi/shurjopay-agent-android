@@ -10,7 +10,7 @@ data class NomineeInfo(
   val dob: String,
   val nid_no: String,
   val occupation_id: Int,
-  val address: String,
+  val addess: String,
   val division_id: Int,
   val district_id: Int,
   val police_station_id: Int,
