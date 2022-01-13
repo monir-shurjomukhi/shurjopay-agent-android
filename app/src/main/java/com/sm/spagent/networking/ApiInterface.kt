@@ -72,6 +72,11 @@ interface ApiInterface {
     @Body accountInfo: AccountInfo
   ): Response<AccountInfo>
 
+  @POST("qr-save-nominee-info")
+  suspend fun submitNomineeInfo(
+    @Body nomineeInfo: NomineeInfo
+  ): Response<NomineeInfo>
+
   @POST("info")
   suspend fun getHtml(
     @Body qrCode: QrCode
