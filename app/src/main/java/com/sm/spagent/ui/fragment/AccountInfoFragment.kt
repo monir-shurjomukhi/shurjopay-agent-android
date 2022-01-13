@@ -194,6 +194,18 @@ class AccountInfoFragment : BaseFragment() {
   }
 
   private fun observeData() {
+    viewModel.progress.observe(viewLifecycleOwner, {
+      if (it) {
+        showProgress()
+      } else {
+        hideProgress()
+      }
+    })
+
+    viewModel.message.observe(viewLifecycleOwner, {
+      shortSnack(binding.root, it)
+    })
+
     viewModel.bank.observe(viewLifecycleOwner, { bank ->
       banks.clear()
       for (data in bank.bank_names!!) {
