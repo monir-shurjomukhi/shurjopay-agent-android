@@ -2,8 +2,8 @@ package com.sm.spagent.ui.fragment
 
 import android.app.DatePickerDialog
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
 import android.util.Patterns
@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageView
 import com.canhub.cropper.options
@@ -22,7 +23,11 @@ import com.sm.spagent.databinding.FragmentAccountInfoBinding
 import com.sm.spagent.model.AccountCategory
 import com.sm.spagent.model.ImageType
 import com.sm.spagent.ui.viewmodel.AccountInfoViewModel
+import id.zelory.compressor.Compressor
+import id.zelory.compressor.constraint.quality
+import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.util.*
 
 class AccountInfoFragment : BaseFragment() {
@@ -54,27 +59,36 @@ class AccountInfoFragment : BaseFragment() {
     if (result.isSuccessful) {
       // use the returned uri
       val uriContent = result.uriContent
+      Log.d(TAG, "uriContent: $uriContent")
       val uriFilePath = result.getUriFilePath(requireContext()) // optional usage
-      val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, uriContent)
-      val outputStream = ByteArrayOutputStream()
-      bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-      val byteArray: ByteArray = outputStream.toByteArray()
-      when (imageType) {
-        ImageType.NOMINEE -> {
-          binding.nomineeImageView.setImageBitmap(bitmap)
-          nomineeImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
-        }
-        ImageType.NOMINEE_NID_FRONT -> {
-          binding.nomineeNIDFrontImageView.setImageBitmap(bitmap)
-          nomineeNIDFrontImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
-        }
-        ImageType.NOMINEE_NID_BACK -> {
-          binding.nomineeNIDBackImageView.setImageBitmap(bitmap)
-          nomineeNIDBackImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
-        }
-        else -> {
-          binding.nomineeImageView.setImageBitmap(bitmap)
-          nomineeImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
+      Log.d(TAG, "uriFilePath: $uriFilePath")
+      lifecycleScope.launch {
+        val file = File(uriFilePath)
+        Log.d(TAG, "file size (KB): ${file.length() / 1024}")
+        val compressedImageFile = Compressor.compress(requireContext(), file) { quality(50) }
+        Log.d(TAG, "compressedImageFile size (KB): ${compressedImageFile.length() / 1024}")
+        val bitmap = BitmapFactory.decodeFile(compressedImageFile.absolutePath)
+        val outputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+        val byteArray: ByteArray = outputStream.toByteArray()
+
+        when (imageType) {
+          ImageType.NOMINEE -> {
+            binding.nomineeImageView.setImageBitmap(bitmap)
+            nomineeImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
+          }
+          ImageType.NOMINEE_NID_FRONT -> {
+            binding.nomineeNIDFrontImageView.setImageBitmap(bitmap)
+            nomineeNIDFrontImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
+          }
+          ImageType.NOMINEE_NID_BACK -> {
+            binding.nomineeNIDBackImageView.setImageBitmap(bitmap)
+            nomineeNIDBackImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
+          }
+          else -> {
+            binding.nomineeImageView.setImageBitmap(bitmap)
+            nomineeImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
+          }
         }
       }
     } else {
