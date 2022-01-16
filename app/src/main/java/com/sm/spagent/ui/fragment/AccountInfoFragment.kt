@@ -373,7 +373,9 @@ class AccountInfoFragment : BaseFragment() {
     val d = c.get(Calendar.DAY_OF_MONTH)
 
     val dialog = DatePickerDialog(requireContext(), { _, year, monthOfYear, dayOfMonth ->
-      val date = "$year-${monthOfYear + 1}-$dayOfMonth"
+      val moy = if (monthOfYear>8) (monthOfYear+1) else "0${monthOfYear+1}"
+      val dom = if (dayOfMonth>9) dayOfMonth else "0$dayOfMonth"
+      val date = "$year-$moy-$dom"
       binding.dobLayout.editText?.setText(date)
     }, y, m, d)
 
