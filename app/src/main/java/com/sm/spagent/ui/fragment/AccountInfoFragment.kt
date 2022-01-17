@@ -59,7 +59,6 @@ class AccountInfoFragment : BaseFragment() {
   private val policeStations = mutableMapOf<String, Int>()
 
   private val cropImage = registerForActivityResult(CropImageContract()) { result ->
-    showProgress()
     if (result.isSuccessful) {
       // use the returned uri
       val uriContent = result.uriContent
@@ -67,6 +66,7 @@ class AccountInfoFragment : BaseFragment() {
       val uriFilePath = result.getUriFilePath(requireContext()) // optional usage
       Log.d(TAG, "uriFilePath: $uriFilePath")
       lifecycleScope.launch {
+        showProgress()
         val file = File(uriFilePath)
         Log.d(TAG, "file size (KB): ${file.length() / 1024}")
         val compressedImageFile = Compressor.compress(requireContext(), file) { quality(50) }
@@ -94,13 +94,13 @@ class AccountInfoFragment : BaseFragment() {
             nomineeImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
           }
         }
+        hideProgress()
       }
     } else {
       // an error occurred
       val exception = result.error
       Log.e(TAG, "exception: ${exception?.message}", exception)
     }
-    hideProgress()
   }
 
   override fun onCreateView(
