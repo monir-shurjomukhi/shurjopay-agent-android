@@ -163,16 +163,6 @@ class PersonalInfoFragment : BaseFragment() {
       false
     }
 
-    binding.dobLayout.editText?.showSoftInputOnFocus = false
-    binding.dobLayout.editText?.isEnabled = false
-    /*binding.dobLayout.editText?.setOnTouchListener { _, event ->
-      if (event.action == MotionEvent.ACTION_UP) {
-        showDatePickerDialog()
-        true
-      }
-      false
-    }*/
-
     binding.ownerImagePickerLayout.setOnClickListener { startImageCrop(ImageType.OWNER) }
     binding.ownerNIDFrontPickerLayout.setOnClickListener { startImageCrop(ImageType.OWNER_NID_FRONT) }
     binding.ownerNIDBackPickerLayout.setOnClickListener { startImageCrop(ImageType.OWNER_NID_BACK) }
@@ -277,15 +267,37 @@ class PersonalInfoFragment : BaseFragment() {
       Log.d(TAG, "nid: $nid")
       when (nid.sp_code) {
         "1" -> {
-          binding.nameLayout.editText?.setText(nid.nid_response?.name)
-          binding.fathersNameLayout.editText?.setText(nid.nid_response?.father)
-          binding.mothersNameLayout.editText?.setText(nid.nid_response?.mother)
-          binding.nidLayout.editText?.setText(nid.nid_response?.nationalId)
-          if (nid.nid_response?.dob != null) {
-            val dob = "${nid.nid_response.dob.substring(6)}-${
-              nid.nid_response.dob.substring(0, 2)
-            }-${nid.nid_response.dob.substring(3, 5)}"
+          if (!nid.nid_response?.nameEn.isNullOrEmpty()) {
+            binding.nameLayout.editText?.setText(nid.nid_response?.nameEn)
+            binding.nameLayout.editText?.isEnabled = false
+          }
+          if (!nid.nid_response?.fatherEn.isNullOrEmpty()) {
+            binding.fathersNameLayout.editText?.setText(nid.nid_response?.fatherEn)
+            binding.fathersNameLayout.editText?.isEnabled = false
+          }
+          if (!nid.nid_response?.motherEn.isNullOrEmpty()) {
+            binding.mothersNameLayout.editText?.setText(nid.nid_response?.motherEn)
+            binding.mothersNameLayout.editText?.isEnabled = false
+          }
+          if (!nid.nid_response?.nationalId.isNullOrEmpty()) {
+            binding.nidLayout.editText?.setText(nid.nid_response?.nationalId)
+            binding.nidLayout.editText?.isEnabled = false
+          }
+          if (!nid.nid_response?.dob.isNullOrEmpty()) {
+            val dob = "${nid.nid_response?.dob?.substring(6)}-${
+              nid.nid_response?.dob?.substring(0, 2)
+            }-${nid.nid_response?.dob?.substring(3, 5)}"
             binding.dobLayout.editText?.setText(dob)
+            binding.dobLayout.editText?.isEnabled = false
+          } else {
+            /*binding.dobLayout.editText?.showSoftInputOnFocus = false
+            binding.dobLayout.editText?.setOnTouchListener { _, event ->
+              if (event.action == MotionEvent.ACTION_UP) {
+                showDatePickerDialog()
+                true
+              }
+              false
+            }*/
           }
           goToNextStep()
         }
