@@ -8,4 +8,5 @@
   <color name="black">#FF000000</color>
   <color name="white">#FFFFFFFF</color>
   <color name="colorShurjoPay">#009247</color>
+  <color name="colorShurjoPayLight">#B4F9D6</color>
 </resources>
