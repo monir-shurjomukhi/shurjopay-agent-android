@@ -39,6 +39,9 @@ interface ApiInterface {
   @GET("qr-mfs-names")
   suspend fun getMfs(): Response<Mfs>
 
+  @GET("qr-creator-all-shop-owner")
+  suspend fun getShopOwners(): Response<ShopOwner>
+
 
   //////////////////// POST ///////////////////
 
@@ -76,39 +79,4 @@ interface ApiInterface {
   suspend fun submitNomineeInfo(
     @Body nomineeInfo: NomineeInfo
   ): Response<NomineeInfo>
-
-  @POST("info")
-  suspend fun getHtml(
-    @Body qrCode: QrCode
-  ): Response<String>
-
-  @POST("customer-register")
-  suspend fun register(
-    @Body registration: Registration
-  ): Response<Registration>
-
-  @POST("customer-verify-otp")
-  suspend fun verifyOTP(
-    @Body otp: Otp
-  ): Response<Otp>
-
-  @POST("customer-verify-account")
-  suspend fun verifyAccount(
-    @Body otp: Otp
-  ): Response<Otp>
-
-  @POST("customer-forgot-pass")
-  suspend fun forgotPassword(
-    @Body forgotPassword: ForgotPassword
-  ): Response<ForgotPassword>
-
-  @POST("customer-pass-change")
-  suspend fun changePassword(
-    @Body changePassword: ChangePassword
-  ): Response<ChangePassword>
-
-  @POST("customer-logout")
-  suspend fun logout(
-    @Body logout: Logout
-  ): Response<Logout>
 }
