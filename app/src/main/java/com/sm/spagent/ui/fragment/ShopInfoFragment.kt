@@ -47,7 +47,6 @@ class ShopInfoFragment : BaseFragment() {
   private val policeStations = mutableMapOf<String, Int>()
 
   private val cropImage = registerForActivityResult(CropImageContract()) { result ->
-    showProgress()
     if (result.isSuccessful) {
       // use the returned uri
       val uriContent = result.uriContent
@@ -86,7 +85,6 @@ class ShopInfoFragment : BaseFragment() {
       val exception = result.error
       Log.e(TAG, "exception: ${exception?.message}", exception)
     }
-    hideProgress()
   }
 
   override fun onCreateView(

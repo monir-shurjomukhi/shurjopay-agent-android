@@ -163,16 +163,6 @@ class PersonalInfoFragment : BaseFragment() {
       false
     }
 
-    binding.dobLayout.editText?.showSoftInputOnFocus = false
-    binding.dobLayout.editText?.isEnabled = false
-    /*binding.dobLayout.editText?.setOnTouchListener { _, event ->
-      if (event.action == MotionEvent.ACTION_UP) {
-        showDatePickerDialog()
-        true
-      }
-      false
-    }*/
-
     binding.ownerImagePickerLayout.setOnClickListener { startImageCrop(ImageType.OWNER) }
     binding.ownerNIDFrontPickerLayout.setOnClickListener { startImageCrop(ImageType.OWNER_NID_FRONT) }
     binding.ownerNIDBackPickerLayout.setOnClickListener { startImageCrop(ImageType.OWNER_NID_BACK) }
