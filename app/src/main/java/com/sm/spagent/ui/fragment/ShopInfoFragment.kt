@@ -54,13 +54,14 @@ class ShopInfoFragment : BaseFragment() {
       val uriFilePath = result.getUriFilePath(requireContext()) // optional usage
       Log.d(TAG, "uriFilePath: $uriFilePath")
       lifecycleScope.launch {
+        showProgress()
         val file = File(uriFilePath)
         Log.d(TAG, "file size (KB): ${file.length() / 1024}")
         val compressedImageFile = Compressor.compress(requireContext(), file) { quality(50) }
         Log.d(TAG, "compressedImageFile size (KB): ${compressedImageFile.length() / 1024}")
         val bitmap = BitmapFactory.decodeFile(compressedImageFile.absolutePath)
         val outputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
         val byteArray: ByteArray = outputStream.toByteArray()
 
         when (imageType) {
@@ -77,6 +78,7 @@ class ShopInfoFragment : BaseFragment() {
             tradeLicenseImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
           }
         }
+        hideProgress()
       }
     } else {
       // an error occurred
