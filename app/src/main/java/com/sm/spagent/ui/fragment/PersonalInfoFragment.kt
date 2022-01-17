@@ -68,7 +68,7 @@ class PersonalInfoFragment : BaseFragment() {
         Log.d(TAG, "compressedImageFile size (KB): ${compressedImageFile.length() / 1024}")
         val bitmap = BitmapFactory.decodeFile(compressedImageFile.absolutePath)
         val outputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
         val byteArray: ByteArray = outputStream.toByteArray()
 
         when (imageType) {
@@ -412,7 +412,7 @@ class PersonalInfoFragment : BaseFragment() {
   }
 
   private fun submitStep2Data(nidNo: String, dob: String) {
-    val nid = Nid(ownerImage.toString(), nidNo.toLong(), dob, null, null, null, null, null)
+    val nid = Nid(ownerImage.toString(), nidNo, dob, null, null, null, null, null)
     viewModel.getNidInfo(nid)
   }
 

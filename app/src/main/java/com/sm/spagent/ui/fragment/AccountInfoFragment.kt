@@ -72,7 +72,7 @@ class AccountInfoFragment : BaseFragment() {
         Log.d(TAG, "compressedImageFile size (KB): ${compressedImageFile.length() / 1024}")
         val bitmap = BitmapFactory.decodeFile(compressedImageFile.absolutePath)
         val outputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
         val byteArray: ByteArray = outputStream.toByteArray()
 
         when (imageType) {
