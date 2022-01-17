@@ -1,12 +1,11 @@
 package com.sm.spagent.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.sm.spagent.databinding.FragmentMerchantsBinding
 import com.sm.spagent.ui.viewmodel.MerchantsViewModel
@@ -31,15 +30,25 @@ class MerchantsFragment : Fragment() {
     _binding = FragmentMerchantsBinding.inflate(inflater, container, false)
     val root: View = binding.root
 
-    val textView: TextView = binding.textDashboard
-    viewModel.text.observe(viewLifecycleOwner, Observer {
-      textView.text = it
-    })
+    observeData()
+
+    viewModel.getShopOwners()
+
     return root
+  }
+
+  private fun observeData() {
+    viewModel.shopOwner.observe(viewLifecycleOwner, { shopOwner ->
+      Log.d(TAG, "shopOwner: $shopOwner")
+    })
   }
 
   override fun onDestroyView() {
     super.onDestroyView()
     _binding = null
+  }
+
+  companion object {
+    private const val TAG = "MerchantsFragment"
   }
 }
