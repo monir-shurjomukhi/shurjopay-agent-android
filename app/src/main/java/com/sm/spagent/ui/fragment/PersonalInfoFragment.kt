@@ -62,6 +62,7 @@ class PersonalInfoFragment : BaseFragment() {
       val uriFilePath = result.getUriFilePath(requireContext()) // optional usage
       Log.d(TAG, "uriFilePath: $uriFilePath")
       lifecycleScope.launch {
+        showProgress()
         val file = File(uriFilePath)
         Log.d(TAG, "file size (KB): ${file.length() / 1024}")
         val compressedImageFile = Compressor.compress(requireContext(), file) { quality(50) }
@@ -94,6 +95,7 @@ class PersonalInfoFragment : BaseFragment() {
             ownerImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
           }
         }
+        hideProgress()
       }
       /*val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, uriContent)
       val outputStream = ByteArrayOutputStream()
