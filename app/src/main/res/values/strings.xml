@@ -55,6 +55,7 @@
   <string name="police_station">Police Station</string>
   <string name="existing_bank">Existing Bank</string>
   <string name="unable_to_connect">Unable To Connect</string>
+  <string name="unable_to_connect_please_try_again">Unable To Connect! Please Try Again</string>
   <string name="something_went_wrong">Something went wrong</string>
   <string name="login">Login</string>
   <string name="password">Password</string>
@@ -77,4 +78,5 @@
   <string name="shop_size">Shop Size</string>
   <string name="father_husband_s_name">Father/Husband\'s Name</string>
   <string name="occupation">Occupation</string>
+  <string name="submit">Submit</string>
 </resources>

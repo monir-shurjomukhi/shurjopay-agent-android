@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardBackgroundColor="@color/colorShurjoPayLight"
+    app:cardElevation="4dp">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+  <ImageView
+      android:id="@+id/ownerImageView"
+      android:layout_width="120dp"
+      android:layout_height="160dp"
+      tools:src="@drawable/ic_baseline_person_24"
+      android:contentDescription="@string/owner_image"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+  <TextView
+      android:id="@+id/ownerNameTextView"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="8dp"
+      android:layout_marginEnd="8dp"
+      android:layout_marginTop="8dp"
+      android:textSize="20sp"
+      android:maxLines="1"
+      android:ellipsize="end"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toEndOf="@id/ownerImageView"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:text="Owner Name Owner Name Owner Name Owner Name " />
+
+  <TextView
+      android:id="@+id/contactNoTextView"
+      tools:text="01234567890012345678900123456789001234567890"
+      app:layout_constraintTop_toBottomOf="@id/ownerNameTextView"
+      app:layout_constraintStart_toEndOf="@id/ownerImageView"
+      android:layout_marginTop="4dp"
+      android:layout_marginStart="8dp"
+      android:layout_marginEnd="8dp"
+      android:textSize="16sp"
+      android:maxLines="1"
+      android:ellipsize="end"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"/>
+
+  <TextView
+      android:id="@+id/addressTextView"
+      tools:text="Permanent Address Permanent Address Permanent Address "
+      app:layout_constraintTop_toBottomOf="@id/contactNoTextView"
+      app:layout_constraintStart_toEndOf="@id/ownerImageView"
+      android:layout_marginTop="4dp"
+      android:layout_marginStart="8dp"
+      android:layout_marginEnd="8dp"
+      android:textSize="16sp"
+      android:maxLines="1"
+      android:ellipsize="end"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"/>
+
+  <TextView
+      android:id="@+id/policeStationTextView"
+      tools:text="Police Station Police Station Police Station Police Station Police Station "
+      app:layout_constraintTop_toBottomOf="@id/addressTextView"
+      app:layout_constraintStart_toEndOf="@id/ownerImageView"
+      android:layout_marginTop="4dp"
+      android:layout_marginStart="8dp"
+      android:layout_marginEnd="8dp"
+      android:textSize="16sp"
+      android:maxLines="1"
+      android:ellipsize="end"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"/>
+
+  <TextView
+      android:id="@+id/districtTextView"
+      tools:text="District District District,"
+      app:layout_constraintTop_toBottomOf="@id/policeStationTextView"
+      app:layout_constraintStart_toEndOf="@id/ownerImageView"
+      android:layout_marginTop="4dp"
+      android:layout_marginStart="8dp"
+      android:textSize="16sp"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"/>
+
+  <TextView
+      android:id="@+id/divisionTextView"
+      tools:text="Division Division Division "
+      app:layout_constraintTop_toBottomOf="@id/policeStationTextView"
+      app:layout_constraintStart_toEndOf="@id/districtTextView"
+      android:layout_marginTop="4dp"
+      android:layout_marginStart="8dp"
+      android:layout_marginEnd="8dp"
+      android:textSize="16sp"
+      android:maxLines="1"
+      android:ellipsize="end"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

@@ -23,9 +23,11 @@ import com.sm.spagent.databinding.FragmentPersonalInfoBinding
 import com.sm.spagent.model.ImageType
 import com.sm.spagent.model.Nid
 import com.sm.spagent.model.Ocr
+import com.sm.spagent.model.OwnerInfo
 import com.sm.spagent.ui.activity.NewMerchantActivity
 import com.sm.spagent.ui.viewmodel.PersonalInfoViewModel
 import id.zelory.compressor.Compressor
+import id.zelory.compressor.constraint.quality
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -60,13 +62,14 @@ class PersonalInfoFragment : BaseFragment() {
       val uriFilePath = result.getUriFilePath(requireContext()) // optional usage
       Log.d(TAG, "uriFilePath: $uriFilePath")
       lifecycleScope.launch {
+        showProgress()
         val file = File(uriFilePath)
         Log.d(TAG, "file size (KB): ${file.length() / 1024}")
-        val compressedImageFile = Compressor.compress(requireContext(), file)
+        val compressedImageFile = Compressor.compress(requireContext(), file) { quality(50) }
         Log.d(TAG, "compressedImageFile size (KB): ${compressedImageFile.length() / 1024}")
         val bitmap = BitmapFactory.decodeFile(compressedImageFile.absolutePath)
         val outputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
         val byteArray: ByteArray = outputStream.toByteArray()
 
         when (imageType) {
@@ -92,6 +95,7 @@ class PersonalInfoFragment : BaseFragment() {
             ownerImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
           }
         }
+        hideProgress()
       }
       /*val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, uriContent)
       val outputStream = ByteArrayOutputStream()
@@ -263,18 +267,64 @@ class PersonalInfoFragment : BaseFragment() {
       Log.d(TAG, "nid: $nid")
       when (nid.sp_code) {
         "1" -> {
-          binding.nameLayout.editText?.setText(nid.nid_response?.name)
-          binding.fathersNameLayout.editText?.setText(nid.nid_response?.father)
-          binding.mothersNameLayout.editText?.setText(nid.nid_response?.mother)
-          if (nid.nid_response?.dob != null) {
-            val dob = "${nid.nid_response.dob.substring(6)}-${
-              nid.nid_response.dob.substring(0, 2)}-${nid.nid_response.dob.substring(3, 5)}"
+          if (!nid.nid_response?.nameEn.isNullOrEmpty()) {
+            binding.nameLayout.editText?.setText(nid.nid_response?.nameEn)
+            binding.nameLayout.editText?.isEnabled = false
+          }
+          if (!nid.nid_response?.fatherEn.isNullOrEmpty()) {
+            binding.fathersNameLayout.editText?.setText(nid.nid_response?.fatherEn)
+            binding.fathersNameLayout.editText?.isEnabled = false
+          }
+          if (!nid.nid_response?.motherEn.isNullOrEmpty()) {
+            binding.mothersNameLayout.editText?.setText(nid.nid_response?.motherEn)
+            binding.mothersNameLayout.editText?.isEnabled = false
+          }
+          if (!nid.nid_response?.nationalId.isNullOrEmpty()) {
+            binding.nidLayout.editText?.setText(nid.nid_response?.nationalId)
+            binding.nidLayout.editText?.isEnabled = false
+          }
+          if (!nid.nid_response?.dob.isNullOrEmpty()) {
+            val dob = "${nid.nid_response?.dob?.substring(6)}-${
+              nid.nid_response?.dob?.substring(0, 2)
+            }-${nid.nid_response?.dob?.substring(3, 5)}"
             binding.dobLayout.editText?.setText(dob)
+            binding.dobLayout.editText?.isEnabled = false
+          } else {
+            /*binding.dobLayout.editText?.showSoftInputOnFocus = false
+            binding.dobLayout.editText?.setOnTouchListener { _, event ->
+              if (event.action == MotionEvent.ACTION_UP) {
+                showDatePickerDialog()
+                true
+              }
+              false
+            }*/
           }
           goToNextStep()
         }
         "400" -> {
           shortToast(nid.errors?.get(0).toString())
+        }
+        else -> {
+          shortToast(R.string.something_went_wrong)
+        }
+      }
+    })
+
+    viewModel.ownerInfo.observe(viewLifecycleOwner, { ownerInfo ->
+      Log.d(TAG, "ownerInfo: $ownerInfo")
+      when (ownerInfo.sp_code) {
+        "1" -> {
+          shortToast(ownerInfo.message.toString())
+          (activity as NewMerchantActivity).setShopOwnerId(ownerInfo.shop_owner_id!!)
+          goToNextStep()
+        }
+        "2" -> {
+          shortToast(ownerInfo.message.toString())
+        }
+        "3" -> {
+          shortToast(ownerInfo.message.toString())
+          (activity as NewMerchantActivity).setShopOwnerId(ownerInfo.shop_owner_id!!)
+          goToNextStep()
         }
         else -> {
           shortToast(R.string.something_went_wrong)
@@ -290,7 +340,9 @@ class PersonalInfoFragment : BaseFragment() {
     val d = c.get(Calendar.DAY_OF_MONTH)
 
     val dialog = DatePickerDialog(requireContext(), { _, year, monthOfYear, dayOfMonth ->
-      val date = "$year-${monthOfYear + 1}-$dayOfMonth"
+      val moy = if (monthOfYear>8) (monthOfYear+1) else "0${monthOfYear+1}"
+      val dom = if (dayOfMonth>9) dayOfMonth else "0$dayOfMonth"
+      val date = "$year-$moy-$dom"
       binding.step2DOBLayout.editText?.setText(date)
     }, y, m, d)
 
@@ -335,7 +387,8 @@ class PersonalInfoFragment : BaseFragment() {
       return
     }
 
-    submitStep1Data()
+    //submitStep1Data()
+    goToNextStep()
   }
 
   private fun submitStep1Data() {
@@ -373,7 +426,7 @@ class PersonalInfoFragment : BaseFragment() {
   }
 
   private fun submitStep2Data(nidNo: String, dob: String) {
-    val nid = Nid(ownerImage.toString(), nidNo.toLong(), dob, null, null, null, null, null)
+    val nid = Nid(ownerImage.toString(), nidNo, dob, null, null, null, null, null)
     viewModel.getNidInfo(nid)
   }
 
@@ -488,11 +541,34 @@ class PersonalInfoFragment : BaseFragment() {
       return
     }
 
-    submitPersonalInfo()
+    val ownerInfo = OwnerInfo(
+      name,
+      fathersName,
+      mothersName,
+      contactNo,
+      email,
+      nid,
+      dob,
+      tin,
+      address,
+      divisions[division]!!,
+      districts[district]!!,
+      policeStations[policeStation]!!,
+      ownerImage!!,
+      ownerNIDFront!!,
+      ownerNIDBack!!,
+      ownerSignature!!,
+      null,
+      null,
+      null,
+      null,
+      null,
+    )
+    submitPersonalInfo(ownerInfo)
   }
 
-  private fun submitPersonalInfo() {
-    goToNextStep()
+  private fun submitPersonalInfo(ownerInfo: OwnerInfo) {
+    viewModel.submitOwnerInfo(ownerInfo)
   }
 
   private fun goToNextStep() {

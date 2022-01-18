@@ -2,7 +2,7 @@ package com.sm.spagent.model
 
 data class Nid(
   val person_photo: String,
-  val national_id: Long,
+  val national_id: String,
   val person_dob: String,
   val status: String?,
   val sp_code: String?,

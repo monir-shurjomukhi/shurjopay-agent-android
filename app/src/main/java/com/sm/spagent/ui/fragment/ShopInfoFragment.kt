@@ -1,9 +1,8 @@
 package com.sm.spagent.ui.fragment
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.provider.MediaStore
-import android.text.InputType
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,15 +11,21 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageView
 import com.canhub.cropper.options
 import com.sm.spagent.R
 import com.sm.spagent.databinding.FragmentShopInfoBinding
 import com.sm.spagent.model.ImageType
+import com.sm.spagent.model.ShopInfo
 import com.sm.spagent.ui.activity.NewMerchantActivity
 import com.sm.spagent.ui.viewmodel.ShopInfoViewModel
+import id.zelory.compressor.Compressor
+import id.zelory.compressor.constraint.quality
+import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
+import java.io.File
 
 class ShopInfoFragment : BaseFragment() {
 
@@ -45,24 +50,35 @@ class ShopInfoFragment : BaseFragment() {
     if (result.isSuccessful) {
       // use the returned uri
       val uriContent = result.uriContent
+      Log.d(TAG, "uriContent: $uriContent")
       val uriFilePath = result.getUriFilePath(requireContext()) // optional usage
-      val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, uriContent)
-      val outputStream = ByteArrayOutputStream()
-      bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-      val byteArray: ByteArray = outputStream.toByteArray()
-      when (imageType) {
-        ImageType.TRADE_LICENSE -> {
-          binding.tradeLicenseImageView.setImageBitmap(bitmap)
-          tradeLicenseImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
+      Log.d(TAG, "uriFilePath: $uriFilePath")
+      lifecycleScope.launch {
+        showProgress()
+        val file = File(uriFilePath)
+        Log.d(TAG, "file size (KB): ${file.length() / 1024}")
+        val compressedImageFile = Compressor.compress(requireContext(), file) { quality(50) }
+        Log.d(TAG, "compressedImageFile size (KB): ${compressedImageFile.length() / 1024}")
+        val bitmap = BitmapFactory.decodeFile(compressedImageFile.absolutePath)
+        val outputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+        val byteArray: ByteArray = outputStream.toByteArray()
+
+        when (imageType) {
+          ImageType.TRADE_LICENSE -> {
+            binding.tradeLicenseImageView.setImageBitmap(bitmap)
+            tradeLicenseImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
+          }
+          ImageType.SHOP_FRONT -> {
+            binding.shopFrontImageView.setImageBitmap(bitmap)
+            shopFrontImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
+          }
+          else -> {
+            binding.tradeLicenseImageView.setImageBitmap(bitmap)
+            tradeLicenseImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
+          }
         }
-        ImageType.SHOP_FRONT -> {
-          binding.shopFrontImageView.setImageBitmap(bitmap)
-          shopFrontImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
-        }
-        else -> {
-          binding.tradeLicenseImageView.setImageBitmap(bitmap)
-          tradeLicenseImage = Base64.encodeToString(byteArray, Base64.DEFAULT)
-        }
+        hideProgress()
       }
     } else {
       // an error occurred
@@ -127,12 +143,23 @@ class ShopInfoFragment : BaseFragment() {
     }
 
     binding.saveNextButton.setOnClickListener {
-      //validateInputs()
-      submitShopInfo()
+      validateInputs()
     }
   }
 
   private fun observeData() {
+    viewModel.progress.observe(viewLifecycleOwner, {
+      if (it) {
+        showProgress()
+      } else {
+        hideProgress()
+      }
+    })
+
+    viewModel.message.observe(viewLifecycleOwner, {
+      shortSnack(binding.root, it)
+    })
+
     viewModel.businessType.observe(viewLifecycleOwner, { businessType ->
       businessTypes.clear()
       for (data in businessType.business_type_names!!) {
@@ -193,6 +220,22 @@ class ShopInfoFragment : BaseFragment() {
           policeStations.keys.toList()
         ).also { adapter ->
           binding.policeStationTextView.setAdapter(adapter)
+        }
+      }
+    })
+
+    viewModel.shopInfo.observe(viewLifecycleOwner, { shopInfo ->
+      Log.d(TAG, "shopInfo: $shopInfo")
+      when (shopInfo.sp_code) {
+        "1" -> {
+          shortToast(shopInfo.message.toString())
+          (activity as NewMerchantActivity).goToNextStep()
+        }
+        "2" -> {
+          shortToast(shopInfo.message.toString())
+        }
+        else -> {
+          shortToast(R.string.something_went_wrong)
         }
       }
     })
@@ -285,22 +328,40 @@ class ShopInfoFragment : BaseFragment() {
     } else {
       binding.locationLayout.error = null
     }
-    if (tradeLicenseImage == null) {
+    /*if (tradeLicenseImage == null) {
       shortSnack(binding.tradeLicenseLayout, R.string.capture_trade_license_image)
       binding.scrollView.smoothScrollTo(0, binding.tradeLicenseLayout.y.toInt())
       return
-    }
+    }*/
     if (shopFrontImage == null) {
       shortSnack(binding.shopFrontLayout, R.string.capture_shop_front_image)
       binding.scrollView.smoothScrollTo(0, binding.shopFrontLayout.y.toInt())
       return
     }
 
-    submitShopInfo()
+    val shopInfo = ShopInfo(
+      shopName,
+      tin,
+      businessTypes[businessType]!!,
+      shopSize,
+      shopAddress,
+      divisions[division]!!,
+      districts[district]!!,
+      policeStations[policeStation]!!,
+      shopLocation,
+      tradeLicenseImage,
+      shopFrontImage!!,
+      (activity as NewMerchantActivity).getShopOwnerId(),
+      null,
+      null,
+      null,
+      null
+    )
+    submitShopInfo(shopInfo)
   }
 
-  private fun submitShopInfo() {
-    (activity as NewMerchantActivity).goToNextStep()
+  private fun submitShopInfo(shopInfo: ShopInfo) {
+    viewModel.submitShopInfo(shopInfo)
   }
 
   companion object {
