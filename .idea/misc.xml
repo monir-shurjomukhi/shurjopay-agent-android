@@ -19,11 +19,13 @@
         <entry key="app/src/main/res/layout/fragment_account_info.xml" value="0.2652832305103758" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.3484375" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.2858974358974359" />
+        <entry key="app/src/main/res/layout/fragment_merchants.xml" value="0.34167517875383047" />
         <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.3484375" />
         <entry key="app/src/main/res/layout/fragment_personal_info.xml" value="0.259375" />
         <entry key="app/src/main/res/layout/fragment_shop_info.xml" value="0.3001269035532995" />
         <entry key="app/src/main/res/layout/grid_item.xml" value="0.34167517875383047" />
         <entry key="app/src/main/res/layout/merchant_list_item.xml" value="0.3484375" />
+        <entry key="app/src/main/res/layout/shop_owner_list_item.xml" value="0.34167517875383047" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.3484375" />
         <entry key="app/src/main/res/menu/menu_stepper_merchant.xml" value="0.1875" />
       </map>
