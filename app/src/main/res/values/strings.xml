@@ -19,7 +19,7 @@
   <string name="nid_no">NID No</string>
   <string name="tin">TIN</string>
   <string name="address">Address</string>
-  <string name="date_of_birth">Date of Birth</string>
+  <string name="date_of_birth">Date of Birth (YYYY-MM-DD)</string>
   <string name="shop_owner_image">Shop Owner Image</string>
   <string name="owner_image">Owner Image</string>
   <string name="front_side_of_nid">Front Side of NID</string>
@@ -55,6 +55,7 @@
   <string name="police_station">Police Station</string>
   <string name="existing_bank">Existing Bank</string>
   <string name="unable_to_connect">Unable To Connect</string>
+  <string name="something_went_wrong">Something went wrong</string>
   <string name="login">Login</string>
   <string name="password">Password</string>
   <string name="username">Username</string>
@@ -65,6 +66,7 @@
   <string name="nid_is_invalid">NID is invalid</string>
   <string name="mobile_number_or_password_did_not_match">Mobile number or password did not match!</string>
   <string name="capture_shop_owner_image">Capture shop owner image</string>
+  <string name="capture_nominee_image">Capture nominee image</string>
   <string name="capture_front_side_of_nid">Capture front side of NID</string>
   <string name="capture_back_side_of_nid">Capture back side of NID</string>
   <string name="capture_shop_owner_signature">Capture shop owner signature</string>

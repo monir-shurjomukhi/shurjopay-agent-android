@@ -41,6 +41,31 @@ class ApiClient {
     return retrofit!!
   }
 
+  fun getOcrApiClient(baseUrl: String): Retrofit {
+    if (retrofit == null) {
+      val interceptor = HttpLoggingInterceptor()
+      interceptor.level = HttpLoggingInterceptor.Level.BODY
+
+      val okHttpClient: OkHttpClient = OkHttpClient.Builder()
+        .connectTimeout(60, TimeUnit.SECONDS)
+        .writeTimeout(60, TimeUnit.SECONDS)
+        .readTimeout(60, TimeUnit.SECONDS)
+        .addInterceptor(interceptor)
+        .build()
+
+      val gson = GsonBuilder().setLenient().create()
+
+      retrofit = Retrofit.Builder()
+        .baseUrl(baseUrl)
+        .addConverterFactory(ScalarsConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create(gson))
+        .client(okHttpClient)
+        .build()
+    }
+
+    return retrofit!!
+  }
+
   fun getAuthApiClient(baseUrl: String, token: String): Retrofit {
     if (retrofit == null) {
       val interceptor = HttpLoggingInterceptor()
