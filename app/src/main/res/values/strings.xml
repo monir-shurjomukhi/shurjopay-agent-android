@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">ShurjoPay Agent</string>
+  <string name="app_name">shurjoPay Agent</string>
   <string name="title_home">Home</string>
   <string name="title_merchants">Merchants</string>
   <string name="title_dashboard">Dashboard</string>
@@ -79,4 +79,5 @@
   <string name="father_husband_s_name">Father/Husband\'s Name</string>
   <string name="occupation">Occupation</string>
   <string name="submit">Submit</string>
+  <string name="district_name">%s,</string>
 </resources>
