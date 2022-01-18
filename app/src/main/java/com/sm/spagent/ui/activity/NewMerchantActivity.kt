@@ -11,42 +11,52 @@ import com.sm.spagent.databinding.ActivityNewMerchantBinding
 
 class NewMerchantActivity : AppCompatActivity(), StepperNavListener {
 
-    private lateinit var binding: ActivityNewMerchantBinding
+  private lateinit var binding: ActivityNewMerchantBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityNewMerchantBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        //setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.title = getString(R.string.new_merchant)
+  private var shopOwnerId: Int = -1
 
-        binding.stepper.setupWithNavController(findNavController(R.id.frame_stepper))
-        binding.stepper.stepperNavListener = this
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    binding = ActivityNewMerchantBinding.inflate(layoutInflater)
+    setContentView(binding.root)
+    //setSupportActionBar(binding.toolbar)
+    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    supportActionBar?.setDisplayShowHomeEnabled(true)
+    supportActionBar?.title = getString(R.string.new_merchant)
+
+    binding.stepper.setupWithNavController(findNavController(R.id.frame_stepper))
+    binding.stepper.stepperNavListener = this
+  }
+
+  fun setShopOwnerId(id: Int) {
+    shopOwnerId = id
+  }
+
+  fun getShopOwnerId(): Int {
+    return shopOwnerId
+  }
+
+  fun goToNextStep() {
+    binding.stepper.goToNextStep()
+  }
+
+  override fun onCompleted() {
+    Log.d(TAG, "onCompleted: ")
+  }
+
+  override fun onStepChanged(step: Int) {
+    Log.d(TAG, "onStepChanged: $step")
+  }
+
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    // handle arrow click here
+    if (item.itemId == android.R.id.home) {
+      onBackPressed()
     }
+    return super.onOptionsItemSelected(item)
+  }
 
-    fun goToNextStep() {
-        binding.stepper.goToNextStep()
-    }
-
-    override fun onCompleted() {
-        Log.d(TAG, "onCompleted: ")
-    }
-
-    override fun onStepChanged(step: Int) {
-        Log.d(TAG, "onStepChanged: $step")
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // handle arrow click here
-        if (item.itemId == android.R.id.home) {
-            onBackPressed()
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    companion object {
-        private const val TAG = "NewMerchantActivity"
-    }
+  companion object {
+    private const val TAG = "NewMerchantActivity"
+  }
 }
