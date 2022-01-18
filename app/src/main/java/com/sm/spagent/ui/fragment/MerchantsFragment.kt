@@ -5,12 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.sm.spagent.databinding.FragmentMerchantsBinding
+import com.sm.spagent.ui.adapter.MerchantsAdapter
 import com.sm.spagent.ui.viewmodel.MerchantsViewModel
 
-class MerchantsFragment : Fragment() {
+class MerchantsFragment : BaseFragment() {
 
   private lateinit var viewModel: MerchantsViewModel
   private var _binding: FragmentMerchantsBinding? = null
@@ -40,7 +40,16 @@ class MerchantsFragment : Fragment() {
   private fun observeData() {
     viewModel.shopOwner.observe(viewLifecycleOwner, { shopOwner ->
       Log.d(TAG, "shopOwner: $shopOwner")
+      if (shopOwner.shop_owners.isNullOrEmpty()) {
+        shortToast("Empty List")
+      } else {
+        binding.showOwnerRecyclerView.adapter = MerchantsAdapter(shopOwner.shop_owners, ::onMerchantItemClick)
+      }
     })
+  }
+
+  private fun onMerchantItemClick(position: Int) {
+    shortToast(position.toString())
   }
 
   override fun onDestroyView() {
