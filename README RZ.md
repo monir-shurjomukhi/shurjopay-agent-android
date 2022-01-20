@@ -9,6 +9,9 @@ Branches:
 
 Git workflow
 ```GIT_WORKFLOW
+10) Git branch "rzrasel"
+    -
+    - rzrasel (merge with) main ⇒ Tuesday December 28, 2021, 18:47:58
 9) Git branch "main"
     - main (merge with) rzrasel → Tuesday December 28, 2021, 18:46:53
 8) Git branch "rzrasel"

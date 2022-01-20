@@ -6,19 +6,18 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(entities = [ModelShopOwnerInfo::class], version = 1)
-abstract class DatabaseShopOwnerInfo : RoomDatabase() {
-    abstract fun shopOwnerInfoDao(): DaoShopOwnerInfo
-
+@Database(entities = [ModelBusinessType::class], version = 1)
+abstract class DatabaseBusinessType : RoomDatabase() {
+    abstract fun businessTypeDao(): DaoBusinessType
     companion object {
-        private var instance: DatabaseShopOwnerInfo? = null
+        private var instance: DatabaseBusinessType? = null
 
         @Synchronized
-        fun getInstance(ctx: Context): DatabaseShopOwnerInfo {
+        fun getInstance(ctx: Context): DatabaseBusinessType {
             if (instance == null)
                 instance = Room.databaseBuilder(
-                    ctx.applicationContext, DatabaseShopOwnerInfo::class.java,
-                    "shop_owner_info_database"
+                    ctx.applicationContext, DatabaseBusinessType::class.java,
+                    "qr_business_type"
                 )
                     .fallbackToDestructiveMigration()
                     .addCallback(roomCallback)
@@ -35,8 +34,8 @@ abstract class DatabaseShopOwnerInfo : RoomDatabase() {
             }
         }
 
-        private fun populateDatabase(db: DatabaseShopOwnerInfo) {
-            val shopOwnerInfoDao = db.shopOwnerInfoDao()
+        private fun populateDatabase(db: DatabaseBusinessType) {
+            val businessTypeDao = db.businessTypeDao()
             /*subscribeOnBackground {
             }*/
         }

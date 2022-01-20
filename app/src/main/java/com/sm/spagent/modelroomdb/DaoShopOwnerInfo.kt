@@ -12,11 +12,11 @@ interface DaoShopOwnerInfo {
     fun update(shopOwnerInfo: ModelShopOwnerInfo)
 
     @Delete
-    fun delete(note: ModelShopOwnerInfo)
+    fun delete(shopOwnerInfo: ModelShopOwnerInfo)
 
     @Query("delete from shop_owner_info")
-    fun deleteAllNotes()
+    fun deleteAllShopOwnerInfo()
 
     @Query("select * from shop_owner_info order by owner_name asc")
-    fun getAllNotes(): LiveData<List<ModelShopOwnerInfo>>
+    fun getAllShopOwnerInfo(): LiveData<List<ModelShopOwnerInfo>>
 }
