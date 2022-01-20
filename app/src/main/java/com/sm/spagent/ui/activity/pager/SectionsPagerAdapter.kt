@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.sm.spagent.R
+import com.sm.spagent.ui.fragment.PersonalInfoDetailsFragment
 
 private val TAB_TITLES = arrayOf(
   R.string.tab_text_1,

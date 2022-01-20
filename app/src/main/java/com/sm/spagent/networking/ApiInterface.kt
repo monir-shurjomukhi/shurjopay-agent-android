@@ -42,6 +42,11 @@ interface ApiInterface {
   @GET("qr-creator-all-shop-owner")
   suspend fun getShopOwners(): Response<ShopOwner>
 
+  @GET("qr-single-shop-owner-info/{shop_owner_id}")
+  suspend fun getPersonalInfo(
+    @Path("shop_owner_id") shopOwnerId: Int
+  ): Response<PersonalInfoDetails>
+
 
   //////////////////// POST ///////////////////
 
