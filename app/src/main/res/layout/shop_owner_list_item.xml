@@ -6,6 +6,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:id="@+id/merchantCard"
+    app:strokeWidth="2dp"
+    app:strokeColor="@color/colorShurjoPay"
     app:cardBackgroundColor="@color/colorShurjoPayLight"
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp">
@@ -116,6 +118,7 @@
         tools:text="Division Division Division " />
 
     <View
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
