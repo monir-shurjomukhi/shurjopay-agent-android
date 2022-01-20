@@ -34,7 +34,7 @@ class PersonalInfoDetailsFragment : Fragment() {
 
   private fun observeData() {
     viewModel.personalInfoDetails.observe(viewLifecycleOwner, {
-
+      binding.textView.text = it.toString()
     })
   }
 
