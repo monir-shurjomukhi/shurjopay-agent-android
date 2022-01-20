@@ -83,4 +83,7 @@
   <string name="location">%f,%f</string>
   <string name="location_not_found">Location Not Found</string>
   <string name="getting_location">Getting Location…</string>
+  <string name="title_activity_merchant_details">MerchantDetailsActivity</string>
+  <string name="tab_text_1">Tab 1</string>
+  <string name="tab_text_2">Tab 2</string>
 </resources>

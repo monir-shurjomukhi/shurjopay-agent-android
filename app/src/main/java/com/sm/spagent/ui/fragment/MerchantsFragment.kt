@@ -1,5 +1,6 @@
 package com.sm.spagent.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.sm.spagent.databinding.FragmentMerchantsBinding
+import com.sm.spagent.ui.activity.MerchantDetailsActivity
 import com.sm.spagent.ui.adapter.MerchantsAdapter
 import com.sm.spagent.ui.viewmodel.MerchantsViewModel
 
@@ -50,6 +52,7 @@ class MerchantsFragment : BaseFragment() {
 
   private fun onMerchantItemClick(position: Int) {
     shortToast(position.toString())
+    startActivity(Intent(requireContext(), MerchantDetailsActivity::class.java))
   }
 
   override fun onDestroyView() {
