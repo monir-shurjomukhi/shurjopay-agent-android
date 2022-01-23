@@ -5,8 +5,11 @@
       <map>
         <entry key="..\:/D Drive/Android Project/Kotlin Sm shurjoPay Agent/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/D Drive/Android Project/Kotlin Sm shurjoPay Agent/app/src/main/res/layout/activity_main.xml" value="0.20833333333333334" />
+        <entry key="..\:/D Drive/Android Project/Kotlin Sm shurjoPay Agent/app/src/main/res/layout/activity_new_merchant.xml" value="0.14402173913043478" />
         <entry key="..\:/D Drive/Android Project/Kotlin Sm shurjoPay Agent/app/src/main/res/layout/fragment_home.xml" value="0.1" />
+        <entry key="..\:/D Drive/Android Project/Kotlin Sm shurjoPay Agent/app/src/main/res/layout/fragment_personal_info.xml" value="0.15307971014492755" />
         <entry key="..\:/D Drive/Android Project/Kotlin Sm shurjoPay Agent/app/src/main/res/layout/fragment_shop_info.xml" value="0.14492753623188406" />
+        <entry key="..\:/D Drive/Android Project/Kotlin Sm shurjoPay Agent/app/src/main/res/menu/menu_stepper_merchant.xml" value="0.20833333333333334" />
         <entry key="app/src/main/res/drawable/ic_baseline_add_a_photo_24.xml" value="0.36875" />
         <entry key="app/src/main/res/drawable/ic_baseline_credit_card_24.xml" value="0.36875" />
         <entry key="app/src/main/res/drawable/ic_baseline_gesture_24.xml" value="0.36875" />
