@@ -8,4 +8,3 @@ data class ModelShopInfo(
     @PrimaryKey(autoGenerate = false) val id: Int? = null,
     val shop_owner_id: String,
 )
-// /
