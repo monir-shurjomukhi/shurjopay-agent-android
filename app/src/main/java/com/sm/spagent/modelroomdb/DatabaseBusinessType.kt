@@ -24,7 +24,6 @@ abstract class DatabaseBusinessType : RoomDatabase() {
                     .build()
 
             return instance!!
-
         }
 
         private val roomCallback = object : Callback() {
