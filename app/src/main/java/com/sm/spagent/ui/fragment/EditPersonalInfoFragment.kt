@@ -34,7 +34,7 @@ import java.io.File
 import java.util.*
 
 
-class PersonalInfoFragment : BaseFragment() {
+class EditPersonalInfoFragment : BaseFragment() {
 
   private lateinit var viewModel: PersonalInfoViewModel
   private var _binding: FragmentPersonalInfoBinding? = null

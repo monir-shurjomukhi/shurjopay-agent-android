@@ -1,7 +1,10 @@
 package com.sm.spagent.ui.fragment
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Location
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
@@ -9,12 +12,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.core.app.ActivityCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageView
 import com.canhub.cropper.options
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.CancellationToken
+import com.google.android.gms.tasks.OnTokenCanceledListener
 import com.sm.spagent.R
 import com.sm.spagent.databinding.FragmentShopInfoBinding
 import com.sm.spagent.model.ImageType
@@ -45,6 +54,9 @@ class ShopInfoFragment : BaseFragment() {
   private val divisions = mutableMapOf<String, Int>()
   private val districts = mutableMapOf<String, Int>()
   private val policeStations = mutableMapOf<String, Int>()
+
+  private var shopLocation: Location? = null
+  private val locationRequestCode = 1000
 
   private val cropImage = registerForActivityResult(CropImageContract()) { result ->
     if (result.isSuccessful) {
@@ -102,6 +114,7 @@ class ShopInfoFragment : BaseFragment() {
 
     viewModel.getBusinessTypes()
     viewModel.getDivisions()
+    requestLocation()
 
     return root
   }
@@ -112,6 +125,8 @@ class ShopInfoFragment : BaseFragment() {
   }
 
   private fun setupViews() {
+    binding.locationLayout.editText?.setText(getString(R.string.location_not_found))
+    binding.locationLayout.setOnClickListener { requestLocation() }
     binding.tradeLicensePickerLayout.setOnClickListener { startImageCrop(ImageType.TRADE_LICENSE) }
     binding.shopFrontPickerLayout.setOnClickListener { startImageCrop(ImageType.SHOP_FRONT) }
 
@@ -239,6 +254,61 @@ class ShopInfoFragment : BaseFragment() {
         }
       }
     })
+  }
+
+  private fun requestLocation() {
+    binding.locationLayout.editText?.setText(getString(R.string.getting_location))
+    val fusedLocationClient: FusedLocationProviderClient =
+      LocationServices.getFusedLocationProviderClient(requireContext())
+    if (ActivityCompat.checkSelfPermission(
+        requireContext(),
+        Manifest.permission.ACCESS_FINE_LOCATION
+      ) != PackageManager.PERMISSION_GRANTED
+      && ActivityCompat.checkSelfPermission(
+        requireContext(),
+        Manifest.permission.ACCESS_COARSE_LOCATION
+      ) != PackageManager.PERMISSION_GRANTED
+    ) {
+      ActivityCompat.requestPermissions(
+        requireActivity(),
+        arrayOf(
+          Manifest.permission.ACCESS_FINE_LOCATION,
+          Manifest.permission.ACCESS_COARSE_LOCATION
+        ),
+        locationRequestCode
+      )
+    } else {
+      val token: CancellationToken = object : CancellationToken() {
+        override fun onCanceledRequested(onTokenCanceledListener: OnTokenCanceledListener): CancellationToken {
+          return this
+        }
+
+        override fun isCancellationRequested(): Boolean {
+          return false
+        }
+      }
+      val task = fusedLocationClient.getCurrentLocation(
+        PRIORITY_BALANCED_POWER_ACCURACY,
+        token
+      )
+
+      task.addOnCompleteListener { task1 ->
+        val location: Location = task1.result
+        longToast(location.toString())
+        if (location.accuracy < 10.0) {
+          shopLocation = location
+          binding.locationLayout.editText?.setText(
+            getString(
+              R.string.location,
+              location.latitude,
+              location.longitude
+            )
+          )
+        } else {
+          binding.locationLayout.editText?.setText(getString(R.string.location_not_found))
+        }
+      }
+    }
   }
 
   private fun startImageCrop(type: ImageType) {
