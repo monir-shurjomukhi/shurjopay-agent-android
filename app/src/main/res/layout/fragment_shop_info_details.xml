@@ -292,7 +292,7 @@
           app:layout_constraintTop_toBottomOf="@id/shopFrontTextView">
 
         <ImageView
-            android:id="@+id/ownerNIDFrontImageView"
+            android:id="@+id/shopFrontImageView"
             android:layout_width="320dp"
             android:layout_height="240dp"
             android:contentDescription="@string/shop_front"
