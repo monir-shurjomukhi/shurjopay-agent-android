@@ -23,161 +23,17 @@
       <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/shop_owner_name"
+          android:text="@string/shop_business_name"
           android:textSize="12sp" />
 
       <TextView
-          android:id="@+id/ownerNameTextView"
+          android:id="@+id/shopNameTextView"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="4dp"
           android:textColor="@color/black"
           android:textSize="16sp"
-          tools:text="Shop Owner Name" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="#DDDDDD"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/father_husband_s_name"
-          android:textSize="12sp" />
-
-      <TextView
-          android:id="@+id/fathersNameTextView"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="4dp"
-          android:textColor="@color/black"
-          android:textSize="16sp"
-          tools:text="Father's Name" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="#DDDDDD"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/mother_s_name"
-          android:textSize="12sp" />
-
-      <TextView
-          android:id="@+id/mothersNameTextView"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="4dp"
-          android:textColor="@color/black"
-          android:textSize="16sp"
-          tools:text="Mothers Name" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="#DDDDDD"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/contact_no"
-          android:textSize="12sp" />
-
-      <TextView
-          android:id="@+id/contactNoTextView"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="4dp"
-          android:textColor="@color/black"
-          android:textSize="16sp"
-          tools:text="01234567890" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="#DDDDDD"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/email"
-          android:textSize="12sp" />
-
-      <TextView
-          android:id="@+id/emailTextView"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="4dp"
-          android:textColor="@color/black"
-          android:textSize="16sp"
-          tools:text="shop_owner@gmail.com" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="#DDDDDD"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/nid_no"
-          android:textSize="12sp" />
-
-      <TextView
-          android:id="@+id/nidTextView"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="4dp"
-          android:textColor="@color/black"
-          android:textSize="16sp"
-          tools:text="12254568895778965" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="#DDDDDD"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/date_of_birth"
-          android:textSize="12sp" />
-
-      <TextView
-          android:id="@+id/dobTextView"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="4dp"
-          android:textColor="@color/black"
-          android:textSize="16sp"
-          tools:text="1971-12-16" />
+          tools:text="Shop/Business Name" />
     </LinearLayout>
 
     <LinearLayout
@@ -201,7 +57,7 @@
           android:layout_marginTop="4dp"
           android:textColor="@color/black"
           android:textSize="16sp"
-          tools:text="1234567890123456789" />
+          tools:text="1234567890" />
     </LinearLayout>
 
     <LinearLayout
@@ -215,7 +71,55 @@
       <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/address"
+          android:text="@string/business_type"
+          android:textSize="12sp" />
+
+      <TextView
+          android:id="@+id/businessTypeTextView"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="4dp"
+          android:textColor="@color/black"
+          android:textSize="16sp"
+          tools:text="Business Type" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="#DDDDDD"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/shop_size"
+          android:textSize="12sp" />
+
+      <TextView
+          android:id="@+id/shopSizeTextView"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="4dp"
+          android:textColor="@color/black"
+          android:textSize="16sp"
+          tools:text="Shop Size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="#DDDDDD"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/shop_address"
           android:textSize="12sp" />
 
       <TextView
@@ -225,7 +129,7 @@
           android:layout_marginTop="4dp"
           android:textColor="@color/black"
           android:textSize="16sp"
-          tools:text="43 Mohakhali C/A" />
+          tools:text="Address" />
     </LinearLayout>
 
     <LinearLayout
@@ -300,6 +204,30 @@
           tools:text="Gulshan" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="#DDDDDD"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/shop_location"
+          android:textSize="12sp" />
+
+      <TextView
+          android:id="@+id/locationTextView"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="4dp"
+          android:textColor="@color/black"
+          android:textSize="16sp"
+          tools:text="123.45678, 90.123456" />
+    </LinearLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -308,10 +236,10 @@
         android:padding="16dp">
 
       <TextView
-          android:id="@+id/ownerImageTextView"
+          android:id="@+id/tradeLicenseImageTextView"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/owner_image"
+          android:text="@string/trade_license"
           android:textSize="16sp"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent" />
@@ -325,14 +253,14 @@
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/ownerImageTextView">
+          app:layout_constraintTop_toBottomOf="@id/tradeLicenseImageTextView">
 
         <ImageView
-            android:id="@+id/ownerImageView"
+            android:id="@+id/tradeLicenseImageView"
             android:layout_width="240dp"
             android:layout_height="320dp"
-            android:contentDescription="@string/owner_image"
-            android:src="@drawable/ic_baseline_person_24" />
+            android:contentDescription="@string/trade_license"
+            android:src="@drawable/ic_baseline_image_24" />
       </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -344,10 +272,10 @@
         android:padding="16dp">
 
       <TextView
-          android:id="@+id/ownerNIDFrontTextView"
+          android:id="@+id/shopFrontTextView"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/front_side_of_nid"
+          android:text="@string/shop_front"
           android:textSize="16sp"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent" />
@@ -361,86 +289,14 @@
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/ownerNIDFrontTextView">
+          app:layout_constraintTop_toBottomOf="@id/shopFrontTextView">
 
         <ImageView
             android:id="@+id/ownerNIDFrontImageView"
             android:layout_width="320dp"
-            android:layout_height="200dp"
-            android:contentDescription="@string/front_side_of_nid"
-            android:src="@drawable/ic_baseline_credit_card_24" />
-      </com.google.android.material.card.MaterialCardView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="#DDDDDD"
-        android:padding="16dp">
-
-      <TextView
-          android:id="@+id/ownerNIDBackTextView"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/back_side_of_nid"
-          android:textSize="16sp"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent" />
-
-      <com.google.android.material.card.MaterialCardView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
-          app:cardCornerRadius="4dp"
-          app:cardElevation="4dp"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/ownerNIDBackTextView">
-
-        <ImageView
-            android:id="@+id/ownerNIDBackImageView"
-            android:layout_width="320dp"
-            android:layout_height="200dp"
-            android:contentDescription="@string/back_side_of_nid"
-            android:src="@drawable/ic_baseline_credit_card_24" />
-      </com.google.android.material.card.MaterialCardView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="#DDDDDD"
-        android:padding="16dp">
-
-      <TextView
-          android:id="@+id/ownerSignatureTextView"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/shop_owner_signature"
-          android:textSize="16sp"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent" />
-
-      <com.google.android.material.card.MaterialCardView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
-          app:cardCornerRadius="4dp"
-          app:cardElevation="4dp"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/ownerSignatureTextView">
-
-        <ImageView
-            android:id="@+id/ownerSignatureImageView"
-            android:layout_width="320dp"
-            android:layout_height="160dp"
-            android:contentDescription="@string/shop_owner_signature"
-            android:src="@drawable/ic_baseline_gesture_24" />
+            android:layout_height="240dp"
+            android:contentDescription="@string/shop_front"
+            android:src="@drawable/ic_baseline_storefront_24" />
       </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
   </LinearLayout>
