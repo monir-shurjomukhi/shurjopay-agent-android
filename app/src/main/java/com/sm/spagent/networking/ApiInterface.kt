@@ -57,6 +57,11 @@ interface ApiInterface {
     @Path("id") id: Int
   ): Response<AccountInfoDetails>
 
+  @GET("qr-single-nominee-info/{id}")
+  suspend fun getNomineeInfo(
+    @Path("id") id: Int
+  ): Response<NomineeInfoDetails>
+
 
   //////////////////// POST ///////////////////
 
