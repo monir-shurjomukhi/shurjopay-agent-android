@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.sm.spagent.R
 import com.sm.spagent.databinding.FragmentAccountInfoDetailsBinding
-import com.sm.spagent.model.AccountCategory
 import com.sm.spagent.ui.activity.MerchantDetailsActivity
 import com.sm.spagent.ui.viewmodel.AccountInfoDetailsViewModel
 import com.squareup.picasso.Picasso
@@ -36,6 +35,7 @@ class AccountInfoDetailsFragment : BaseFragment() {
     val merchantId = (activity as MerchantDetailsActivity).getMerchantId()
     if (merchantId != -1) {
       viewModel.getAccountInfo(1)
+      viewModel.getNomineeInfo(1)
     } else {
       shortSnack(binding.root, R.string.something_went_wrong)
     }
@@ -68,7 +68,6 @@ class AccountInfoDetailsFragment : BaseFragment() {
   private fun observeData() {
     viewModel.accountInfoDetails.observe(viewLifecycleOwner, {
       val accountInfo = it.account_info?.get(0)
-
       if (accountInfo?.is_mfs != null && accountInfo.is_mfs == 1) {
         if (!accountInfo.account_type.isNullOrEmpty()) {
           binding.mfsAccountTypeTextView.text = accountInfo.account_type
@@ -102,6 +101,67 @@ class AccountInfoDetailsFragment : BaseFragment() {
           binding.routingNumberTextView.text = accountInfo?.routing_no
         }
       }
+    })
+
+    viewModel.nomineeInfoDetails.observe(viewLifecycleOwner, {
+      val nomineeInfo = it.nominee_info?.get(0)
+      if (!nomineeInfo?.name.isNullOrEmpty()) {
+        binding.nomineeNameTextView.text = nomineeInfo?.name
+      }
+      if (!nomineeInfo?.father_or_husband_name.isNullOrEmpty()) {
+        binding.fathersNameTextView.text = nomineeInfo?.father_or_husband_name
+      }
+      if (!nomineeInfo?.mother_name.isNullOrEmpty()) {
+        binding.mothersNameTextView.text = nomineeInfo?.mother_name
+      }
+      if (!nomineeInfo?.relation_name.isNullOrEmpty()) {
+        binding.relationTextView.text = nomineeInfo?.relation_name
+      }
+      if (!nomineeInfo?.contact_no.isNullOrEmpty()) {
+        binding.contactNoTextView.text = nomineeInfo?.contact_no
+      }
+      if (!nomineeInfo?.email_address.isNullOrEmpty()) {
+        binding.emailTextView.text = nomineeInfo?.email_address
+      }
+      if (!nomineeInfo?.dob.isNullOrEmpty()) {
+        binding.dobTextView.text = nomineeInfo?.dob
+      }
+      if (!nomineeInfo?.nid_no.isNullOrEmpty()) {
+        binding.nidTextView.text = nomineeInfo?.nid_no
+      }
+      if (!nomineeInfo?.occupation_name.isNullOrEmpty()) {
+        binding.occupationTextView.text = nomineeInfo?.occupation_name
+      }
+      if (!nomineeInfo?.addess.isNullOrEmpty()) {
+        binding.addressTextView.text = nomineeInfo?.addess
+      }
+      if (!nomineeInfo?.division_name.isNullOrEmpty()) {
+        binding.divisionTextView.text = nomineeInfo?.division_name
+      }
+      if (!nomineeInfo?.district_name.isNullOrEmpty()) {
+        binding.districtTextView.text = nomineeInfo?.district_name
+      }
+      if (!nomineeInfo?.police_station_name.isNullOrEmpty()) {
+        binding.policeStationTextView.text = nomineeInfo?.police_station_name
+      }
+
+      Picasso.get()
+        .load("https://stagingapp.engine.shurjopayment.com/nominee_img/${nomineeInfo?.nominee_img}")
+        .placeholder(R.drawable.ic_baseline_person_24)
+        .error(R.drawable.ic_baseline_broken_image_24)
+        .into(binding.nomineeImageView)
+
+      Picasso.get()
+        .load("https://stagingapp.engine.shurjopayment.com/nid_img/frontside/${nomineeInfo?.nid_front}")
+        .placeholder(R.drawable.ic_baseline_credit_card_24)
+        .error(R.drawable.ic_baseline_broken_image_24)
+        .into(binding.nomineeNIDFrontImageView)
+
+      Picasso.get()
+        .load("https://stagingapp.engine.shurjopayment.com/nid_img/backside/${nomineeInfo?.nid_back}")
+        .placeholder(R.drawable.ic_baseline_credit_card_24)
+        .error(R.drawable.ic_baseline_broken_image_24)
+        .into(binding.nomineeNIDBackImageView)
     })
   }
 
