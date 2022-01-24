@@ -33,7 +33,7 @@ class ShopInfoDetailsFragment : BaseFragment() {
     observeData()
     val merchantId = (activity as MerchantDetailsActivity).getMerchantId()
     if (merchantId != -1) {
-      viewModel.getShopInfo(0)
+      viewModel.getShopInfo(1)
     } else {
       shortSnack(binding.root, R.string.something_went_wrong)
     }
