@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
 import com.sm.spagent.R
+import com.sm.spagent.model.AccountInfoDetails
 import com.sm.spagent.model.PersonalInfoDetails
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -11,22 +12,22 @@ import java.io.IOException
 
 class AccountInfoDetailsViewModel(application: Application) : BaseViewModel(application) {
 
-  private val _personalInfoDetails = MutableLiveData<PersonalInfoDetails>()
-  val personalInfoDetails: LiveData<PersonalInfoDetails>
-    get() = _personalInfoDetails
+  private val _accountInfoDetails = MutableLiveData<AccountInfoDetails>()
+  val accountInfoDetails: LiveData<AccountInfoDetails>
+    get() = _accountInfoDetails
 
-  fun getPersonalInfo(shopOwnerId: Int) {
+  fun getAccountInfo(id: Int) {
     viewModelScope.launch {
       progress.value = true
       val response = try {
-        authApiClient.getPersonalInfo(shopOwnerId)
+        authApiClient.getAccountInfo(id)
       } catch (e: IOException) {
-        Log.e(TAG, "getPersonalInfo: ${e.message}", e)
+        Log.e(TAG, "getAccountInfo: ${e.message}", e)
         progress.value = false
         message.value = R.string.unable_to_connect
         return@launch
       } catch (e: HttpException) {
-        Log.e(TAG, "getPersonalInfo: ${e.message}", e)
+        Log.e(TAG, "getAccountInfo: ${e.message}", e)
         progress.value = false
         message.value = R.string.unable_to_connect
         return@launch
@@ -34,7 +35,7 @@ class AccountInfoDetailsViewModel(application: Application) : BaseViewModel(appl
 
       progress.value = false
       if (response.isSuccessful && response.body() != null) {
-        _personalInfoDetails.value = response.body()
+        _accountInfoDetails.value = response.body()
       } else {
         message.value = R.string.unable_to_connect
       }
@@ -42,6 +43,6 @@ class AccountInfoDetailsViewModel(application: Application) : BaseViewModel(appl
   }
 
   companion object {
-    private const val TAG = "PersonalInfoDetailsViewModel"
+    private const val TAG = "AccountInfoDetailsViewModel"
   }
 }
