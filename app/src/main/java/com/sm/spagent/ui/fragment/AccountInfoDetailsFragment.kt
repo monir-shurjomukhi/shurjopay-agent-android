@@ -66,6 +66,18 @@ class AccountInfoDetailsFragment : BaseFragment() {
   }
 
   private fun observeData() {
+    viewModel.progress.observe(viewLifecycleOwner, {
+      if (it) {
+        showProgress()
+      } else {
+        hideProgress()
+      }
+    })
+
+    viewModel.message.observe(viewLifecycleOwner, {
+      shortSnack(binding.root, it)
+    })
+
     viewModel.accountInfoDetails.observe(viewLifecycleOwner, {
       val accountInfo = it.account_info?.get(0)
       if (accountInfo?.is_mfs != null && accountInfo.is_mfs == 1) {

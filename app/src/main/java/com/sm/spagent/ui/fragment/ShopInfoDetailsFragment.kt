@@ -42,6 +42,18 @@ class ShopInfoDetailsFragment : BaseFragment() {
   }
 
   private fun observeData() {
+    viewModel.progress.observe(viewLifecycleOwner, {
+      if (it) {
+        showProgress()
+      } else {
+        hideProgress()
+      }
+    })
+
+    viewModel.message.observe(viewLifecycleOwner, {
+      shortSnack(binding.root, it)
+    })
+
     viewModel.shopInfoDetails.observe(viewLifecycleOwner, {
       val shopInfo = it.shop_info?.get(0)
       if (shopInfo?.shop_or_business_name.isNullOrEmpty()) {
