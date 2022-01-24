@@ -18,7 +18,8 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3484375" />
         <entry key="app/src/main/res/layout/activity_merchant_details.xml" value="0.3484375" />
         <entry key="app/src/main/res/layout/activity_new_merchant.xml" value="0.34167517875383047" />
-        <entry key="app/src/main/res/layout/fragment_account_info.xml" value="0.2652832305103758" />
+        <entry key="app/src/main/res/layout/fragment_account_info.xml" value="0.23333333333333334" />
+        <entry key="app/src/main/res/layout/fragment_account_info_details.xml" value="0.2611111111111111" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.3484375" />
         <entry key="app/src/main/res/layout/fragment_edit_personal_info.xml" value="0.2826362484157161" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.2858974358974359" />
@@ -26,8 +27,9 @@
         <entry key="app/src/main/res/layout/fragment_merchants.xml" value="0.34167517875383047" />
         <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.3484375" />
         <entry key="app/src/main/res/layout/fragment_personal_info.xml" value="0.259375" />
-        <entry key="app/src/main/res/layout/fragment_personal_info_details.xml" value="0.31247080803362914" />
-        <entry key="app/src/main/res/layout/fragment_shop_info.xml" value="0.3001269035532995" />
+        <entry key="app/src/main/res/layout/fragment_personal_info_details.xml" value="0.23333333333333334" />
+        <entry key="app/src/main/res/layout/fragment_shop_info.xml" value="0.23703703703703705" />
+        <entry key="app/src/main/res/layout/fragment_shop_info_details.xml" value="0.23703703703703705" />
         <entry key="app/src/main/res/layout/grid_item.xml" value="0.34167517875383047" />
         <entry key="app/src/main/res/layout/merchant_list_item.xml" value="0.3484375" />
         <entry key="app/src/main/res/layout/shop_owner_list_item.xml" value="0.34167517875383047" />
@@ -39,7 +41,7 @@
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_15" project-jdk-name="15" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

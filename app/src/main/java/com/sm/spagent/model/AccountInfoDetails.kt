@@ -1,9 +1,9 @@
 package com.sm.spagent.model
 
-data class PersonalInfoDetails(
+data class AccountInfoDetails(
   val status: Boolean?,
   val sp_code: String?,
   val message: String?,
-  val shop_owner: List<PersonalInfoDetailsData>?,
+  val account_info: List<AccountInfoDetailsData>?,
   val errors: List<String>?,
 )

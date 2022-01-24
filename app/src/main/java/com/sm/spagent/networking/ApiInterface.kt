@@ -47,6 +47,21 @@ interface ApiInterface {
     @Path("shop_owner_id") shopOwnerId: Int
   ): Response<PersonalInfoDetails>
 
+  @GET("qr-single-shop-info/{shop_id}")
+  suspend fun getShopInfo(
+    @Path("shop_id") shopId: Int
+  ): Response<ShopInfoDetails>
+
+  @GET("qr-single-settlement-ac-info/{id}")
+  suspend fun getAccountInfo(
+    @Path("id") id: Int
+  ): Response<AccountInfoDetails>
+
+  @GET("qr-single-nominee-info/{id}")
+  suspend fun getNomineeInfo(
+    @Path("id") id: Int
+  ): Response<NomineeInfoDetails>
+
 
   //////////////////// POST ///////////////////
 

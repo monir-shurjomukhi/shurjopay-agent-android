@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.ShopInfoDetailsFragment">
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#DDDDDD"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/shop_business_name"
+          android:textSize="12sp" />
+
+      <TextView
+          android:id="@+id/shopNameTextView"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="4dp"
+          android:textColor="@color/black"
+          android:textSize="16sp"
+          tools:text="Shop/Business Name" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="#DDDDDD"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/tin"
+          android:textSize="12sp" />
+
+      <TextView
+          android:id="@+id/tinTextView"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="4dp"
+          android:textColor="@color/black"
+          android:textSize="16sp"
+          tools:text="1234567890" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="#DDDDDD"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/business_type"
+          android:textSize="12sp" />
+
+      <TextView
+          android:id="@+id/businessTypeTextView"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="4dp"
+          android:textColor="@color/black"
+          android:textSize="16sp"
+          tools:text="Business Type" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="#DDDDDD"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/shop_size"
+          android:textSize="12sp" />
+
+      <TextView
+          android:id="@+id/shopSizeTextView"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="4dp"
+          android:textColor="@color/black"
+          android:textSize="16sp"
+          tools:text="Shop Size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="#DDDDDD"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/shop_address"
+          android:textSize="12sp" />
+
+      <TextView
+          android:id="@+id/addressTextView"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="4dp"
+          android:textColor="@color/black"
+          android:textSize="16sp"
+          tools:text="Address" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="#DDDDDD"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/division"
+          android:textSize="12sp" />
+
+      <TextView
+          android:id="@+id/divisionTextView"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="4dp"
+          android:textColor="@color/black"
+          android:textSize="16sp"
+          tools:text="Dhaka" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="#DDDDDD"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/district"
+          android:textSize="12sp" />
+
+      <TextView
+          android:id="@+id/districtTextView"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="4dp"
+          android:textColor="@color/black"
+          android:textSize="16sp"
+          tools:text="Dhaka" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="#DDDDDD"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/police_station"
+          android:textSize="12sp" />
+
+      <TextView
+          android:id="@+id/policeStationTextView"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="4dp"
+          android:textColor="@color/black"
+          android:textSize="16sp"
+          tools:text="Gulshan" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="#DDDDDD"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/shop_location"
+          android:textSize="12sp" />
+
+      <TextView
+          android:id="@+id/locationTextView"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="4dp"
+          android:textColor="@color/black"
+          android:textSize="16sp"
+          tools:text="123.45678, 90.123456" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="#DDDDDD"
+        android:padding="16dp">
+
+      <TextView
+          android:id="@+id/tradeLicenseImageTextView"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/trade_license"
+          android:textSize="16sp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent" />
+
+      <com.google.android.material.card.MaterialCardView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          app:cardCornerRadius="4dp"
+          app:cardElevation="4dp"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/tradeLicenseImageTextView">
+
+        <ImageView
+            android:id="@+id/tradeLicenseImageView"
+            android:layout_width="240dp"
+            android:layout_height="320dp"
+            android:contentDescription="@string/trade_license"
+            android:src="@drawable/ic_baseline_image_24" />
+      </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="#DDDDDD"
+        android:padding="16dp">
+
+      <TextView
+          android:id="@+id/shopFrontTextView"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/shop_front"
+          android:textSize="16sp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent" />
+
+      <com.google.android.material.card.MaterialCardView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          app:cardCornerRadius="4dp"
+          app:cardElevation="4dp"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/shopFrontTextView">
+
+        <ImageView
+            android:id="@+id/shopFrontImageView"
+            android:layout_width="320dp"
+            android:layout_height="240dp"
+            android:contentDescription="@string/shop_front"
+            android:src="@drawable/ic_baseline_storefront_24" />
+      </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+  </LinearLayout>
+</ScrollView>

@@ -5,7 +5,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.sm.spagent.R
+import com.sm.spagent.ui.fragment.AccountInfoDetailsFragment
+import com.sm.spagent.ui.fragment.AccountInfoFragment
 import com.sm.spagent.ui.fragment.PersonalInfoDetailsFragment
+import com.sm.spagent.ui.fragment.ShopInfoDetailsFragment
 
 
 class MerchantDetailsPagerAdapter(private val context: Context, fm: FragmentManager) :
@@ -14,8 +17,8 @@ class MerchantDetailsPagerAdapter(private val context: Context, fm: FragmentMana
   override fun getItem(position: Int): Fragment {
     return when(position) {
       0 -> PersonalInfoDetailsFragment.newInstance()
-      1 -> PersonalInfoDetailsFragment.newInstance()
-      else -> PersonalInfoDetailsFragment.newInstance()
+      1 -> ShopInfoDetailsFragment.newInstance()
+      else -> AccountInfoDetailsFragment.newInstance()
     }
   }
 

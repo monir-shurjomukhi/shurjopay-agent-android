@@ -185,20 +185,20 @@ class AccountInfoFragment : BaseFragment() {
         R.id.existingAccountRadioButton -> {
           accountCategory = AccountCategory.EXISTING_BANK
           binding.accountInfoLayout.visibility = View.VISIBLE
-          binding.nomineeInfoLayout.visibility = View.GONE
           binding.mfsInfoLayout.visibility = View.GONE
+          binding.nomineeInfoLayout.visibility = View.GONE
         }
         R.id.mfsAccountRadioButton -> {
           accountCategory = AccountCategory.MFS
           binding.accountInfoLayout.visibility = View.GONE
-          binding.nomineeInfoLayout.visibility = View.GONE
           binding.mfsInfoLayout.visibility = View.VISIBLE
+          binding.nomineeInfoLayout.visibility = View.GONE
         }
         R.id.newAccountRadioButton -> {
           accountCategory = AccountCategory.NEW
           binding.accountInfoLayout.visibility = View.GONE
-          binding.nomineeInfoLayout.visibility = View.VISIBLE
           binding.mfsInfoLayout.visibility = View.GONE
+          binding.nomineeInfoLayout.visibility = View.VISIBLE
         }
       }
     }

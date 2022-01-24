@@ -40,6 +40,18 @@ class PersonalInfoDetailsFragment : BaseFragment() {
   }
 
   private fun observeData() {
+    viewModel.progress.observe(viewLifecycleOwner, {
+      if (it) {
+        showProgress()
+      } else {
+        hideProgress()
+      }
+    })
+
+    viewModel.message.observe(viewLifecycleOwner, {
+      shortSnack(binding.root, it)
+    })
+
     viewModel.personalInfoDetails.observe(viewLifecycleOwner, {
       val shopOwner = it.shop_owner?.get(0)
       if (shopOwner?.owner_name.isNullOrEmpty()) {
