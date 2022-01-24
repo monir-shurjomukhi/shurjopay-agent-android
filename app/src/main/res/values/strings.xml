@@ -84,4 +84,5 @@
   <string name="location_not_found">Location Not Found</string>
   <string name="getting_location">Getting Location…</string>
   <string name="title_activity_merchant_details">MerchantDetailsActivity</string>
+  <string name="n_a">N/A</string>
 </resources>
