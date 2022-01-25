@@ -5,7 +5,7 @@ data class ShopInfoDetailsData(
   val shop_or_business_name: String?,
   val tin_no: String?,
   val business_type_id: Int?,
-  val business_type_Name: String?,
+  val business_type_name: String?,
   val shop_size: String?,
   val shop_addess: String?,
   val shop_address_division_id: Int?,

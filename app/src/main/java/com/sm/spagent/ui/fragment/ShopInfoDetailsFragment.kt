@@ -56,49 +56,31 @@ class ShopInfoDetailsFragment : BaseFragment() {
 
     viewModel.shopInfoDetails.observe(viewLifecycleOwner, {
       val shopInfo = it.shop_info?.get(0)
-      if (shopInfo?.shop_or_business_name.isNullOrEmpty()) {
-        binding.shopNameTextView.text = "N/A"
-      } else {
+      if (!shopInfo?.shop_or_business_name.isNullOrEmpty()) {
         binding.shopNameTextView.text = shopInfo?.shop_or_business_name
       }
-      if (shopInfo?.tin_no.isNullOrEmpty()) {
-        binding.tinTextView.text = "N/A"
-      } else {
+      if (!shopInfo?.tin_no.isNullOrEmpty()) {
         binding.tinTextView.text = shopInfo?.tin_no
       }
-      if (shopInfo?.business_type_Name.isNullOrEmpty()) {
-        binding.businessTypeTextView.text = "N/A"
-      } else {
-        binding.businessTypeTextView.text = shopInfo?.business_type_Name
+      if (!shopInfo?.business_type_name.isNullOrEmpty()) {
+        binding.businessTypeTextView.text = shopInfo?.business_type_name
       }
-      if (shopInfo?.shop_size.isNullOrEmpty()) {
-        binding.shopSizeTextView.text = "N/A"
-      } else {
+      if (!shopInfo?.shop_size.isNullOrEmpty()) {
         binding.shopSizeTextView.text = shopInfo?.shop_size
       }
-      if (shopInfo?.shop_addess.isNullOrEmpty()) {
-        binding.addressTextView.text = "N/A"
-      } else {
+      if (!shopInfo?.shop_addess.isNullOrEmpty()) {
         binding.addressTextView.text = shopInfo?.shop_addess
       }
-      if (shopInfo?.division_name.isNullOrEmpty()) {
-        binding.divisionTextView.text = "N/A"
-      } else {
+      if (!shopInfo?.division_name.isNullOrEmpty()) {
         binding.divisionTextView.text = shopInfo?.division_name
       }
-      if (shopInfo?.district_name.isNullOrEmpty()) {
-        binding.districtTextView.text = "N/A"
-      } else {
+      if (!shopInfo?.district_name.isNullOrEmpty()) {
         binding.districtTextView.text = shopInfo?.district_name
       }
-      if (shopInfo?.police_station_name.isNullOrEmpty()) {
-        binding.policeStationTextView.text = "N/A"
-      } else {
+      if (!shopInfo?.police_station_name.isNullOrEmpty()) {
         binding.policeStationTextView.text = shopInfo?.police_station_name
       }
-      if (shopInfo?.shop_gps_location.isNullOrEmpty()) {
-        binding.locationTextView.text = "N/A"
-      } else {
+      if (!shopInfo?.shop_gps_location.isNullOrEmpty()) {
         binding.locationTextView.text = shopInfo?.shop_gps_location
       }
 

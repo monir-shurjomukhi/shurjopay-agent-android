@@ -54,64 +54,40 @@ class PersonalInfoDetailsFragment : BaseFragment() {
 
     viewModel.personalInfoDetails.observe(viewLifecycleOwner, {
       val shopOwner = it.shop_owner?.get(0)
-      if (shopOwner?.owner_name.isNullOrEmpty()) {
-        binding.ownerNameTextView.text = "N/A"
-      } else {
+      if (!shopOwner?.owner_name.isNullOrEmpty()) {
         binding.ownerNameTextView.text = shopOwner?.owner_name
       }
-      if (shopOwner?.father_name.isNullOrEmpty()) {
-        binding.fathersNameTextView.text = "N/A"
-      } else {
+      if (!shopOwner?.father_name.isNullOrEmpty()) {
         binding.fathersNameTextView.text = shopOwner?.father_name
       }
-      if (shopOwner?.mother_name.isNullOrEmpty()) {
-        binding.mothersNameTextView.text = "N/A"
-      } else {
+      if (!shopOwner?.mother_name.isNullOrEmpty()) {
         binding.mothersNameTextView.text = shopOwner?.mother_name
       }
-      if (shopOwner?.contact_no.isNullOrEmpty()) {
-        binding.contactNoTextView.text = "N/A"
-      } else {
+      if (!shopOwner?.contact_no.isNullOrEmpty()) {
         binding.contactNoTextView.text = shopOwner?.contact_no
       }
-      if (shopOwner?.email_address.isNullOrEmpty()) {
-        binding.emailTextView.text = "N/A"
-      } else {
+      if (!shopOwner?.email_address.isNullOrEmpty()) {
         binding.emailTextView.text = shopOwner?.email_address
       }
-      if (shopOwner?.nid_no.isNullOrEmpty()) {
-        binding.nidTextView.text = "N/A"
-      } else {
+      if (!shopOwner?.nid_no.isNullOrEmpty()) {
         binding.nidTextView.text = shopOwner?.nid_no
       }
-      if (shopOwner?.owner_dob.isNullOrEmpty()) {
-        binding.dobTextView.text = "N/A"
-      } else {
+      if (!shopOwner?.owner_dob.isNullOrEmpty()) {
         binding.dobTextView.text = shopOwner?.owner_dob
       }
-      if (shopOwner?.tin_no.isNullOrEmpty()) {
-        binding.tinTextView.text = "N/A"
-      } else {
+      if (!shopOwner?.tin_no.isNullOrEmpty()) {
         binding.tinTextView.text = shopOwner?.tin_no
       }
-      if (shopOwner?.perm_addess.isNullOrEmpty()) {
-        binding.addressTextView.text = "N/A"
-      } else {
+      if (!shopOwner?.perm_addess.isNullOrEmpty()) {
         binding.addressTextView.text = shopOwner?.perm_addess
       }
-      if (shopOwner?.division_name.isNullOrEmpty()) {
-        binding.divisionTextView.text = "N/A"
-      } else {
+      if (!shopOwner?.division_name.isNullOrEmpty()) {
         binding.divisionTextView.text = shopOwner?.division_name
       }
-      if (shopOwner?.district_name.isNullOrEmpty()) {
-        binding.districtTextView.text = "N/A"
-      } else {
+      if (!shopOwner?.district_name.isNullOrEmpty()) {
         binding.districtTextView.text = shopOwner?.district_name
       }
-      if (shopOwner?.police_station_name.isNullOrEmpty()) {
-        binding.policeStationTextView.text = "N/A"
-      } else {
+      if (!shopOwner?.police_station_name.isNullOrEmpty()) {
         binding.policeStationTextView.text = shopOwner?.police_station_name
       }
 
