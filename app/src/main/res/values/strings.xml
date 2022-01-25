@@ -36,8 +36,8 @@
   <string name="nominee_name">Nominee Name*</string>
   <string name="father_s_name">Father\'s Name*</string>
   <string name="mother_s_name">Mother\'s Name*</string>
-  <string name="relation">Relation</string>
-  <string name="nominee_image">Nominee Image</string>
+  <string name="relation">Relation*</string>
+  <string name="nominee_image">Nominee Image*</string>
   <string name="existing_account">Existing Account</string>
   <string name="new_account">New Account</string>
   <string name="account_type">Account Type*</string>
@@ -51,7 +51,7 @@
   <string name="existing">Existing</string>
   <string name="new_">New</string>
   <string name="mfs">MFS</string>
-  <string name="mfs_name">MFS Name</string>
+  <string name="mfs_name">MFS Name*</string>
   <string name="police_station">Police Station*</string>
   <string name="existing_bank">Existing Bank</string>
   <string name="unable_to_connect">Unable To Connect</string>
@@ -77,7 +77,7 @@
   <string name="business_type">Business Type*</string>
   <string name="shop_size">Shop Size*</string>
   <string name="father_husband_s_name">Father/Husband\'s Name*</string>
-  <string name="occupation">Occupation</string>
+  <string name="occupation">Occupation*</string>
   <string name="submit">Submit</string>
   <string name="district_name">%s,</string>
   <string name="location">%f,%f</string>
