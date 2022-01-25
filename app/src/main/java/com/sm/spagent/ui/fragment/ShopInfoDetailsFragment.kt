@@ -31,11 +31,11 @@ class ShopInfoDetailsFragment : BaseFragment() {
     val root = binding.root
 
     observeData()
-    val merchantId = (activity as MerchantDetailsActivity).getMerchantId()
-    if (merchantId != -1) {
-      viewModel.getShopInfo(1)
+    val shopId = (activity as MerchantDetailsActivity).getShopId()
+    if (shopId != -1) {
+      viewModel.getShopInfo(shopId)
     } else {
-      shortSnack(binding.root, R.string.something_went_wrong)
+      shortSnack(binding.shopNameTextView, R.string.something_went_wrong)
     }
 
     return root

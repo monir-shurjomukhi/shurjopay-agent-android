@@ -33,7 +33,7 @@ class PersonalInfoDetailsFragment : BaseFragment() {
     if (merchantId != -1) {
       viewModel.getPersonalInfo(merchantId)
     } else {
-      shortSnack(binding.root, R.string.something_went_wrong)
+      shortSnack(binding.ownerNameTextView, R.string.something_went_wrong)
     }
 
     return root
