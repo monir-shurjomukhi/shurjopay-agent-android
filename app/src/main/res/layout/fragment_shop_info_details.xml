@@ -33,7 +33,7 @@
           android:layout_marginTop="4dp"
           android:textColor="@color/black"
           android:textSize="16sp"
-          tools:text="Shop/Business Name" />
+          android:text="@string/n_a" />
     </LinearLayout>
 
     <LinearLayout
@@ -57,7 +57,7 @@
           android:layout_marginTop="4dp"
           android:textColor="@color/black"
           android:textSize="16sp"
-          tools:text="1234567890" />
+          android:text="@string/n_a" />
     </LinearLayout>
 
     <LinearLayout
@@ -81,7 +81,7 @@
           android:layout_marginTop="4dp"
           android:textColor="@color/black"
           android:textSize="16sp"
-          tools:text="Business Type" />
+          android:text="@string/n_a" />
     </LinearLayout>
 
     <LinearLayout
@@ -105,7 +105,7 @@
           android:layout_marginTop="4dp"
           android:textColor="@color/black"
           android:textSize="16sp"
-          tools:text="Shop Size" />
+          android:text="@string/n_a" />
     </LinearLayout>
 
     <LinearLayout
@@ -129,7 +129,7 @@
           android:layout_marginTop="4dp"
           android:textColor="@color/black"
           android:textSize="16sp"
-          tools:text="Address" />
+          android:text="@string/n_a" />
     </LinearLayout>
 
     <LinearLayout
@@ -153,7 +153,7 @@
           android:layout_marginTop="4dp"
           android:textColor="@color/black"
           android:textSize="16sp"
-          tools:text="Dhaka" />
+          android:text="@string/n_a" />
     </LinearLayout>
 
     <LinearLayout
@@ -177,7 +177,7 @@
           android:layout_marginTop="4dp"
           android:textColor="@color/black"
           android:textSize="16sp"
-          tools:text="Dhaka" />
+          android:text="@string/n_a" />
     </LinearLayout>
 
     <LinearLayout
@@ -201,7 +201,7 @@
           android:layout_marginTop="4dp"
           android:textColor="@color/black"
           android:textSize="16sp"
-          tools:text="Gulshan" />
+          android:text="@string/n_a" />
     </LinearLayout>
 
     <LinearLayout
@@ -225,7 +225,7 @@
           android:layout_marginTop="4dp"
           android:textColor="@color/black"
           android:textSize="16sp"
-          tools:text="123.45678, 90.123456" />
+          android:text="@string/n_a" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

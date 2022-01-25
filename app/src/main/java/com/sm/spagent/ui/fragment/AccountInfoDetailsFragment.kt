@@ -32,12 +32,22 @@ class AccountInfoDetailsFragment : BaseFragment() {
     setupViews()
     observeData()
 
-    val merchantId = (activity as MerchantDetailsActivity).getMerchantId()
-    if (merchantId != -1) {
-      viewModel.getAccountInfo(1)
-      viewModel.getNomineeInfo(1)
-    } else {
-      shortSnack(binding.root, R.string.something_went_wrong)
+    val accountId = (activity as MerchantDetailsActivity).getAccountId()
+    if (accountId != -1) {
+      viewModel.getAccountInfo(accountId)
+    }/* else {
+      shortSnack(binding.accountNameTextView, R.string.something_went_wrong)
+    }*/
+
+    val nomineeId = (activity as MerchantDetailsActivity).getNomineeId()
+    if (nomineeId != -1) {
+      viewModel.getNomineeInfo(nomineeId)
+    }/* else {
+      shortSnack(binding.nomineeNameTextView, R.string.something_went_wrong)
+    }*/
+
+    if (accountId == -1 && nomineeId == -1) {
+      shortToast(R.string.account_info_not_found)
     }
 
     return root
@@ -75,7 +85,7 @@ class AccountInfoDetailsFragment : BaseFragment() {
     })
 
     viewModel.message.observe(viewLifecycleOwner, {
-      shortSnack(binding.root, it)
+      shortToast(it)
     })
 
     viewModel.accountInfoDetails.observe(viewLifecycleOwner, {

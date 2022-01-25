@@ -21,5 +21,8 @@ data class ShopOwnerData(
   val nid_front: String?,
   val nid_back: String?,
   val owner_signature: String?,
-  val status: Int?
+  val status: Int?,
+  val shop_ids: String?,
+  val settlement_ac_ids: String?,
+  val nominee_ids: String?
 )

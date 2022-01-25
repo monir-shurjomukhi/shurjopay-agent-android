@@ -157,9 +157,9 @@ class ShopInfoFragment : BaseFragment() {
       }
     }
 
-    binding.saveNextButton.setOnClickListener {
-      validateInputs()
-    }
+    binding.refreshLocationLayout.setOnClickListener { requestLocation() }
+
+    binding.saveNextButton.setOnClickListener { validateInputs() }
   }
 
   private fun observeData() {
@@ -172,7 +172,7 @@ class ShopInfoFragment : BaseFragment() {
     })
 
     viewModel.message.observe(viewLifecycleOwner, {
-      shortSnack(binding.root, it)
+      shortSnack(binding.saveNextButton, it)
     })
 
     viewModel.businessType.observe(viewLifecycleOwner, { businessType ->
@@ -293,9 +293,20 @@ class ShopInfoFragment : BaseFragment() {
       )
 
       task.addOnCompleteListener { task1 ->
-        val location: Location = task1.result
-        longToast(location.toString())
-        if (location.accuracy < 10.0) {
+        if (task1.result != null) {
+          val location: Location = task1.result
+          //longToast(location.toString())
+          shopLocation = location
+          binding.locationLayout.editText?.setText(
+            getString(
+              R.string.location,
+              location.latitude,
+              location.longitude
+            )
+          )
+        }
+
+        /*if (location.accuracy < 100.0) {
           shopLocation = location
           binding.locationLayout.editText?.setText(
             getString(
@@ -306,7 +317,7 @@ class ShopInfoFragment : BaseFragment() {
           )
         } else {
           binding.locationLayout.editText?.setText(getString(R.string.location_not_found))
-        }
+        }*/
       }
     }
   }
@@ -393,6 +404,13 @@ class ShopInfoFragment : BaseFragment() {
     }
     if (shopLocation.isEmpty()) {
       binding.locationLayout.error = getString(R.string.this_field_is_required)
+      binding.scrollView.smoothScrollTo(0, binding.locationLayout.y.toInt())
+      return
+    } else {
+      binding.locationLayout.error = null
+    }
+    if (shopLocation == getString(R.string.getting_location)) {
+      binding.locationLayout.error = getString(R.string.turn_on_gps_and_refresh_location)
       binding.scrollView.smoothScrollTo(0, binding.locationLayout.y.toInt())
       return
     } else {

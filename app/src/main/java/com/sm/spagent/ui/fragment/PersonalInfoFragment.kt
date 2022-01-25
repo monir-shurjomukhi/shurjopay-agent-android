@@ -204,7 +204,7 @@ class PersonalInfoFragment : BaseFragment() {
     })
 
     viewModel.message.observe(viewLifecycleOwner, {
-      shortSnack(binding.root, it)
+      shortSnack(binding.saveNextButton, it)
     })
 
     viewModel.division.observe(viewLifecycleOwner, { division ->
@@ -386,8 +386,8 @@ class PersonalInfoFragment : BaseFragment() {
       return
     }
 
-    //submitStep1Data()
-    goToNextStep()
+    submitStep1Data()
+    //goToNextStep()
   }
 
   private fun submitStep1Data() {

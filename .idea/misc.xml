@@ -14,19 +14,19 @@
         <entry key="app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.36875" />
         <entry key="app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.36875" />
         <entry key="app/src/main/res/drawable/ic_shurjopay_logo.xml" value="0.36875" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.3484375" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.3484375" />
-        <entry key="app/src/main/res/layout/activity_merchant_details.xml" value="0.3484375" />
-        <entry key="app/src/main/res/layout/activity_new_merchant.xml" value="0.34167517875383047" />
-        <entry key="app/src/main/res/layout/fragment_account_info.xml" value="0.23333333333333334" />
-        <entry key="app/src/main/res/layout/fragment_account_info_details.xml" value="0.2611111111111111" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.21772151898734177" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.21772151898734177" />
+        <entry key="app/src/main/res/layout/activity_merchant_details.xml" value="0.21772151898734177" />
+        <entry key="app/src/main/res/layout/activity_new_merchant.xml" value="0.21772151898734177" />
+        <entry key="app/src/main/res/layout/fragment_account_info.xml" value="0.21772151898734177" />
+        <entry key="app/src/main/res/layout/fragment_account_info_details.xml" value="0.21772151898734177" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.3484375" />
         <entry key="app/src/main/res/layout/fragment_edit_personal_info.xml" value="0.2826362484157161" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.2858974358974359" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.21772151898734177" />
         <entry key="app/src/main/res/layout/fragment_merchant_details.xml" value="0.3484375" />
-        <entry key="app/src/main/res/layout/fragment_merchants.xml" value="0.34167517875383047" />
-        <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.3484375" />
-        <entry key="app/src/main/res/layout/fragment_personal_info.xml" value="0.259375" />
+        <entry key="app/src/main/res/layout/fragment_merchants.xml" value="0.21772151898734177" />
+        <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.21772151898734177" />
+        <entry key="app/src/main/res/layout/fragment_personal_info.xml" value="0.21772151898734177" />
         <entry key="app/src/main/res/layout/fragment_personal_info_details.xml" value="0.23333333333333334" />
         <entry key="app/src/main/res/layout/fragment_shop_info.xml" value="0.23703703703703705" />
         <entry key="app/src/main/res/layout/fragment_shop_info_details.xml" value="0.23703703703703705" />

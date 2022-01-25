@@ -222,7 +222,7 @@ class AccountInfoFragment : BaseFragment() {
     })
 
     viewModel.message.observe(viewLifecycleOwner, {
-      shortSnack(binding.root, it)
+      shortSnack(binding.saveNextButton, it)
     })
 
     viewModel.bank.observe(viewLifecycleOwner, { bank ->
