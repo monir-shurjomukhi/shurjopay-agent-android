@@ -14,7 +14,7 @@ open class BaseViewModel(application: Application) : AndroidViewModel(applicatio
   private val preference = AgentPreference(application)
 
   val ocrApiClient: ApiInterface =
-    ApiClient().getOcrApiClient("http://104.248.147.247/api/v1/")
+    ApiClient().getOcrApiClient("http://104.248.147.247:8000/api/v1/")
       .create(ApiInterface::class.java)
   val apiClient: ApiInterface =
     ApiClient().getApiClient("https://stagingapp.engine.shurjopayment.com/api/")
