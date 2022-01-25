@@ -35,7 +35,7 @@ class ShopInfoDetailsFragment : BaseFragment() {
     if (shopId != -1) {
       viewModel.getShopInfo(shopId)
     } else {
-      shortSnack(binding.shopNameTextView, R.string.something_went_wrong)
+      shortToast(R.string.shop_info_not_found)
     }
 
     return root
@@ -51,7 +51,7 @@ class ShopInfoDetailsFragment : BaseFragment() {
     })
 
     viewModel.message.observe(viewLifecycleOwner, {
-      shortSnack(binding.root, it)
+      shortToast(it)
     })
 
     viewModel.shopInfoDetails.observe(viewLifecycleOwner, {

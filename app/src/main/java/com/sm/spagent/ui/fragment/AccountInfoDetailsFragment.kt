@@ -47,7 +47,7 @@ class AccountInfoDetailsFragment : BaseFragment() {
     }*/
 
     if (accountId == -1 && nomineeId == -1) {
-      shortSnack(binding.accountNameTextView, R.string.something_went_wrong)
+      shortToast(R.string.account_info_not_found)
     }
 
     return root
@@ -85,7 +85,7 @@ class AccountInfoDetailsFragment : BaseFragment() {
     })
 
     viewModel.message.observe(viewLifecycleOwner, {
-      shortSnack(binding.root, it)
+      shortToast(it)
     })
 
     viewModel.accountInfoDetails.observe(viewLifecycleOwner, {

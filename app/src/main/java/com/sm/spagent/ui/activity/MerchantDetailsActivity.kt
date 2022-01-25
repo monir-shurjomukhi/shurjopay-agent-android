@@ -28,7 +28,7 @@ class MerchantDetailsActivity : AppCompatActivity() {
     merchantId = intent.getIntExtra(MERCHANT_ID, -1)
     Log.d(TAG, "onCreate: merchantId = $merchantId")
     shopId = intent.getStringExtra(SHOP_ID).toString()
-    Log.d(TAG, "onCreate: sopId = $shopId")
+    Log.d(TAG, "onCreate: shopId = $shopId")
     accountId = intent.getStringExtra(ACCOUNT_ID).toString()
     Log.d(TAG, "onCreate: accountId = $accountId")
     nomineeId = intent.getStringExtra(NOMINEE_ID).toString()

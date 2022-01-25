@@ -33,7 +33,7 @@ class PersonalInfoDetailsFragment : BaseFragment() {
     if (merchantId != -1) {
       viewModel.getPersonalInfo(merchantId)
     } else {
-      shortSnack(binding.ownerNameTextView, R.string.something_went_wrong)
+      shortToast(R.string.something_went_wrong)
     }
 
     return root
@@ -49,7 +49,7 @@ class PersonalInfoDetailsFragment : BaseFragment() {
     })
 
     viewModel.message.observe(viewLifecycleOwner, {
-      shortSnack(binding.root, it)
+      shortToast(it)
     })
 
     viewModel.personalInfoDetails.observe(viewLifecycleOwner, {

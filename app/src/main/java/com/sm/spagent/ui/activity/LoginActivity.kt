@@ -41,7 +41,7 @@ class LoginActivity : BaseActivity() {
     })
 
     viewModel.message.observe(this, {
-      shortSnack(binding.root, it)
+      shortSnack(binding.loginButton, it)
     })
 
     viewModel.login.observe(this, {
@@ -52,7 +52,7 @@ class LoginActivity : BaseActivity() {
           finishAffinity()
         }
         it.sp_code.equals("1064") -> {
-          shortSnack(binding.root, R.string.mobile_number_or_password_did_not_match)
+          shortSnack(binding.loginButton, R.string.mobile_number_or_password_did_not_match)
         }
       }
     })

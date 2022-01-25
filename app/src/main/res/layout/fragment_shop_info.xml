@@ -2,9 +2,9 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/scrollView"
     tools:context=".ui.fragment.ShopInfoFragment">
 
   <LinearLayout
@@ -166,21 +166,48 @@
           android:textSize="16sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/locationLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <RelativeLayout
         android:layout_marginTop="8dp"
-        android:hint="@string/shop_location"
-        app:errorEnabled="true">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-      <com.google.android.material.textfield.TextInputEditText
+      <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/locationLayout"
+          style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:enabled="false"
-          android:textSize="16sp" />
-    </com.google.android.material.textfield.TextInputLayout>
+          android:layout_alignParentTop="true"
+          android:layout_alignParentStart="true"
+          android:layout_alignParentEnd="true"
+          android:layout_alignParentBottom="true"
+          android:hint="@string/shop_location"
+          app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:textSize="16sp" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.card.MaterialCardView
+          android:id="@+id/refreshLocationLayout"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentEnd="true"
+          android:layout_marginTop="6dp"
+          android:layout_marginEnd="6dp"
+          app:cardCornerRadius="4dp"
+          app:cardElevation="4dp">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="@string/turn_on_gps_and_refresh_location"
+            android:padding="4dp"
+            android:src="@drawable/ic_baseline_refresh_24" />
+      </com.google.android.material.card.MaterialCardView>
+    </RelativeLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/tradeLicenseLayout"
@@ -212,10 +239,10 @@
           app:layout_constraintTop_toBottomOf="@id/tradeLicensePickerLayout">
 
         <ImageView
-            android:contentDescription="@string/trade_license"
             android:id="@+id/tradeLicenseImageView"
             android:layout_width="240dp"
             android:layout_height="320dp"
+            android:contentDescription="@string/trade_license"
             android:src="@drawable/ic_baseline_image_24" />
       </com.google.android.material.card.MaterialCardView>
 
@@ -231,9 +258,9 @@
           app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:contentDescription="@string/trade_license"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:contentDescription="@string/trade_license"
             android:padding="8dp"
             android:src="@drawable/ic_baseline_add_a_photo_24" />
       </com.google.android.material.card.MaterialCardView>
@@ -270,10 +297,10 @@
           app:layout_constraintTop_toBottomOf="@id/shopFrontPickerLayout">
 
         <ImageView
-            android:contentDescription="@string/shop_front"
             android:id="@+id/shopFrontImageView"
             android:layout_width="320dp"
             android:layout_height="240dp"
+            android:contentDescription="@string/shop_front"
             android:src="@drawable/ic_baseline_storefront_24" />
       </com.google.android.material.card.MaterialCardView>
 
@@ -289,9 +316,9 @@
           app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:contentDescription="@string/shop_front"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:contentDescription="@string/shop_front"
             android:padding="8dp"
             android:src="@drawable/ic_baseline_add_a_photo_24" />
       </com.google.android.material.card.MaterialCardView>
