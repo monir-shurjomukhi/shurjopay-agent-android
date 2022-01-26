@@ -88,4 +88,7 @@
   <string name="getting_location">Getting Location…</string>
   <string name="title_activity_merchant_details">MerchantDetailsActivity</string>
   <string name="n_a">N/A</string>
+  <string name="success">Success</string>
+  <string name="merchant_created_successfully">Merchant created successfully</string>
+  <string name="view_details">View Details</string>
 </resources>
