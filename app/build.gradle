@@ -109,7 +109,11 @@ dependencies {
 
   // Location
   implementation 'com.google.android.gms:play-services-location:19.0.1'
+
+  // Lottie
+  implementation "com.airbnb.android:lottie:4.2.2"
 }
+
 repositories {
   mavenCentral()
 }

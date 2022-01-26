@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.sm.spagent.databinding.FragmentHomeBinding
 import com.sm.spagent.ui.activity.NewMerchantActivity
+import com.sm.spagent.ui.activity.SuccessActivity
 
 class HomeFragment : Fragment() {
 
@@ -25,14 +26,14 @@ class HomeFragment : Fragment() {
     _binding = FragmentHomeBinding.inflate(inflater, container, false)
     val root: View = binding.root
 
-    binding.newMerchantLayout.setOnClickListener {
-      startActivity(Intent(requireContext(), NewMerchantActivity::class.java))
-    }
     binding.attendanceLayout.setOnClickListener {
 //      startActivity(Intent(requireContext(), NewMerchantActivity::class.java))
     }
     binding.exitLayout.setOnClickListener {
-//      startActivity(Intent(requireContext(), NewMerchantActivity::class.java))
+      startActivity(Intent(requireContext(), SuccessActivity::class.java))
+    }
+    binding.newMerchantLayout.setOnClickListener {
+      startActivity(Intent(requireContext(), NewMerchantActivity::class.java))
     }
     binding.synchronizeLayout.setOnClickListener {
 //      startActivity(Intent(requireContext(), NewMerchantActivity::class.java))
