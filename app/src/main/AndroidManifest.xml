@@ -19,6 +19,9 @@
       android:theme="@style/Theme.ShurjoPayAgent"
       android:usesCleartextTraffic="true">
     <activity
+        android:name=".ui.activity.EditPersonalInfoActivity"
+        android:exported="false" />
+    <activity
         android:name=".ui.activity.SuccessActivity"
         android:exported="false" />
     <activity
