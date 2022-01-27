@@ -19,7 +19,6 @@ class NewMerchantActivity : AppCompatActivity(), StepperNavListener {
     super.onCreate(savedInstanceState)
     binding = ActivityNewMerchantBinding.inflate(layoutInflater)
     setContentView(binding.root)
-    //setSupportActionBar(binding.toolbar)
     supportActionBar?.setDisplayHomeAsUpEnabled(true)
     supportActionBar?.setDisplayShowHomeEnabled(true)
     supportActionBar?.title = getString(R.string.new_merchant)

@@ -3,6 +3,7 @@ package com.sm.spagent.ui.activity
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.sm.spagent.R
 import com.sm.spagent.databinding.ActivityMerchantDetailsBinding
 import com.sm.spagent.ui.adapter.MerchantDetailsPagerAdapter
 import com.sm.spagent.utils.ACCOUNT_ID
@@ -21,9 +22,11 @@ class MerchantDetailsActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-
     binding = ActivityMerchantDetailsBinding.inflate(layoutInflater)
     setContentView(binding.root)
+    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    supportActionBar?.setDisplayShowHomeEnabled(true)
+    supportActionBar?.title = getString(R.string.merchant_details)
 
     merchantId = intent.getIntExtra(MERCHANT_ID, -1)
     Log.d(TAG, "onCreate: merchantId = $merchantId")
