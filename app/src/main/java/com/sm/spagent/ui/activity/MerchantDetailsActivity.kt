@@ -2,6 +2,8 @@ package com.sm.spagent.ui.activity
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.sm.spagent.R
@@ -72,12 +74,24 @@ class MerchantDetailsActivity : AppCompatActivity() {
     }
   }
 
+  override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    val inflater: MenuInflater = menuInflater
+    inflater.inflate(R.menu.merchant_details_menu, menu)
+    return true
+  }
+
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
-    // handle arrow click here
-    if (item.itemId == android.R.id.home) {
-      onBackPressed()
+    // Handle item selection
+    return when (item.itemId) {
+      android.R.id.home -> {
+        onBackPressed()
+        true
+      }
+      R.id.edit -> {
+        true
+      }
+      else -> super.onOptionsItemSelected(item)
     }
-    return super.onOptionsItemSelected(item)
   }
 
   companion object {
