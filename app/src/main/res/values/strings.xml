@@ -91,4 +91,5 @@
   <string name="success">Success</string>
   <string name="merchant_created_successfully">Merchant created successfully</string>
   <string name="view_details">View Details</string>
+  <string name="merchant_details">Merchant Details</string>
 </resources>

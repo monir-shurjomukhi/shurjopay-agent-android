@@ -30,6 +30,7 @@ class SuccessActivity : AppCompatActivity() {
       intent.putExtra(ACCOUNT_ID, "1")
       intent.putExtra(NOMINEE_ID, "1")
       startActivity(intent)
+      finish()
     }
   }
 
