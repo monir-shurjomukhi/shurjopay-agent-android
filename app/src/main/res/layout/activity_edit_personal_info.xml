@@ -509,7 +509,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:padding="16dp"
-        android:text="@string/update"
+        android:text="@string/next"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="16sp"
