@@ -2,6 +2,7 @@ package com.sm.spagent.ui.activity
 
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.sm.spagent.R
 import com.sm.spagent.databinding.ActivityMerchantDetailsBinding
@@ -69,6 +70,14 @@ class MerchantDetailsActivity : AppCompatActivity() {
       val nomineeIds = nomineeId.split(",")
       nomineeIds[0].toInt()
     }
+  }
+
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    // handle arrow click here
+    if (item.itemId == android.R.id.home) {
+      onBackPressed()
+    }
+    return super.onOptionsItemSelected(item)
   }
 
   companion object {

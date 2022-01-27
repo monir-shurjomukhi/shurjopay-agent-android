@@ -9,6 +9,10 @@ import androidx.fragment.app.Fragment
 import com.sm.spagent.databinding.FragmentHomeBinding
 import com.sm.spagent.ui.activity.NewMerchantActivity
 import com.sm.spagent.ui.activity.SuccessActivity
+import com.sm.spagent.utils.ACCOUNT_ID
+import com.sm.spagent.utils.MERCHANT_ID
+import com.sm.spagent.utils.NOMINEE_ID
+import com.sm.spagent.utils.SHOP_ID
 
 class HomeFragment : Fragment() {
 
@@ -30,7 +34,12 @@ class HomeFragment : Fragment() {
 //      startActivity(Intent(requireContext(), NewMerchantActivity::class.java))
     }
     binding.exitLayout.setOnClickListener {
-      startActivity(Intent(requireContext(), SuccessActivity::class.java))
+      val intent = Intent(requireContext(), SuccessActivity::class.java)
+      intent.putExtra(MERCHANT_ID, 1)
+      intent.putExtra(SHOP_ID, 1)
+      intent.putExtra(ACCOUNT_ID, 1)
+      intent.putExtra(NOMINEE_ID, 1)
+      startActivity(intent)
     }
     binding.newMerchantLayout.setOnClickListener {
       startActivity(Intent(requireContext(), NewMerchantActivity::class.java))
