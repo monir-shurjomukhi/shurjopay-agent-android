@@ -9,4 +9,5 @@
   <color name="white">#FFFFFFFF</color>
   <color name="colorShurjoPay">#009247</color>
   <color name="colorShurjoPayLight">#B4F9D6</color>
+  <color name="colorAccent">#B4F9D6</color>
 </resources>
