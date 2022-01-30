@@ -5,7 +5,7 @@ import android.os.Bundle
 import com.sm.spagent.R
 import com.sm.spagent.databinding.ActivityEditPersonalInfoBinding
 
-class EditPersonalInfoActivity : AppCompatActivity() {
+class EditPersonalInfoActivity : BaseActivity() {
 
   private lateinit var binding: ActivityEditPersonalInfoBinding
 
