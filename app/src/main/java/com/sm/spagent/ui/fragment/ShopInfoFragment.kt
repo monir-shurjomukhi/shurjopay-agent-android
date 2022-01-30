@@ -443,6 +443,7 @@ class ShopInfoFragment : BaseFragment() {
       null,
       null,
       null,
+      null,
       null
     )
     submitShopInfo(shopInfo)

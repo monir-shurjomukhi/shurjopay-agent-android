@@ -455,6 +455,7 @@ class AccountInfoFragment : BaseFragment() {
       null,
       null,
       null,
+      null,
       null
     )
 
@@ -511,6 +512,7 @@ class AccountInfoFragment : BaseFragment() {
       null,
       1,
       (activity as NewMerchantActivity).getShopOwnerId(),
+      null,
       null,
       null,
       null,
@@ -669,6 +671,7 @@ class AccountInfoFragment : BaseFragment() {
       districts[district]!!,
       policeStations[policeStation]!!,
       (activity as NewMerchantActivity).getShopOwnerId(),
+      null,
       nomineeImage!!,
       nomineeNIDFrontImage!!,
       nomineeNIDBackImage!!,

@@ -15,6 +15,7 @@ data class NomineeInfo(
   val district_id: Int,
   val police_station_id: Int,
   val shop_owner_id: Int,
+  val nominee_id: Int?,
   val nominee_img: String,
   val nid_front: String,
   val nid_back: String,
