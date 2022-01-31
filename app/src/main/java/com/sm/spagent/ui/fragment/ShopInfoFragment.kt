@@ -244,6 +244,7 @@ class ShopInfoFragment : BaseFragment() {
       when (shopInfo.sp_code) {
         "1" -> {
           shortToast(shopInfo.message.toString())
+          (activity as NewMerchantActivity).setShopId(shopInfo.shop_id!!)
           (activity as NewMerchantActivity).goToNextStep()
         }
         "2" -> {
@@ -440,6 +441,7 @@ class ShopInfoFragment : BaseFragment() {
       tradeLicenseImage,
       shopFrontImage!!,
       (activity as NewMerchantActivity).getShopOwnerId(),
+      null,
       null,
       null,
       null,

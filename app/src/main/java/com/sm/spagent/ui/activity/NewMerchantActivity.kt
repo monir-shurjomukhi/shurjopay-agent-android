@@ -14,6 +14,9 @@ class NewMerchantActivity : AppCompatActivity(), StepperNavListener {
   private lateinit var binding: ActivityNewMerchantBinding
 
   private var shopOwnerId: Int = -1
+  private var shopId: Int = -1
+  private var accountId: Int = -1
+  private var nomineeId: Int = -1
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -33,6 +36,30 @@ class NewMerchantActivity : AppCompatActivity(), StepperNavListener {
 
   fun getShopOwnerId(): Int {
     return shopOwnerId
+  }
+
+  fun setShopId(id: Int) {
+    shopId = id
+  }
+
+  fun getShopId(): Int {
+    return shopId
+  }
+
+  fun setAccountId(id: Int) {
+    accountId = id
+  }
+
+  fun getAccountId(): Int {
+    return accountId
+  }
+
+  fun setNomineeId(id: Int) {
+    nomineeId = id
+  }
+
+  fun getNomineeId(): Int {
+    return nomineeId
   }
 
   fun goToNextStep() {

@@ -1,6 +1,7 @@
 package com.sm.spagent.ui.fragment
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -25,7 +26,12 @@ import com.sm.spagent.model.AccountInfo
 import com.sm.spagent.model.ImageType
 import com.sm.spagent.model.NomineeInfo
 import com.sm.spagent.ui.activity.NewMerchantActivity
+import com.sm.spagent.ui.activity.SuccessActivity
 import com.sm.spagent.ui.viewmodel.AccountInfoViewModel
+import com.sm.spagent.utils.ACCOUNT_ID
+import com.sm.spagent.utils.MERCHANT_ID
+import com.sm.spagent.utils.NOMINEE_ID
+import com.sm.spagent.utils.SHOP_ID
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.quality
 import kotlinx.coroutines.launch
@@ -213,19 +219,19 @@ class AccountInfoFragment : BaseFragment() {
   }
 
   private fun observeData() {
-    viewModel.progress.observe(viewLifecycleOwner, {
+    viewModel.progress.observe(viewLifecycleOwner) {
       if (it) {
         showProgress()
       } else {
         hideProgress()
       }
-    })
+    }
 
-    viewModel.message.observe(viewLifecycleOwner, {
+    viewModel.message.observe(viewLifecycleOwner) {
       shortSnack(binding.saveNextButton, it)
-    })
+    }
 
-    viewModel.bank.observe(viewLifecycleOwner, { bank ->
+    viewModel.bank.observe(viewLifecycleOwner) { bank ->
       bankNames.clear()
       for (data in bank.bank_names!!) {
         bankNames[data.bank_name.toString()] = data.id!!
@@ -239,9 +245,9 @@ class AccountInfoFragment : BaseFragment() {
           binding.bankNameTextView.setAdapter(adapter)
         }
       }
-    })
+    }
 
-    viewModel.mfs.observe(viewLifecycleOwner, { mfs ->
+    viewModel.mfs.observe(viewLifecycleOwner) { mfs ->
       mfsNames.clear()
       for (data in mfs.mfs_names!!) {
         mfsNames[data.bank_name.toString()] = data.id!!
@@ -255,9 +261,9 @@ class AccountInfoFragment : BaseFragment() {
           binding.mfsNameTextView.setAdapter(adapter)
         }
       }
-    })
+    }
 
-    viewModel.relation.observe(viewLifecycleOwner, { relation ->
+    viewModel.relation.observe(viewLifecycleOwner) { relation ->
       relations.clear()
       for (data in relation.relation_names!!) {
         relations[data.relation_name.toString()] = data.id!!
@@ -271,9 +277,9 @@ class AccountInfoFragment : BaseFragment() {
           binding.relationTextView.setAdapter(adapter)
         }
       }
-    })
+    }
 
-    viewModel.occupation.observe(viewLifecycleOwner, { occupation ->
+    viewModel.occupation.observe(viewLifecycleOwner) { occupation ->
       occupations.clear()
       for (data in occupation.occupation_names!!) {
         occupations[data.occupation_name.toString()] = data.id!!
@@ -287,9 +293,9 @@ class AccountInfoFragment : BaseFragment() {
           binding.occupationTextView.setAdapter(adapter)
         }
       }
-    })
+    }
 
-    viewModel.division.observe(viewLifecycleOwner, { division ->
+    viewModel.division.observe(viewLifecycleOwner) { division ->
       divisions.clear()
       for (data in division.divisions!!) {
         divisions[data.division_name.toString()] = data.id!!
@@ -303,9 +309,9 @@ class AccountInfoFragment : BaseFragment() {
           binding.divisionTextView.setAdapter(adapter)
         }
       }
-    })
+    }
 
-    viewModel.district.observe(viewLifecycleOwner, { district ->
+    viewModel.district.observe(viewLifecycleOwner) { district ->
       districts.clear()
       for (data in district.districts!!) {
         districts[data.district_name.toString()] = data.id!!
@@ -319,9 +325,9 @@ class AccountInfoFragment : BaseFragment() {
           binding.districtTextView.setAdapter(adapter)
         }
       }
-    })
+    }
 
-    viewModel.policeStation.observe(viewLifecycleOwner, { policeStation ->
+    viewModel.policeStation.observe(viewLifecycleOwner) { policeStation ->
       policeStations.clear()
       for (data in policeStation.police_stations!!) {
         policeStations[data.police_station_name.toString()] = data.id!!
@@ -335,13 +341,15 @@ class AccountInfoFragment : BaseFragment() {
           binding.policeStationTextView.setAdapter(adapter)
         }
       }
-    })
+    }
 
-    viewModel.accountInfo.observe(viewLifecycleOwner, { accountInfo ->
+    viewModel.accountInfo.observe(viewLifecycleOwner) { accountInfo ->
       Log.d(TAG, "accountInfo: $accountInfo")
       when (accountInfo.sp_code) {
         "1" -> {
           shortToast(accountInfo.message.toString())
+          (activity as NewMerchantActivity).setAccountId(accountInfo.account_id!!)
+          showSuccess()
         }
         "2" -> {
           shortToast(accountInfo.message.toString())
@@ -350,13 +358,15 @@ class AccountInfoFragment : BaseFragment() {
           shortToast(R.string.something_went_wrong)
         }
       }
-    })
+    }
 
-    viewModel.nomineeInfo.observe(viewLifecycleOwner, { nomineeInfo ->
+    viewModel.nomineeInfo.observe(viewLifecycleOwner) { nomineeInfo ->
       Log.d(TAG, "nomineeInfo: $nomineeInfo")
       when (nomineeInfo.sp_code) {
         "1" -> {
           shortToast(nomineeInfo.message.toString())
+          (activity as NewMerchantActivity).setNomineeId(nomineeInfo.nominee_id!!)
+          showSuccess()
         }
         "2" -> {
           shortToast(nomineeInfo.message.toString())
@@ -365,7 +375,7 @@ class AccountInfoFragment : BaseFragment() {
           shortToast(R.string.something_went_wrong)
         }
       }
-    })
+    }
   }
 
   private fun showDatePickerDialog() {
@@ -375,8 +385,8 @@ class AccountInfoFragment : BaseFragment() {
     val d = c.get(Calendar.DAY_OF_MONTH)
 
     val dialog = DatePickerDialog(requireContext(), { _, year, monthOfYear, dayOfMonth ->
-      val moy = if (monthOfYear>8) (monthOfYear+1) else "0${monthOfYear+1}"
-      val dom = if (dayOfMonth>9) dayOfMonth else "0$dayOfMonth"
+      val moy = if (monthOfYear > 8) (monthOfYear + 1) else "0${monthOfYear + 1}"
+      val dom = if (dayOfMonth > 9) dayOfMonth else "0$dayOfMonth"
       val date = "$year-$moy-$dom"
       binding.dobLayout.editText?.setText(date)
     }, y, m, d)
@@ -455,6 +465,7 @@ class AccountInfoFragment : BaseFragment() {
       null,
       null,
       null,
+      null,
       null
     )
 
@@ -511,6 +522,7 @@ class AccountInfoFragment : BaseFragment() {
       null,
       1,
       (activity as NewMerchantActivity).getShopOwnerId(),
+      null,
       null,
       null,
       null,
@@ -669,6 +681,7 @@ class AccountInfoFragment : BaseFragment() {
       districts[district]!!,
       policeStations[policeStation]!!,
       (activity as NewMerchantActivity).getShopOwnerId(),
+      null,
       nomineeImage!!,
       nomineeNIDFrontImage!!,
       nomineeNIDBackImage!!,
@@ -683,6 +696,16 @@ class AccountInfoFragment : BaseFragment() {
 
   private fun submitNomineeInfo(nomineeInfo: NomineeInfo) {
     viewModel.submitNomineeInfo(nomineeInfo)
+  }
+
+  private fun showSuccess() {
+    val intent = Intent(requireContext(), SuccessActivity::class.java)
+    intent.putExtra(MERCHANT_ID, (activity as NewMerchantActivity).getShopOwnerId())
+    intent.putExtra(SHOP_ID, (activity as NewMerchantActivity).getShopId())
+    intent.putExtra(ACCOUNT_ID, (activity as NewMerchantActivity).getAccountId())
+    intent.putExtra(NOMINEE_ID, (activity as NewMerchantActivity).getNomineeId())
+    startActivity(intent)
+    (activity as NewMerchantActivity).finish()
   }
 
   companion object {

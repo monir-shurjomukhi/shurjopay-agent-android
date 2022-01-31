@@ -6,13 +6,12 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.sm.spagent.R
 import com.sm.spagent.ui.fragment.AccountInfoDetailsFragment
-import com.sm.spagent.ui.fragment.AccountInfoFragment
 import com.sm.spagent.ui.fragment.PersonalInfoDetailsFragment
 import com.sm.spagent.ui.fragment.ShopInfoDetailsFragment
 
 
 class MerchantDetailsPagerAdapter(private val context: Context, fm: FragmentManager) :
-  FragmentPagerAdapter(fm) {
+  FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
   override fun getItem(position: Int): Fragment {
     return when(position) {

@@ -10,6 +10,7 @@ data class AccountInfo(
   val routing_no: String?,
   val is_mfs: Int?,
   val shop_owner_id: Int,
+  val account_id: Int?,
   val status: Boolean?,
   val sp_code: String?,
   val message: String?,

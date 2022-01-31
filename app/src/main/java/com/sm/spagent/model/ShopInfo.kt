@@ -13,6 +13,7 @@ data class ShopInfo(
   val trade_licence: String?,
   val shop_front_img: String,
   val shop_owner_id: Int,
+  val shop_id: Int?,
   val status: Boolean?,
   val sp_code: String?,
   val message: String?,
