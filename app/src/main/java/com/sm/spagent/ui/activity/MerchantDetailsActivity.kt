@@ -1,5 +1,6 @@
 package com.sm.spagent.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -80,10 +81,6 @@ class MerchantDetailsActivity : AppCompatActivity() {
     this.fragmentType = fragmentType
   }
 
-  fun getFragmentType(): FragmentType {
-    return this.fragmentType
-  }
-
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
     val inflater: MenuInflater = menuInflater
     inflater.inflate(R.menu.merchant_details_menu, menu)
@@ -98,6 +95,24 @@ class MerchantDetailsActivity : AppCompatActivity() {
         true
       }
       R.id.edit -> {
+        when (fragmentType) {
+          FragmentType.PERSONAL_INFO -> {
+            val intent = Intent(this, EditPersonalInfoActivity::class.java)
+            intent.putExtra(MERCHANT_ID, getMerchantId())
+            startActivity(intent)
+          }
+          FragmentType.SHOP_INFO -> {
+            /*val intent = Intent(this, EditPersonalInfoActivity::class.java)
+            intent.putExtra(shopId, getShopId())
+            startActivity(intent)*/
+          }
+          FragmentType.ACCOUNT_INFO -> {
+            /*val intent = Intent(this, EditPersonalInfoActivity::class.java)
+            intent.putExtra(ACCOUNT_ID, getAccountId())
+            intent.putExtra(NOMINEE_ID, getNomineeId())
+            startActivity(intent)*/
+          }
+        }
         true
       }
       else -> super.onOptionsItemSelected(item)
