@@ -1,6 +1,7 @@
 package com.sm.spagent.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -76,19 +77,19 @@ class AccountInfoDetailsFragment : BaseFragment() {
   }
 
   private fun observeData() {
-    viewModel.progress.observe(viewLifecycleOwner, {
+    viewModel.progress.observe(viewLifecycleOwner) {
       if (it) {
         showProgress()
       } else {
         hideProgress()
       }
-    })
+    }
 
-    viewModel.message.observe(viewLifecycleOwner, {
+    viewModel.message.observe(viewLifecycleOwner) {
       shortToast(it)
-    })
+    }
 
-    viewModel.accountInfoDetails.observe(viewLifecycleOwner, {
+    viewModel.accountInfoDetails.observe(viewLifecycleOwner) {
       val accountInfo = it.account_info?.get(0)
       if (accountInfo?.is_mfs != null && accountInfo.is_mfs == 1) {
         if (!accountInfo.account_type.isNullOrEmpty()) {
@@ -123,9 +124,9 @@ class AccountInfoDetailsFragment : BaseFragment() {
           binding.routingNumberTextView.text = accountInfo?.routing_no
         }
       }
-    })
+    }
 
-    viewModel.nomineeInfoDetails.observe(viewLifecycleOwner, {
+    viewModel.nomineeInfoDetails.observe(viewLifecycleOwner) {
       val nomineeInfo = it.nominee_info?.get(0)
       if (!nomineeInfo?.name.isNullOrEmpty()) {
         binding.nomineeNameTextView.text = nomineeInfo?.name
@@ -184,13 +185,20 @@ class AccountInfoDetailsFragment : BaseFragment() {
         .placeholder(R.drawable.ic_baseline_credit_card_24)
         .error(R.drawable.ic_baseline_broken_image_24)
         .into(binding.nomineeNIDBackImageView)
-    })
+    }
   }
 
   companion object {
     fun newInstance(): AccountInfoDetailsFragment {
       return AccountInfoDetailsFragment()
     }
+
+    private const val TAG = "AccountInfoDetailsFragm"
+  }
+
+  override fun onResume() {
+    Log.d(TAG, "onResume: ")
+    super.onResume()
   }
 
   override fun onDestroyView() {

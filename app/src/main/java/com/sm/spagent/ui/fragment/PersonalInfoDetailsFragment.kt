@@ -1,6 +1,7 @@
 package com.sm.spagent.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,19 +41,19 @@ class PersonalInfoDetailsFragment : BaseFragment() {
   }
 
   private fun observeData() {
-    viewModel.progress.observe(viewLifecycleOwner, {
+    viewModel.progress.observe(viewLifecycleOwner) {
       if (it) {
         showProgress()
       } else {
         hideProgress()
       }
-    })
+    }
 
-    viewModel.message.observe(viewLifecycleOwner, {
+    viewModel.message.observe(viewLifecycleOwner) {
       shortToast(it)
-    })
+    }
 
-    viewModel.personalInfoDetails.observe(viewLifecycleOwner, {
+    viewModel.personalInfoDetails.observe(viewLifecycleOwner) {
       val shopOwner = it.shop_owner?.get(0)
       if (!shopOwner?.owner_name.isNullOrEmpty()) {
         binding.ownerNameTextView.text = shopOwner?.owner_name
@@ -114,13 +115,20 @@ class PersonalInfoDetailsFragment : BaseFragment() {
         .placeholder(R.drawable.ic_baseline_gesture_24)
         .error(R.drawable.ic_baseline_broken_image_24)
         .into(binding.ownerSignatureImageView)
-    })
+    }
   }
 
   companion object {
     fun newInstance(): PersonalInfoDetailsFragment {
       return PersonalInfoDetailsFragment()
     }
+
+    private const val TAG = "PersonalInfoDetailsFrag"
+  }
+
+  override fun onResume() {
+    Log.d(TAG, "onResume:")
+    super.onResume()
   }
 
   override fun onDestroyView() {
