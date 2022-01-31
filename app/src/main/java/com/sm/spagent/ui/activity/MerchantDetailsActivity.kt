@@ -8,6 +8,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.sm.spagent.R
 import com.sm.spagent.databinding.ActivityMerchantDetailsBinding
+import com.sm.spagent.model.FragmentType
 import com.sm.spagent.ui.adapter.MerchantDetailsPagerAdapter
 import com.sm.spagent.utils.ACCOUNT_ID
 import com.sm.spagent.utils.MERCHANT_ID
@@ -22,6 +23,7 @@ class MerchantDetailsActivity : AppCompatActivity() {
   private var shopId: String = ""
   private var accountId: String = ""
   private var nomineeId: String = ""
+  private var fragmentType: FragmentType = FragmentType.PERSONAL_INFO
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -72,6 +74,14 @@ class MerchantDetailsActivity : AppCompatActivity() {
       val nomineeIds = nomineeId.split(",")
       nomineeIds[0].toInt()
     }
+  }
+
+  fun setFragmentType(fragmentType: FragmentType) {
+    this.fragmentType = fragmentType
+  }
+
+  fun getFragmentType(): FragmentType {
+    return this.fragmentType
   }
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.sm.spagent.R
 import com.sm.spagent.databinding.FragmentShopInfoDetailsBinding
+import com.sm.spagent.model.FragmentType
 import com.sm.spagent.ui.activity.MerchantDetailsActivity
 import com.sm.spagent.ui.viewmodel.ShopInfoDetailsViewModel
 import com.squareup.picasso.Picasso
@@ -107,8 +108,9 @@ class ShopInfoDetailsFragment : BaseFragment() {
   }
 
   override fun onResume() {
-    Log.d(TAG, "onResume: ")
     super.onResume()
+    Log.d(TAG, "onResume: ")
+    (activity as MerchantDetailsActivity).setFragmentType(FragmentType.SHOP_INFO)
   }
 
   override fun onDestroyView() {
