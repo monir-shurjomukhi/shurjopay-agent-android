@@ -195,19 +195,19 @@ class PersonalInfoFragment : BaseFragment() {
   }
 
   private fun observeData() {
-    viewModel.progress.observe(viewLifecycleOwner, {
+    viewModel.progress.observe(viewLifecycleOwner) {
       if (it) {
         showProgress()
       } else {
         hideProgress()
       }
-    })
+    }
 
-    viewModel.message.observe(viewLifecycleOwner, {
+    viewModel.message.observe(viewLifecycleOwner) {
       shortSnack(binding.saveNextButton, it)
-    })
+    }
 
-    viewModel.division.observe(viewLifecycleOwner, { division ->
+    viewModel.division.observe(viewLifecycleOwner) { division ->
       divisions.clear()
       for (data in division.divisions!!) {
         divisions[data.division_name.toString()] = data.id!!
@@ -221,9 +221,9 @@ class PersonalInfoFragment : BaseFragment() {
           binding.divisionTextView.setAdapter(adapter)
         }
       }
-    })
+    }
 
-    viewModel.district.observe(viewLifecycleOwner, { district ->
+    viewModel.district.observe(viewLifecycleOwner) { district ->
       districts.clear()
       for (data in district.districts!!) {
         districts[data.district_name.toString()] = data.id!!
@@ -237,9 +237,9 @@ class PersonalInfoFragment : BaseFragment() {
           binding.districtTextView.setAdapter(adapter)
         }
       }
-    })
+    }
 
-    viewModel.policeStation.observe(viewLifecycleOwner, { policeStation ->
+    viewModel.policeStation.observe(viewLifecycleOwner) { policeStation ->
       policeStations.clear()
       for (data in policeStation.police_stations!!) {
         policeStations[data.police_station_name.toString()] = data.id!!
@@ -253,16 +253,16 @@ class PersonalInfoFragment : BaseFragment() {
           binding.policeStationTextView.setAdapter(adapter)
         }
       }
-    })
+    }
 
-    viewModel.ocr.observe(viewLifecycleOwner, { ocr ->
+    viewModel.ocr.observe(viewLifecycleOwner) { ocr ->
       Log.d(TAG, "ocr: $ocr")
       if (ocr.nid != null) binding.step2NIDLayout.editText?.setText(ocr.nid.toString())
       if (ocr.dob != null) binding.step2DOBLayout.editText?.setText(ocr.dob)
       goToNextStep()
-    })
+    }
 
-    viewModel.nid.observe(viewLifecycleOwner, { nid ->
+    viewModel.nid.observe(viewLifecycleOwner) { nid ->
       Log.d(TAG, "nid: $nid")
       when (nid.sp_code) {
         "1" -> {
@@ -307,9 +307,9 @@ class PersonalInfoFragment : BaseFragment() {
           shortToast(R.string.something_went_wrong)
         }
       }
-    })
+    }
 
-    viewModel.ownerInfo.observe(viewLifecycleOwner, { ownerInfo ->
+    viewModel.ownerInfo.observe(viewLifecycleOwner) { ownerInfo ->
       Log.d(TAG, "ownerInfo: $ownerInfo")
       when (ownerInfo.sp_code) {
         "1" -> {
@@ -329,7 +329,7 @@ class PersonalInfoFragment : BaseFragment() {
           shortToast(R.string.something_went_wrong)
         }
       }
-    })
+    }
   }
 
   private fun showDatePickerDialog() {

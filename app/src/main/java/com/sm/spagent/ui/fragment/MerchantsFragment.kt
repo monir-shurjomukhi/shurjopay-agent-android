@@ -46,15 +46,16 @@ class MerchantsFragment : BaseFragment() {
   }
 
   private fun observeData() {
-    viewModel.shopOwner.observe(viewLifecycleOwner, { shopOwner ->
+    viewModel.shopOwner.observe(viewLifecycleOwner) { shopOwner ->
       Log.d(TAG, "shopOwner: $shopOwner")
       shopOwners = shopOwner.shop_owners
       if (shopOwners.isNullOrEmpty()) {
         shortToast("Empty List")
       } else {
-        binding.showOwnerRecyclerView.adapter = MerchantsAdapter(shopOwners!!, ::onMerchantItemClick)
+        binding.showOwnerRecyclerView.adapter =
+          MerchantsAdapter(shopOwners!!, ::onMerchantItemClick)
       }
-    })
+    }
   }
 
   private fun onMerchantItemClick(position: Int) {

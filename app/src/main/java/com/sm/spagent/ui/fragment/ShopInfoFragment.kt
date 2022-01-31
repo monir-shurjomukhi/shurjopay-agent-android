@@ -163,19 +163,19 @@ class ShopInfoFragment : BaseFragment() {
   }
 
   private fun observeData() {
-    viewModel.progress.observe(viewLifecycleOwner, {
+    viewModel.progress.observe(viewLifecycleOwner) {
       if (it) {
         showProgress()
       } else {
         hideProgress()
       }
-    })
+    }
 
-    viewModel.message.observe(viewLifecycleOwner, {
+    viewModel.message.observe(viewLifecycleOwner) {
       shortSnack(binding.saveNextButton, it)
-    })
+    }
 
-    viewModel.businessType.observe(viewLifecycleOwner, { businessType ->
+    viewModel.businessType.observe(viewLifecycleOwner) { businessType ->
       businessTypes.clear()
       for (data in businessType.business_type_names!!) {
         businessTypes[data.business_type_name.toString()] = data.id!!
@@ -189,9 +189,9 @@ class ShopInfoFragment : BaseFragment() {
           binding.businessTypeTextView.setAdapter(adapter)
         }
       }
-    })
+    }
 
-    viewModel.division.observe(viewLifecycleOwner, { division ->
+    viewModel.division.observe(viewLifecycleOwner) { division ->
       divisions.clear()
       for (data in division.divisions!!) {
         divisions[data.division_name.toString()] = data.id!!
@@ -205,9 +205,9 @@ class ShopInfoFragment : BaseFragment() {
           binding.divisionTextView.setAdapter(adapter)
         }
       }
-    })
+    }
 
-    viewModel.district.observe(viewLifecycleOwner, { district ->
+    viewModel.district.observe(viewLifecycleOwner) { district ->
       districts.clear()
       for (data in district.districts!!) {
         districts[data.district_name.toString()] = data.id!!
@@ -221,9 +221,9 @@ class ShopInfoFragment : BaseFragment() {
           binding.districtTextView.setAdapter(adapter)
         }
       }
-    })
+    }
 
-    viewModel.policeStation.observe(viewLifecycleOwner, { policeStation ->
+    viewModel.policeStation.observe(viewLifecycleOwner) { policeStation ->
       policeStations.clear()
       for (data in policeStation.police_stations!!) {
         policeStations[data.police_station_name.toString()] = data.id!!
@@ -237,9 +237,9 @@ class ShopInfoFragment : BaseFragment() {
           binding.policeStationTextView.setAdapter(adapter)
         }
       }
-    })
+    }
 
-    viewModel.shopInfo.observe(viewLifecycleOwner, { shopInfo ->
+    viewModel.shopInfo.observe(viewLifecycleOwner) { shopInfo ->
       Log.d(TAG, "shopInfo: $shopInfo")
       when (shopInfo.sp_code) {
         "1" -> {
@@ -254,7 +254,7 @@ class ShopInfoFragment : BaseFragment() {
           shortToast(R.string.something_went_wrong)
         }
       }
-    })
+    }
   }
 
   private fun requestLocation() {
