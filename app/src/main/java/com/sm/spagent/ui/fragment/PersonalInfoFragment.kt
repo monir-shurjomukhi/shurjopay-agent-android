@@ -257,8 +257,10 @@ class PersonalInfoFragment : BaseFragment() {
 
     viewModel.ocr.observe(viewLifecycleOwner) { ocr ->
       Log.d(TAG, "ocr: $ocr")
-      if (ocr.nid != null) binding.step2NIDLayout.editText?.setText(ocr.nid.toString())
-      if (ocr.dob != null) binding.step2DOBLayout.editText?.setText(ocr.dob)
+      if (ocr.nid != null && (ocr.nid.toString().length == 10 || ocr.nid.toString().length == 13
+            || ocr.nid.toString().length == 17))
+        binding.step2NIDLayout.editText?.setText(ocr.nid.toString())
+      if (ocr.dob != null && ocr.dob.length == 10) binding.step2DOBLayout.editText?.setText(ocr.dob)
       goToNextStep()
     }
 
@@ -273,10 +275,16 @@ class PersonalInfoFragment : BaseFragment() {
           if (!nid.nid_response?.fatherEn.isNullOrEmpty()) {
             binding.fathersNameLayout.editText?.setText(nid.nid_response?.fatherEn)
             binding.fathersNameLayout.editText?.isEnabled = false
+          } else {
+            binding.fathersNameLayout.hint =
+              "${getString(R.string.father_husband_s_name)} (${nid.nid_response?.father})"
           }
           if (!nid.nid_response?.motherEn.isNullOrEmpty()) {
             binding.mothersNameLayout.editText?.setText(nid.nid_response?.motherEn)
             binding.mothersNameLayout.editText?.isEnabled = false
+          } else {
+            binding.fathersNameLayout.hint =
+              "${getString(R.string.mother_s_name)} (${nid.nid_response?.mother})"
           }
           if (!nid.nid_response?.nationalId.isNullOrEmpty()) {
             binding.nidLayout.editText?.setText(nid.nid_response?.nationalId)
@@ -541,6 +549,7 @@ class PersonalInfoFragment : BaseFragment() {
     }
 
     val ownerInfo = OwnerInfo(
+      null,
       name,
       fathersName,
       mothersName,

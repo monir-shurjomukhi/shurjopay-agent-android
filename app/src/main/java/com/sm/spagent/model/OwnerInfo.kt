@@ -1,6 +1,7 @@
 package com.sm.spagent.model
 
 data class OwnerInfo(
+  val id: Int?,
   val owner_name: String,
   val father_name: String?,
   val mother_name: String?,

@@ -159,32 +159,6 @@ class EditPersonalInfoViewModel(application: Application) : BaseViewModel(applic
     }
   }
 
-  fun submitOwnerInfo(ownerInfo: OwnerInfo) {
-    viewModelScope.launch {
-      progress.value = true
-      val response = try {
-        authApiClient.submitOwnerInfo(ownerInfo)
-      } catch (e: IOException) {
-        Log.e(TAG, "submitOwnerInfo: ${e.message}", e)
-        progress.value = false
-        message.value = R.string.unable_to_connect
-        return@launch
-      } catch (e: HttpException) {
-        Log.e(TAG, "submitOwnerInfo: ${e.message}", e)
-        progress.value = false
-        message.value = R.string.unable_to_connect
-        return@launch
-      }
-
-      progress.value = false
-      if (response.isSuccessful && response.body() != null) {
-        _ownerInfo.value = response.body()
-      } else {
-        message.value = R.string.unable_to_connect
-      }
-    }
-  }
-
   fun getPersonalInfo(shopOwnerId: Int) {
     viewModelScope.launch {
       progress.value = true
@@ -205,6 +179,32 @@ class EditPersonalInfoViewModel(application: Application) : BaseViewModel(applic
       progress.value = false
       if (response.isSuccessful && response.body() != null) {
         _personalInfoDetails.value = response.body()
+      } else {
+        message.value = R.string.unable_to_connect
+      }
+    }
+  }
+
+  fun submitOwnerInfo(ownerInfo: OwnerInfo) {
+    viewModelScope.launch {
+      progress.value = true
+      val response = try {
+        authApiClient.submitOwnerInfo(ownerInfo)
+      } catch (e: IOException) {
+        Log.e(TAG, "submitOwnerInfo: ${e.message}", e)
+        progress.value = false
+        message.value = R.string.unable_to_connect
+        return@launch
+      } catch (e: HttpException) {
+        Log.e(TAG, "submitOwnerInfo: ${e.message}", e)
+        progress.value = false
+        message.value = R.string.unable_to_connect
+        return@launch
+      }
+
+      progress.value = false
+      if (response.isSuccessful && response.body() != null) {
+        _ownerInfo.value = response.body()
       } else {
         message.value = R.string.unable_to_connect
       }
