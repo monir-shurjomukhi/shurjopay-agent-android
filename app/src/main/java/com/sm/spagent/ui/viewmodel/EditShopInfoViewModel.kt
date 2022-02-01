@@ -29,6 +29,10 @@ class EditShopInfoViewModel(application: Application) : BaseViewModel(applicatio
   val policeStation: LiveData<PoliceStation>
     get() = _policeStation
 
+  private val _shopInfoDetails = MutableLiveData<ShopInfoDetails>()
+  val shopInfoDetails: LiveData<ShopInfoDetails>
+    get() = _shopInfoDetails
+
   private val _shopInfo = MutableLiveData<ShopInfo>()
   val shopInfo: LiveData<ShopInfo>
     get() = _shopInfo
@@ -115,6 +119,32 @@ class EditShopInfoViewModel(application: Application) : BaseViewModel(applicatio
 
       if (response.isSuccessful && response.body() != null) {
         _policeStation.value = response.body()
+      } else {
+        message.value = R.string.unable_to_connect
+      }
+    }
+  }
+
+  fun getShopInfo(shopId: Int) {
+    viewModelScope.launch {
+      progress.value = true
+      val response = try {
+        authApiClient.getShopInfo(shopId)
+      } catch (e: IOException) {
+        Log.e(TAG, "getShopInfo: ${e.message}", e)
+        progress.value = false
+        message.value = R.string.unable_to_connect
+        return@launch
+      } catch (e: HttpException) {
+        Log.e(TAG, "getShopInfo: ${e.message}", e)
+        progress.value = false
+        message.value = R.string.unable_to_connect
+        return@launch
+      }
+
+      progress.value = false
+      if (response.isSuccessful && response.body() != null) {
+        _shopInfoDetails.value = response.body()
       } else {
         message.value = R.string.unable_to_connect
       }

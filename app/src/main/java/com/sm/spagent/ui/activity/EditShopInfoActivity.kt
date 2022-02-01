@@ -27,7 +27,9 @@ import com.sm.spagent.databinding.ActivityEditShopInfoBinding
 import com.sm.spagent.model.ImageType
 import com.sm.spagent.model.ShopInfo
 import com.sm.spagent.ui.viewmodel.EditShopInfoViewModel
+import com.sm.spagent.utils.MERCHANT_ID
 import com.sm.spagent.utils.SHOP_ID
+import com.squareup.picasso.Picasso
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.quality
 import kotlinx.coroutines.launch
@@ -104,6 +106,7 @@ class EditShopInfoActivity : BaseActivity() {
     supportActionBar?.title = getString(R.string.edit_shop_info)
 
     viewModel = ViewModelProvider(this)[EditShopInfoViewModel::class.java]
+    merchantId = intent.getIntExtra(MERCHANT_ID, -1)
     shopId = intent.getIntExtra(SHOP_ID, -1)
 
     setupViews()
@@ -194,6 +197,8 @@ class EditShopInfoActivity : BaseActivity() {
           binding.divisionTextView.setAdapter(adapter)
         }
       }
+
+      viewModel.getShopInfo(shopId)
     }
 
     viewModel.district.observe(this) { district ->
@@ -226,6 +231,52 @@ class EditShopInfoActivity : BaseActivity() {
           binding.policeStationTextView.setAdapter(adapter)
         }
       }
+    }
+
+    viewModel.shopInfoDetails.observe(this) {
+      val shopInfo = it.shop_info?.get(0)
+
+      if (!shopInfo?.shop_or_business_name.isNullOrEmpty()) {
+        binding.shopNameLayout.editText?.setText(shopInfo?.shop_or_business_name)
+      }
+      if (!shopInfo?.tin_no.isNullOrEmpty()) {
+        binding.tinLayout.editText?.setText(shopInfo?.tin_no)
+      }
+      if (!shopInfo?.business_type_name.isNullOrEmpty()) {
+        binding.businessTypeTextView.setText(shopInfo?.business_type_name, false)
+      }
+      if (!shopInfo?.shop_size.isNullOrEmpty()) {
+        binding.shopSizeTextView.setText(shopInfo?.shop_size, false)
+      }
+      if (!shopInfo?.shop_addess.isNullOrEmpty()) {
+        binding.shopAddressLayout.editText?.setText(shopInfo?.shop_addess)
+      }
+      if (!shopInfo?.division_name.isNullOrEmpty()) {
+        binding.divisionTextView.setText(shopInfo?.division_name, false)
+      }
+      if (!shopInfo?.district_name.isNullOrEmpty()) {
+        districts[shopInfo?.district_name.toString()] = shopInfo?.shop_address_district_id!!
+        binding.districtTextView.setText(shopInfo.district_name, false)
+      }
+      if (!shopInfo?.police_station_name.isNullOrEmpty()) {
+        districts[shopInfo?.police_station_name.toString()] = shopInfo?.shop_address_police_station_id!!
+        binding.policeStationTextView.setText(shopInfo.police_station_name, false)
+      }
+      if (!shopInfo?.shop_gps_location.isNullOrEmpty()) {
+        binding.locationLayout.editText?.setText(shopInfo?.shop_gps_location)
+      }
+
+      Picasso.get()
+        .load("https://stagingapp.engine.shurjopayment.com/trade_license/${shopInfo?.trade_licence}")
+        .placeholder(R.drawable.ic_baseline_image_24)
+        .error(R.drawable.ic_baseline_broken_image_24)
+        .into(binding.tradeLicenseImageView)
+
+      Picasso.get()
+        .load("https://stagingapp.engine.shurjopayment.com/shop_front_img/${shopInfo?.shop_front_img}")
+        .placeholder(R.drawable.ic_baseline_storefront_24)
+        .error(R.drawable.ic_baseline_broken_image_24)
+        .into(binding.shopFrontImageView)
     }
 
     viewModel.shopInfo.observe(this) { shopInfo ->

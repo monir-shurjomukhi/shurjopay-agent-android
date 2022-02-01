@@ -309,21 +309,6 @@ class EditPersonalInfoActivity : BaseActivity() {
       }
     }
 
-    viewModel.ownerInfo.observe(this) { ownerInfo ->
-      Log.d(TAG, "ownerInfo: $ownerInfo")
-      when (ownerInfo.sp_code) {
-        "1" -> {
-          shortToast(ownerInfo.message.toString())
-        }
-        "2" -> {
-          shortToast(ownerInfo.message.toString())
-        }
-        else -> {
-          shortToast(ownerInfo.message.toString())
-        }
-      }
-    }
-
     viewModel.personalInfoDetails.observe(this) {
       val shopOwner = it.shop_owner?.get(0)
 
@@ -402,6 +387,21 @@ class EditPersonalInfoActivity : BaseActivity() {
       ownerNIDFront = shopOwner?.nid_front_base64
       ownerNIDBack = shopOwner?.nid_back_base64
       ownerSignature = shopOwner?.owner_signature_base64
+    }
+
+    viewModel.ownerInfo.observe(this) { ownerInfo ->
+      Log.d(TAG, "ownerInfo: $ownerInfo")
+      when (ownerInfo.sp_code) {
+        "1" -> {
+          shortToast(ownerInfo.message.toString())
+        }
+        "2" -> {
+          shortToast(ownerInfo.message.toString())
+        }
+        else -> {
+          shortToast(ownerInfo.message.toString())
+        }
+      }
     }
   }
 
