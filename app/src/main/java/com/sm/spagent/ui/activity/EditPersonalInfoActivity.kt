@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import android.util.Patterns
+import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.widget.ArrayAdapter
@@ -651,10 +652,10 @@ class EditPersonalInfoActivity : BaseActivity() {
       null,
       null,
     )
-    submitPersonalInfo(ownerInfo)
+    updatePersonalInfo(ownerInfo)
   }
 
-  private fun submitPersonalInfo(ownerInfo: OwnerInfo) {
+  private fun updatePersonalInfo(ownerInfo: OwnerInfo) {
     viewModel.submitOwnerInfo(ownerInfo)
   }
 
@@ -674,6 +675,17 @@ class EditPersonalInfoActivity : BaseActivity() {
         binding.updateButton.text = getString(R.string.update)
       }
       /*3 -> (activity as NewMerchantActivity).goToNextStep()*/
+    }
+  }
+
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    // Handle item selection
+    return when (item.itemId) {
+      android.R.id.home -> {
+        onBackPressed()
+        true
+      }
+      else -> super.onOptionsItemSelected(item)
     }
   }
 

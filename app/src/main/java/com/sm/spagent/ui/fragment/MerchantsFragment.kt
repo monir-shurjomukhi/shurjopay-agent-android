@@ -46,6 +46,18 @@ class MerchantsFragment : BaseFragment() {
   }
 
   private fun observeData() {
+    viewModel.progress.observe(viewLifecycleOwner) {
+      if (it) {
+        showProgress()
+      } else {
+        hideProgress()
+      }
+    }
+
+    viewModel.message.observe(viewLifecycleOwner) {
+      shortSnack(binding.root, it)
+    }
+
     viewModel.shopOwner.observe(viewLifecycleOwner) { shopOwner ->
       Log.d(TAG, "shopOwner: $shopOwner")
       shopOwners = shopOwner.shop_owners
