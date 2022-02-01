@@ -212,6 +212,6 @@ class EditPersonalInfoViewModel(application: Application) : BaseViewModel(applic
   }
 
   companion object {
-    private const val TAG = "PersonalInfoViewModel"
+    private const val TAG = "EditPersonalInfoViewModel"
   }
 }

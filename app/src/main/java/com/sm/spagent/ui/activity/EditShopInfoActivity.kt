@@ -7,12 +7,14 @@ import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import android.view.MenuItem
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.canhub.cropper.CropImageContract
 import com.sm.spagent.R
 import com.sm.spagent.databinding.ActivityEditShopInfoBinding
 import com.sm.spagent.model.ImageType
-import com.sm.spagent.ui.viewmodel.EditPersonalInfoViewModel
+import com.sm.spagent.ui.viewmodel.EditShopInfoViewModel
+import com.sm.spagent.utils.SHOP_ID
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.quality
 import kotlinx.coroutines.launch
@@ -22,7 +24,7 @@ import java.io.File
 class EditShopInfoActivity : BaseActivity() {
 
   private lateinit var binding: ActivityEditShopInfoBinding
-  private lateinit var viewModel: EditPersonalInfoViewModel
+  private lateinit var viewModel: EditShopInfoViewModel
 
   private var shopId = -1
   private var imageType = ImageType.TRADE_LICENSE
@@ -86,6 +88,9 @@ class EditShopInfoActivity : BaseActivity() {
     supportActionBar?.setDisplayHomeAsUpEnabled(true)
     supportActionBar?.setDisplayShowHomeEnabled(true)
     supportActionBar?.title = getString(R.string.edit_shop_info)
+
+    viewModel = ViewModelProvider(this)[EditShopInfoViewModel::class.java]
+    shopId = intent.getIntExtra(SHOP_ID, -1)
   }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {

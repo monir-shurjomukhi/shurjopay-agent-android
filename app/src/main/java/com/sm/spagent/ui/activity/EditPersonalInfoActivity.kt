@@ -110,7 +110,6 @@ class EditPersonalInfoActivity : BaseActivity() {
     supportActionBar?.title = getString(R.string.edit_personal_info)
 
     viewModel = ViewModelProvider(this)[EditPersonalInfoViewModel::class.java]
-
     merchantId = intent.getIntExtra(MERCHANT_ID, -1)
 
     setupViews()
