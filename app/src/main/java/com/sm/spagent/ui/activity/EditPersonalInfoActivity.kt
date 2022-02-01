@@ -24,6 +24,7 @@ import com.sm.spagent.model.Ocr
 import com.sm.spagent.model.OwnerInfo
 import com.sm.spagent.ui.viewmodel.EditPersonalInfoViewModel
 import com.sm.spagent.utils.MERCHANT_ID
+import com.squareup.picasso.Picasso
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.quality
 import kotlinx.coroutines.launch
@@ -114,6 +115,7 @@ class EditPersonalInfoActivity : BaseActivity() {
     observeData()
 
     viewModel.getDivisions()
+    viewModel.getPersonalInfo(merchantId)
   }
 
   private fun setupViews() {
@@ -293,6 +295,78 @@ class EditPersonalInfoActivity : BaseActivity() {
           shortToast(R.string.something_went_wrong)
         }
       }
+    }
+
+    viewModel.personalInfoDetails.observe(this) {
+      val shopOwner = it.shop_owner?.get(0)
+
+      Picasso.get()
+        .load("https://stagingapp.engine.shurjopayment.com/shop_owner_img/${shopOwner?.owner_img}")
+        .placeholder(R.drawable.ic_baseline_person_24)
+        .error(R.drawable.ic_baseline_broken_image_24)
+        .into(binding.ownerImageView)
+
+      Picasso.get()
+        .load("https://stagingapp.engine.shurjopayment.com/nid_img/frontside/${shopOwner?.nid_front}")
+        .placeholder(R.drawable.ic_baseline_credit_card_24)
+        .error(R.drawable.ic_baseline_broken_image_24)
+        .into(binding.ownerNIDFrontImageView)
+
+      Picasso.get()
+        .load("https://stagingapp.engine.shurjopayment.com/nid_img/backside/${shopOwner?.nid_back}")
+        .placeholder(R.drawable.ic_baseline_credit_card_24)
+        .error(R.drawable.ic_baseline_broken_image_24)
+        .into(binding.ownerNIDBackImageView)
+
+      if (!shopOwner?.nid_no.isNullOrEmpty()) {
+        binding.step2NIDLayout.editText?.setText(shopOwner?.nid_no)
+      }
+      if (!shopOwner?.owner_dob.isNullOrEmpty()) {
+        binding.step2DOBLayout.editText?.setText(shopOwner?.owner_dob)
+      }
+
+      if (!shopOwner?.owner_name.isNullOrEmpty()) {
+        binding.nameLayout.editText?.setText(shopOwner?.owner_name)
+      }
+      if (!shopOwner?.father_name.isNullOrEmpty()) {
+        binding.fathersNameLayout.editText?.setText(shopOwner?.father_name)
+      }
+      if (!shopOwner?.mother_name.isNullOrEmpty()) {
+        binding.mothersNameLayout.editText?.setText(shopOwner?.mother_name)
+      }
+      if (!shopOwner?.contact_no.isNullOrEmpty()) {
+        binding.contactLayout.editText?.setText(shopOwner?.contact_no)
+      }
+      if (!shopOwner?.email_address.isNullOrEmpty()) {
+        binding.emailLayout.editText?.setText(shopOwner?.email_address)
+      }
+      if (!shopOwner?.nid_no.isNullOrEmpty()) {
+        binding.nidLayout.editText?.setText(shopOwner?.nid_no)
+      }
+      if (!shopOwner?.owner_dob.isNullOrEmpty()) {
+        binding.dobLayout.editText?.setText(shopOwner?.owner_dob)
+      }
+      if (!shopOwner?.tin_no.isNullOrEmpty()) {
+        binding.tinLayout.editText?.setText(shopOwner?.tin_no)
+      }
+      if (!shopOwner?.perm_addess.isNullOrEmpty()) {
+        binding.addressLayout.editText?.setText(shopOwner?.perm_addess)
+      }
+      if (!shopOwner?.division_name.isNullOrEmpty()) {
+        binding.divisionLayout.editText?.setText(shopOwner?.division_name)
+      }
+      if (!shopOwner?.district_name.isNullOrEmpty()) {
+        binding.districtLayout.editText?.setText(shopOwner?.district_name)
+      }
+      if (!shopOwner?.police_station_name.isNullOrEmpty()) {
+        binding.policeStationLayout.editText?.setText(shopOwner?.police_station_name)
+      }
+
+      Picasso.get()
+        .load("https://stagingapp.engine.shurjopayment.com/owner_signature/${shopOwner?.owner_signature}")
+        .placeholder(R.drawable.ic_baseline_gesture_24)
+        .error(R.drawable.ic_baseline_broken_image_24)
+        .into(binding.ownerSignatureImageView)
     }
   }
 
