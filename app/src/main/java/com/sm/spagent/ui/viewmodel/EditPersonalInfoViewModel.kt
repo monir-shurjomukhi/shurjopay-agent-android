@@ -185,18 +185,18 @@ class EditPersonalInfoViewModel(application: Application) : BaseViewModel(applic
     }
   }
 
-  fun submitOwnerInfo(ownerInfo: OwnerInfo) {
+  fun updatePersonalInfo(ownerInfo: OwnerInfo) {
     viewModelScope.launch {
       progress.value = true
       val response = try {
-        authApiClient.submitOwnerInfo(ownerInfo)
+        authApiClient.updateOwnerInfo(ownerInfo)
       } catch (e: IOException) {
-        Log.e(TAG, "submitOwnerInfo: ${e.message}", e)
+        Log.e(TAG, "updatePersonalInfo: ${e.message}", e)
         progress.value = false
         message.value = R.string.unable_to_connect
         return@launch
       } catch (e: HttpException) {
-        Log.e(TAG, "submitOwnerInfo: ${e.message}", e)
+        Log.e(TAG, "updatePersonalInfo: ${e.message}", e)
         progress.value = false
         message.value = R.string.unable_to_connect
         return@launch

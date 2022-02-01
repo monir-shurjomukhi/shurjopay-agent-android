@@ -122,6 +122,11 @@ class EditPersonalInfoActivity : BaseActivity() {
     viewModel.getDivisions()
   }
 
+  override fun onDestroy() {
+    super.onDestroy()
+    hideProgress()
+  }
+
   private fun setupViews() {
     binding.step2DOBLayout.editText?.showSoftInputOnFocus = false
     binding.step2DOBLayout.editText?.setOnTouchListener { _, event ->
@@ -322,19 +327,12 @@ class EditPersonalInfoActivity : BaseActivity() {
       when (ownerInfo.sp_code) {
         "1" -> {
           shortToast(ownerInfo.message.toString())
-          /*(activity as NewMerchantActivity).setShopOwnerId(ownerInfo.shop_owner_id!!)*/
-          goToNextStep()
         }
         "2" -> {
           shortToast(ownerInfo.message.toString())
         }
-        "3" -> {
-          shortToast(ownerInfo.message.toString())
-          /*(activity as NewMerchantActivity).setShopOwnerId(ownerInfo.shop_owner_id!!)*/
-          goToNextStep()
-        }
         else -> {
-          shortToast(R.string.something_went_wrong)
+          shortToast(ownerInfo.message.toString())
         }
       }
     }
@@ -656,7 +654,7 @@ class EditPersonalInfoActivity : BaseActivity() {
   }
 
   private fun updatePersonalInfo(ownerInfo: OwnerInfo) {
-    viewModel.submitOwnerInfo(ownerInfo)
+    viewModel.updatePersonalInfo(ownerInfo)
   }
 
   private fun goToNextStep() {
@@ -674,7 +672,6 @@ class EditPersonalInfoActivity : BaseActivity() {
         binding.step3Layout.visibility = View.VISIBLE
         binding.updateButton.text = getString(R.string.update)
       }
-      /*3 -> (activity as NewMerchantActivity).goToNextStep()*/
     }
   }
 
