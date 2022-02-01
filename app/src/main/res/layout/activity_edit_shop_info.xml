@@ -325,12 +325,12 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/saveNextButton"
+        android:id="@+id/updateButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:padding="16dp"
-        android:text="@string/save_next"
+        android:text="@string/update"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="16sp" />
