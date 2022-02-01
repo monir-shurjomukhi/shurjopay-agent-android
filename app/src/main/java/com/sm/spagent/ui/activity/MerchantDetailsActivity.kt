@@ -103,6 +103,7 @@ class MerchantDetailsActivity : AppCompatActivity() {
           }
           FragmentType.SHOP_INFO -> {
             val intent = Intent(this, EditShopInfoActivity::class.java)
+            intent.putExtra(MERCHANT_ID, getMerchantId())
             intent.putExtra(shopId, getShopId())
             startActivity(intent)
           }
