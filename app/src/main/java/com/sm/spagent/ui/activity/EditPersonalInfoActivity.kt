@@ -46,8 +46,11 @@ class EditPersonalInfoActivity : BaseActivity() {
   private var currentStep = 1
 
   private val divisions = mutableMapOf<String, Int>()
+  private val divisionsKeyList = mutableListOf<String>()
   private val districts = mutableMapOf<String, Int>()
+  private val districtsKeyList = mutableListOf<String>()
   private val policeStations = mutableMapOf<String, Int>()
+  private val policeStationsKeyList = mutableListOf<String>()
 
   private val cropImage = registerForActivityResult(CropImageContract()) { result ->
     if (result.isSuccessful) {
@@ -115,7 +118,6 @@ class EditPersonalInfoActivity : BaseActivity() {
     observeData()
 
     viewModel.getDivisions()
-    viewModel.getPersonalInfo(merchantId)
   }
 
   private fun setupViews() {
@@ -151,6 +153,24 @@ class EditPersonalInfoActivity : BaseActivity() {
       }
     }
 
+    this.let {
+      ArrayAdapter(
+        it, android.R.layout.simple_list_item_1,
+        districtsKeyList
+      ).also { adapter ->
+        binding.districtTextView.setAdapter(adapter)
+      }
+    }
+
+    this.let {
+      ArrayAdapter(
+        it, android.R.layout.simple_list_item_1,
+        policeStationsKeyList
+      ).also { adapter ->
+        binding.policeStationTextView.setAdapter(adapter)
+      }
+    }
+
     binding.updateButton.setOnClickListener {
       when (currentStep) {
         1 -> validateStep1Inputs() /*goToNextStep()*/
@@ -179,14 +199,19 @@ class EditPersonalInfoActivity : BaseActivity() {
         divisions[data.division_name.toString()] = data.id!!
       }
 
+      divisionsKeyList.clear()
+      divisionsKeyList.addAll(divisions.keys.toList())
+
       this.let {
         ArrayAdapter(
           it, android.R.layout.simple_list_item_1,
-          divisions.keys.toList()
+          divisionsKeyList
         ).also { adapter ->
           binding.divisionTextView.setAdapter(adapter)
         }
       }
+
+      viewModel.getPersonalInfo(merchantId)
     }
 
     viewModel.district.observe(this) { district ->
@@ -195,10 +220,13 @@ class EditPersonalInfoActivity : BaseActivity() {
         districts[data.district_name.toString()] = data.id!!
       }
 
+      districtsKeyList.clear()
+      districtsKeyList.addAll(districts.keys.toList())
+
       this.let {
         ArrayAdapter(
           it, android.R.layout.simple_list_item_1,
-          districts.keys.toList()
+          districtsKeyList
         ).also { adapter ->
           binding.districtTextView.setAdapter(adapter)
         }
@@ -211,10 +239,13 @@ class EditPersonalInfoActivity : BaseActivity() {
         policeStations[data.police_station_name.toString()] = data.id!!
       }
 
+      policeStationsKeyList.clear()
+      policeStationsKeyList.addAll(policeStations.keys.toList())
+
       this.let {
         ArrayAdapter(
           it, android.R.layout.simple_list_item_1,
-          policeStations.keys.toList()
+          policeStationsKeyList
         ).also { adapter ->
           binding.policeStationTextView.setAdapter(adapter)
         }
@@ -353,13 +384,16 @@ class EditPersonalInfoActivity : BaseActivity() {
         binding.addressLayout.editText?.setText(shopOwner?.perm_addess)
       }
       if (!shopOwner?.division_name.isNullOrEmpty()) {
-        binding.divisionLayout.editText?.setText(shopOwner?.division_name)
+        binding.divisionTextView.setText(shopOwner?.division_name, false)
+        //binding.divisionTextView.setSelection(divisionsKeyList.indexOf(shopOwner?.division_name))
       }
       if (!shopOwner?.district_name.isNullOrEmpty()) {
-        binding.districtLayout.editText?.setText(shopOwner?.district_name)
+        districts[shopOwner?.district_name.toString()] = shopOwner?.perm_district_id!!
+        binding.districtTextView.setText(shopOwner.district_name)
       }
       if (!shopOwner?.police_station_name.isNullOrEmpty()) {
-        binding.policeStationLayout.editText?.setText(shopOwner?.police_station_name)
+        districts[shopOwner?.police_station_name.toString()] = shopOwner?.perm_police_station_id!!
+        binding.policeStationTextView.setText(shopOwner.police_station_name)
       }
 
       Picasso.get()
