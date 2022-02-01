@@ -7,18 +7,18 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 
 open class BaseActivity: AppCompatActivity() {
-  private lateinit var progressDialog: ProgressDialog
+  private var progressDialog: ProgressDialog? = null
 
   protected fun showProgress() {
     progressDialog = ProgressDialog(this)
-    progressDialog.setMessage("Please Wait...")
-    progressDialog.setCancelable(false)
-    progressDialog.show()
+    progressDialog!!.setMessage("Please Wait...")
+    progressDialog!!.setCancelable(false)
+    progressDialog!!.show()
   }
 
   protected fun hideProgress() {
-    if (progressDialog.isShowing) {
-      progressDialog.dismiss()
+    if (progressDialog != null && progressDialog!!.isShowing) {
+      progressDialog!!.dismiss()
     }
   }
 

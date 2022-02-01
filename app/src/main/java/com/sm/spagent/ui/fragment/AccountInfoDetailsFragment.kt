@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.sm.spagent.R
 import com.sm.spagent.databinding.FragmentAccountInfoDetailsBinding
+import com.sm.spagent.model.FragmentType
 import com.sm.spagent.ui.activity.MerchantDetailsActivity
 import com.sm.spagent.ui.viewmodel.AccountInfoDetailsViewModel
 import com.squareup.picasso.Picasso
@@ -197,8 +198,9 @@ class AccountInfoDetailsFragment : BaseFragment() {
   }
 
   override fun onResume() {
-    Log.d(TAG, "onResume: ")
     super.onResume()
+    Log.d(TAG, "onResume: ")
+    (activity as MerchantDetailsActivity).setFragmentType(FragmentType.ACCOUNT_INFO)
   }
 
   override fun onDestroyView() {

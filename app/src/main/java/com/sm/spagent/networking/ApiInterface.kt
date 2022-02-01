@@ -85,6 +85,11 @@ interface ApiInterface {
     @Body ownerInfo: OwnerInfo
   ): Response<OwnerInfo>
 
+  @POST("qr-update-shop-owner-info")
+  suspend fun updateOwnerInfo(
+    @Body ownerInfo: OwnerInfo
+  ): Response<OwnerInfo>
+
   @POST("qr-store-shop-info")
   suspend fun submitShopInfo(
     @Body shopInfo: ShopInfo
