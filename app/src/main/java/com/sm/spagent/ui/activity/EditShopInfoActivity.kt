@@ -277,6 +277,9 @@ class EditShopInfoActivity : BaseActivity() {
         .placeholder(R.drawable.ic_baseline_storefront_24)
         .error(R.drawable.ic_baseline_broken_image_24)
         .into(binding.shopFrontImageView)
+
+      tradeLicenseImage = shopInfo?.trade_licence_base64
+      shopFrontImage = shopInfo?.shop_front_img_base64
     }
 
     viewModel.shopInfo.observe(this) { shopInfo ->
@@ -289,7 +292,7 @@ class EditShopInfoActivity : BaseActivity() {
           shortToast(shopInfo.message.toString())
         }
         else -> {
-          shortToast(R.string.something_went_wrong)
+          shortToast(shopInfo.message.toString())
         }
       }
     }
@@ -490,7 +493,7 @@ class EditShopInfoActivity : BaseActivity() {
   }
 
   private fun submitShopInfo(shopInfo: ShopInfo) {
-    viewModel.submitShopInfo(shopInfo)
+    viewModel.updateShopInfo(shopInfo)
   }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
