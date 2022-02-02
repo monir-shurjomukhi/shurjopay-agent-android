@@ -108,10 +108,11 @@ class MerchantDetailsActivity : AppCompatActivity() {
             startActivity(intent)
           }
           FragmentType.ACCOUNT_INFO -> {
-            /*val intent = Intent(this, EditPersonalInfoActivity::class.java)
+            val intent = Intent(this, EditAccountInfoActivity::class.java)
+            intent.putExtra(MERCHANT_ID, getMerchantId())
             intent.putExtra(ACCOUNT_ID, getAccountId())
             intent.putExtra(NOMINEE_ID, getNomineeId())
-            startActivity(intent)*/
+            startActivity(intent)
           }
         }
         true

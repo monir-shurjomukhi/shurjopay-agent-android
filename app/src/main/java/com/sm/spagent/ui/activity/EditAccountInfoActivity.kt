@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageView
 import com.canhub.cropper.options
+import com.sm.spagent.R
 import com.sm.spagent.databinding.ActivityEditAccountInfoBinding
 import com.sm.spagent.model.AccountCategory
 import com.sm.spagent.model.AccountInfo
@@ -107,7 +108,7 @@ class EditAccountInfoActivity : BaseActivity() {
     setContentView(binding.root)
     supportActionBar?.setDisplayHomeAsUpEnabled(true)
     supportActionBar?.setDisplayShowHomeEnabled(true)
-    supportActionBar?.title = getString(com.sm.spagent.R.string.edit_shop_info)
+    supportActionBar?.title = getString(R.string.edit_account_info)
 
     viewModel = ViewModelProvider(this)[EditAccountInfoViewModel::class.java]
     merchantId = intent.getIntExtra(MERCHANT_ID, -1)
@@ -176,19 +177,19 @@ class EditAccountInfoActivity : BaseActivity() {
 
     binding.accountRadioGroup.setOnCheckedChangeListener { _, checkedId ->
       when (checkedId) {
-        com.sm.spagent.R.id.existingAccountRadioButton -> {
+        R.id.existingAccountRadioButton -> {
           accountCategory = AccountCategory.EXISTING_BANK
           binding.accountInfoLayout.visibility = View.VISIBLE
           binding.mfsInfoLayout.visibility = View.GONE
           binding.nomineeInfoLayout.visibility = View.GONE
         }
-        com.sm.spagent.R.id.mfsAccountRadioButton -> {
+        R.id.mfsAccountRadioButton -> {
           accountCategory = AccountCategory.MFS
           binding.accountInfoLayout.visibility = View.GONE
           binding.mfsInfoLayout.visibility = View.VISIBLE
           binding.nomineeInfoLayout.visibility = View.GONE
         }
-        com.sm.spagent.R.id.newAccountRadioButton -> {
+        R.id.newAccountRadioButton -> {
           accountCategory = AccountCategory.NEW
           binding.accountInfoLayout.visibility = View.GONE
           binding.mfsInfoLayout.visibility = View.GONE
@@ -297,6 +298,9 @@ class EditAccountInfoActivity : BaseActivity() {
           binding.divisionTextView.setAdapter(adapter)
         }
       }
+
+      viewModel.getAccountInfo(accountId)
+      viewModel.getNomineeInfo(nomineeId)
     }
 
     viewModel.district.observe(this) { district ->
@@ -330,6 +334,108 @@ class EditAccountInfoActivity : BaseActivity() {
         }
       }
     }
+
+    viewModel.accountInfoDetails.observe(this) {
+      val accountInfo = it.account_info?.get(0)
+
+      if (accountInfo?.is_mfs != null && accountInfo.is_mfs == 1) {
+        if (!accountInfo.account_type.isNullOrEmpty()) {
+          binding.mfsAccountTypeTextView.setText(accountInfo.account_type, false)
+        }
+        if (!accountInfo.account_name.isNullOrEmpty()) {
+          binding.mfsAccountNameLayout.editText?.setText(accountInfo.account_name)
+        }
+        if (!accountInfo.account_no.isNullOrEmpty()) {
+          binding.mfsAccountNumberLayout.editText?.setText(accountInfo.account_no)
+        }
+        if (!accountInfo.bank_name.isNullOrEmpty()) {
+          binding.mfsNameTextView.setText(accountInfo.bank_name, false)
+        }
+      } else {
+        if (!accountInfo?.account_type.isNullOrEmpty()) {
+          binding.accountTypeTextView.setText(accountInfo?.account_type, false)
+        }
+        if (!accountInfo?.account_name.isNullOrEmpty()) {
+          binding.accountNameLayout.editText?.setText(accountInfo?.account_name)
+        }
+        if (!accountInfo?.account_no.isNullOrEmpty()) {
+          binding.accountNumberLayout.editText?.setText(accountInfo?.account_no)
+        }
+        if (!accountInfo?.bank_name.isNullOrEmpty()) {
+          binding.bankNameTextView.setText(accountInfo?.bank_name, false)
+        }
+        if (!accountInfo?.bank_branch_name.isNullOrEmpty()) {
+          binding.branchNameLayout.editText?.setText(accountInfo?.bank_branch_name)
+        }
+        if (!accountInfo?.routing_no.isNullOrEmpty()) {
+          binding.routingNumberLayout.editText?.setText(accountInfo?.routing_no)
+        }
+      }
+    }
+/*
+
+    viewModel.nomineeInfoDetails.observe(viewLifecycleOwner) {
+      val nomineeInfo = it.nominee_info?.get(0)
+
+      if (!nomineeInfo?.name.isNullOrEmpty()) {
+        binding.nomineeNameTextView.text = nomineeInfo?.name
+      }
+      if (!nomineeInfo?.father_or_husband_name.isNullOrEmpty()) {
+        binding.fathersNameTextView.text = nomineeInfo?.father_or_husband_name
+      }
+      if (!nomineeInfo?.mother_name.isNullOrEmpty()) {
+        binding.mothersNameTextView.text = nomineeInfo?.mother_name
+      }
+      if (!nomineeInfo?.relation_name.isNullOrEmpty()) {
+        binding.relationTextView.text = nomineeInfo?.relation_name
+      }
+      if (!nomineeInfo?.contact_no.isNullOrEmpty()) {
+        binding.contactNoTextView.text = nomineeInfo?.contact_no
+      }
+      if (!nomineeInfo?.email_address.isNullOrEmpty()) {
+        binding.emailTextView.text = nomineeInfo?.email_address
+      }
+      if (!nomineeInfo?.dob.isNullOrEmpty()) {
+        binding.dobTextView.text = nomineeInfo?.dob
+      }
+      if (!nomineeInfo?.nid_no.isNullOrEmpty()) {
+        binding.nidTextView.text = nomineeInfo?.nid_no
+      }
+      if (!nomineeInfo?.occupation_name.isNullOrEmpty()) {
+        binding.occupationTextView.text = nomineeInfo?.occupation_name
+      }
+      if (!nomineeInfo?.addess.isNullOrEmpty()) {
+        binding.addressTextView.text = nomineeInfo?.addess
+      }
+      if (!nomineeInfo?.division_name.isNullOrEmpty()) {
+        binding.divisionTextView.text = nomineeInfo?.division_name
+      }
+      if (!nomineeInfo?.district_name.isNullOrEmpty()) {
+        binding.districtTextView.text = nomineeInfo?.district_name
+      }
+      if (!nomineeInfo?.police_station_name.isNullOrEmpty()) {
+        binding.policeStationTextView.text = nomineeInfo?.police_station_name
+      }
+
+      Picasso.get()
+        .load("https://stagingapp.engine.shurjopayment.com/nominee_img/${nomineeInfo?.nominee_img}")
+        .placeholder(R.drawable.ic_baseline_person_24)
+        .error(R.drawable.ic_baseline_broken_image_24)
+        .into(binding.nomineeImageView)
+
+      Picasso.get()
+        .load("https://stagingapp.engine.shurjopayment.com/nid_img/frontside/${nomineeInfo?.nid_front}")
+        .placeholder(R.drawable.ic_baseline_credit_card_24)
+        .error(R.drawable.ic_baseline_broken_image_24)
+        .into(binding.nomineeNIDFrontImageView)
+
+      Picasso.get()
+        .load("https://stagingapp.engine.shurjopayment.com/nid_img/backside/${nomineeInfo?.nid_back}")
+        .placeholder(R.drawable.ic_baseline_credit_card_24)
+        .error(R.drawable.ic_baseline_broken_image_24)
+        .into(binding.nomineeNIDBackImageView)
+    }
+*/
 
     viewModel.accountInfo.observe(this) { accountInfo ->
       Log.d(TAG, "accountInfo: $accountInfo")

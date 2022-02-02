@@ -41,6 +41,14 @@ class EditAccountInfoViewModel(application: Application) : BaseViewModel(applica
   val policeStation: LiveData<PoliceStation>
     get() = _policeStation
 
+  private val _accountInfoDetails = MutableLiveData<AccountInfoDetails>()
+  val accountInfoDetails: LiveData<AccountInfoDetails>
+    get() = _accountInfoDetails
+
+  private val _nomineeInfoDetails = MutableLiveData<NomineeInfoDetails>()
+  val nomineeInfoDetails: LiveData<NomineeInfoDetails>
+    get() = _nomineeInfoDetails
+
   private val _accountInfo = MutableLiveData<AccountInfo>()
   val accountInfo: LiveData<AccountInfo>
     get() = _accountInfo
@@ -197,6 +205,58 @@ class EditAccountInfoViewModel(application: Application) : BaseViewModel(applica
 
       if (response.isSuccessful && response.body() != null) {
         _policeStation.value = response.body()
+      } else {
+        message.value = R.string.unable_to_connect
+      }
+    }
+  }
+
+  fun getAccountInfo(id: Int) {
+    viewModelScope.launch {
+      progress.value = true
+      val response = try {
+        authApiClient.getAccountInfo(id)
+      } catch (e: IOException) {
+        Log.e(TAG, "getAccountInfo: ${e.message}", e)
+        progress.value = false
+        message.value = R.string.unable_to_connect
+        return@launch
+      } catch (e: HttpException) {
+        Log.e(TAG, "getAccountInfo: ${e.message}", e)
+        //progress.value = false
+        message.value = R.string.unable_to_connect
+        return@launch
+      }
+
+      progress.value = false
+      if (response.isSuccessful && response.body() != null) {
+        _accountInfoDetails.value = response.body()
+      } else {
+        message.value = R.string.unable_to_connect
+      }
+    }
+  }
+
+  fun getNomineeInfo(id: Int) {
+    viewModelScope.launch {
+      //progress.value = true
+      val response = try {
+        authApiClient.getNomineeInfo(id)
+      } catch (e: IOException) {
+        Log.e(TAG, "getNomineeInfo: ${e.message}", e)
+        //progress.value = false
+        message.value = R.string.unable_to_connect
+        return@launch
+      } catch (e: HttpException) {
+        Log.e(TAG, "getNomineeInfo: ${e.message}", e)
+        //progress.value = false
+        message.value = R.string.unable_to_connect
+        return@launch
+      }
+
+      //progress.value = false
+      if (response.isSuccessful && response.body() != null) {
+        _nomineeInfoDetails.value = response.body()
       } else {
         message.value = R.string.unable_to_connect
       }
