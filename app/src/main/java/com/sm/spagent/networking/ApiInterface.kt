@@ -95,13 +95,28 @@ interface ApiInterface {
     @Body shopInfo: ShopInfo
   ): Response<ShopInfo>
 
+  @POST("qr-update-shop-info")
+  suspend fun updateShopInfo(
+    @Body shopInfo: ShopInfo
+  ): Response<ShopInfo>
+
   @POST("qr-store-settlement-ac-info")
   suspend fun submitAccountInfo(
     @Body accountInfo: AccountInfo
   ): Response<AccountInfo>
 
+  @POST("qr-update-settlement-ac-info")
+  suspend fun updateAccountInfo(
+    @Body accountInfo: AccountInfo
+  ): Response<AccountInfo>
+
   @POST("qr-save-nominee-info")
   suspend fun submitNomineeInfo(
+    @Body nomineeInfo: NomineeInfo
+  ): Response<NomineeInfo>
+
+  @POST("qr-update-nominee-info")
+  suspend fun updateNomineeInfo(
     @Body nomineeInfo: NomineeInfo
   ): Response<NomineeInfo>
 }

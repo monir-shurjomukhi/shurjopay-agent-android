@@ -429,6 +429,7 @@ class ShopInfoFragment : BaseFragment() {
     }
 
     val shopInfo = ShopInfo(
+      null,
       shopName,
       tin,
       businessTypes[businessType]!!,

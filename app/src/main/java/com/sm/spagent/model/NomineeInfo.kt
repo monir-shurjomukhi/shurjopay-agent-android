@@ -1,6 +1,7 @@
 package com.sm.spagent.model
 
 data class NomineeInfo(
+  val id: Int?,
   val name: String,
   val father_or_husband_name: String,
   val mother_name: String,
