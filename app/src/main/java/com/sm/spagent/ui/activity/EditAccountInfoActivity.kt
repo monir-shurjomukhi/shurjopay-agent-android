@@ -1,12 +1,15 @@
 package com.sm.spagent.ui.activity
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.sm.spagent.R
+import com.sm.spagent.databinding.ActivityEditAccountInfoBinding
 
 class EditAccountInfoActivity : BaseActivity() {
+
+  private lateinit var binding: ActivityEditAccountInfoBinding
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_edit_account_info)
+    binding = ActivityEditAccountInfoBinding.inflate(layoutInflater)
+    setContentView(binding.root)
   }
 }
