@@ -669,6 +669,7 @@ class AccountInfoFragment : BaseFragment() {
     }
 
     val nomineeInfo = NomineeInfo(
+      null,
       nomineeName,
       fatherHusbandsName,
       mothersName,

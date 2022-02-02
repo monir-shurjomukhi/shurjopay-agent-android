@@ -114,4 +114,9 @@ interface ApiInterface {
   suspend fun submitNomineeInfo(
     @Body nomineeInfo: NomineeInfo
   ): Response<NomineeInfo>
+
+  @POST("qr-update-nominee-info")
+  suspend fun updateNomineeInfo(
+    @Body nomineeInfo: NomineeInfo
+  ): Response<NomineeInfo>
 }

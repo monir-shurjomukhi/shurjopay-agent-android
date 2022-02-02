@@ -229,18 +229,18 @@ class EditAccountInfoViewModel(application: Application) : BaseViewModel(applica
     }
   }
 
-  fun submitNomineeInfo(nomineeInfo: NomineeInfo) {
+  fun updateNomineeInfo(nomineeInfo: NomineeInfo) {
     viewModelScope.launch {
       progress.value = true
       val response = try {
-        authApiClient.submitNomineeInfo(nomineeInfo)
+        authApiClient.updateNomineeInfo(nomineeInfo)
       } catch (e: IOException) {
-        Log.e(TAG, "submitNomineeInfo: ${e.message}", e)
+        Log.e(TAG, "updateNomineeInfo: ${e.message}", e)
         progress.value = false
         message.value = R.string.unable_to_connect
         return@launch
       } catch (e: HttpException) {
-        Log.e(TAG, "submitNomineeInfo: ${e.message}", e)
+        Log.e(TAG, "updateNomineeInfo: ${e.message}", e)
         progress.value = false
         message.value = R.string.unable_to_connect
         return@launch
