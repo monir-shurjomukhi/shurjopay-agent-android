@@ -453,6 +453,7 @@ class AccountInfoFragment : BaseFragment() {
     }
 
     val accountInfo = AccountInfo(
+      null,
       accountCategory,
       accountType,
       accountName,
@@ -513,6 +514,7 @@ class AccountInfoFragment : BaseFragment() {
     }
 
     val accountInfo = AccountInfo(
+      null,
       accountCategory,
       accountType,
       accountName,

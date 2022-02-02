@@ -105,6 +105,11 @@ interface ApiInterface {
     @Body accountInfo: AccountInfo
   ): Response<AccountInfo>
 
+  @POST("qr-update-settlement-ac-info")
+  suspend fun updateAccountInfo(
+    @Body accountInfo: AccountInfo
+  ): Response<AccountInfo>
+
   @POST("qr-save-nominee-info")
   suspend fun submitNomineeInfo(
     @Body nomineeInfo: NomineeInfo
