@@ -151,18 +151,18 @@ class EditShopInfoViewModel(application: Application) : BaseViewModel(applicatio
     }
   }
 
-  fun submitShopInfo(shopInfo: ShopInfo) {
+  fun updateShopInfo(shopInfo: ShopInfo) {
     viewModelScope.launch {
       progress.value = true
       val response = try {
-        authApiClient.submitShopInfo(shopInfo)
+        authApiClient.updateShopInfo(shopInfo)
       } catch (e: IOException) {
-        Log.e(TAG, "submitShopInfo: ${e.message}", e)
+        Log.e(TAG, "updateShopInfo: ${e.message}", e)
         progress.value = false
         message.value = R.string.unable_to_connect
         return@launch
       } catch (e: HttpException) {
-        Log.e(TAG, "submitShopInfo: ${e.message}", e)
+        Log.e(TAG, "updateShopInfo: ${e.message}", e)
         progress.value = false
         message.value = R.string.unable_to_connect
         return@launch

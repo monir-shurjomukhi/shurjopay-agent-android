@@ -461,12 +461,13 @@ class EditShopInfoActivity : BaseActivity() {
       return
     }*/
     if (shopFrontImage == null) {
-      shortSnack(binding.shopFrontLayout, R.string.capture_shop_front_image)
+      shortSnack(binding.updateButton, R.string.capture_shop_front_image)
       binding.scrollView.smoothScrollTo(0, binding.shopFrontLayout.y.toInt())
       return
     }
 
     val shopInfo = ShopInfo(
+      shopId,
       shopName,
       tin,
       businessTypes[businessType]!!,
