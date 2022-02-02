@@ -1,6 +1,7 @@
 package com.sm.spagent.model
 
 data class AccountInfo(
+  val id: Int?,
   val account_category: String,
   val account_type: String,
   val account_name: String,

@@ -1,6 +1,7 @@
 package com.sm.spagent.model
 
 data class ShopInfo(
+  val id: Int?,
   val shop_or_business_name: String,
   val tin_no: String?,
   val business_type_id: Int,

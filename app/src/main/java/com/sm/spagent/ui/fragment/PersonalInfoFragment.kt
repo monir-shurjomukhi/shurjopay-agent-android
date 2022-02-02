@@ -195,19 +195,19 @@ class PersonalInfoFragment : BaseFragment() {
   }
 
   private fun observeData() {
-    viewModel.progress.observe(viewLifecycleOwner, {
+    viewModel.progress.observe(viewLifecycleOwner) {
       if (it) {
         showProgress()
       } else {
         hideProgress()
       }
-    })
+    }
 
-    viewModel.message.observe(viewLifecycleOwner, {
+    viewModel.message.observe(viewLifecycleOwner) {
       shortSnack(binding.saveNextButton, it)
-    })
+    }
 
-    viewModel.division.observe(viewLifecycleOwner, { division ->
+    viewModel.division.observe(viewLifecycleOwner) { division ->
       divisions.clear()
       for (data in division.divisions!!) {
         divisions[data.division_name.toString()] = data.id!!
@@ -221,9 +221,9 @@ class PersonalInfoFragment : BaseFragment() {
           binding.divisionTextView.setAdapter(adapter)
         }
       }
-    })
+    }
 
-    viewModel.district.observe(viewLifecycleOwner, { district ->
+    viewModel.district.observe(viewLifecycleOwner) { district ->
       districts.clear()
       for (data in district.districts!!) {
         districts[data.district_name.toString()] = data.id!!
@@ -237,9 +237,9 @@ class PersonalInfoFragment : BaseFragment() {
           binding.districtTextView.setAdapter(adapter)
         }
       }
-    })
+    }
 
-    viewModel.policeStation.observe(viewLifecycleOwner, { policeStation ->
+    viewModel.policeStation.observe(viewLifecycleOwner) { policeStation ->
       policeStations.clear()
       for (data in policeStation.police_stations!!) {
         policeStations[data.police_station_name.toString()] = data.id!!
@@ -253,16 +253,18 @@ class PersonalInfoFragment : BaseFragment() {
           binding.policeStationTextView.setAdapter(adapter)
         }
       }
-    })
+    }
 
-    viewModel.ocr.observe(viewLifecycleOwner, { ocr ->
+    viewModel.ocr.observe(viewLifecycleOwner) { ocr ->
       Log.d(TAG, "ocr: $ocr")
-      if (ocr.nid != null) binding.step2NIDLayout.editText?.setText(ocr.nid.toString())
-      if (ocr.dob != null) binding.step2DOBLayout.editText?.setText(ocr.dob)
+      if (ocr.nid != null && (ocr.nid.toString().length == 10 || ocr.nid.toString().length == 13
+            || ocr.nid.toString().length == 17))
+        binding.step2NIDLayout.editText?.setText(ocr.nid.toString())
+      if (ocr.dob != null && ocr.dob.length == 10) binding.step2DOBLayout.editText?.setText(ocr.dob)
       goToNextStep()
-    })
+    }
 
-    viewModel.nid.observe(viewLifecycleOwner, { nid ->
+    viewModel.nid.observe(viewLifecycleOwner) { nid ->
       Log.d(TAG, "nid: $nid")
       when (nid.sp_code) {
         "1" -> {
@@ -273,10 +275,16 @@ class PersonalInfoFragment : BaseFragment() {
           if (!nid.nid_response?.fatherEn.isNullOrEmpty()) {
             binding.fathersNameLayout.editText?.setText(nid.nid_response?.fatherEn)
             binding.fathersNameLayout.editText?.isEnabled = false
+          } else {
+            binding.fathersNameLayout.hint =
+              "${getString(R.string.father_husband_s_name)} (${nid.nid_response?.father})"
           }
           if (!nid.nid_response?.motherEn.isNullOrEmpty()) {
             binding.mothersNameLayout.editText?.setText(nid.nid_response?.motherEn)
             binding.mothersNameLayout.editText?.isEnabled = false
+          } else {
+            binding.fathersNameLayout.hint =
+              "${getString(R.string.mother_s_name)} (${nid.nid_response?.mother})"
           }
           if (!nid.nid_response?.nationalId.isNullOrEmpty()) {
             binding.nidLayout.editText?.setText(nid.nid_response?.nationalId)
@@ -307,9 +315,9 @@ class PersonalInfoFragment : BaseFragment() {
           shortToast(R.string.something_went_wrong)
         }
       }
-    })
+    }
 
-    viewModel.ownerInfo.observe(viewLifecycleOwner, { ownerInfo ->
+    viewModel.ownerInfo.observe(viewLifecycleOwner) { ownerInfo ->
       Log.d(TAG, "ownerInfo: $ownerInfo")
       when (ownerInfo.sp_code) {
         "1" -> {
@@ -329,7 +337,7 @@ class PersonalInfoFragment : BaseFragment() {
           shortToast(R.string.something_went_wrong)
         }
       }
-    })
+    }
   }
 
   private fun showDatePickerDialog() {
@@ -541,6 +549,7 @@ class PersonalInfoFragment : BaseFragment() {
     }
 
     val ownerInfo = OwnerInfo(
+      null,
       name,
       fathersName,
       mothersName,

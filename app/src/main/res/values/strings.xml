@@ -83,7 +83,7 @@
   <string name="occupation">Occupation*</string>
   <string name="submit">Submit</string>
   <string name="district_name">%s,</string>
-  <string name="location">%f,%f</string>
+  <string name="location">%f, %f</string>
   <string name="location_not_found">Location Not Found</string>
   <string name="getting_location">Getting Location…</string>
   <string name="title_activity_merchant_details">MerchantDetailsActivity</string>
@@ -95,6 +95,8 @@
   <string name="edit">Edit</string>
   <string name="update">Update</string>
   <string name="edit_personal_info">Edit Personal Info</string>
+  <string name="edit_shop_info">Edit Shop Info</string>
+  <string name="edit_account_info">Edit Account Info</string>
   <!-- [START fcm_default_icon_string] -->
   <string name="msg_token_fmt" translatable="false">FCM registration Token: %s</string>
   <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>

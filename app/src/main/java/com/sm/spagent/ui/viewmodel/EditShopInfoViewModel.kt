@@ -11,7 +11,11 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
-class EditPersonalInfoViewModel(application: Application) : BaseViewModel(application) {
+class EditShopInfoViewModel(application: Application) : BaseViewModel(application) {
+
+  private val _businessType = MutableLiveData<BusinessType>()
+  val businessType: LiveData<BusinessType>
+    get() = _businessType
 
   private val _division = MutableLiveData<Division>()
   val division: LiveData<Division>
@@ -25,21 +29,35 @@ class EditPersonalInfoViewModel(application: Application) : BaseViewModel(applic
   val policeStation: LiveData<PoliceStation>
     get() = _policeStation
 
-  private val _ocr = MutableLiveData<Ocr>()
-  val ocr: LiveData<Ocr>
-    get() = _ocr
+  private val _shopInfoDetails = MutableLiveData<ShopInfoDetails>()
+  val shopInfoDetails: LiveData<ShopInfoDetails>
+    get() = _shopInfoDetails
 
-  private val _nid = MutableLiveData<Nid>()
-  val nid: LiveData<Nid>
-    get() = _nid
+  private val _shopInfo = MutableLiveData<ShopInfo>()
+  val shopInfo: LiveData<ShopInfo>
+    get() = _shopInfo
 
-  private val _ownerInfo = MutableLiveData<OwnerInfo>()
-  val ownerInfo: LiveData<OwnerInfo>
-    get() = _ownerInfo
+  fun getBusinessTypes() {
+    viewModelScope.launch {
+      val response = try {
+        authApiClient.getBusinessTypes()
+      } catch (e: IOException) {
+        Log.e(TAG, "getBusinessTypes: ${e.message}", e)
+        message.value = R.string.unable_to_connect
+        return@launch
+      } catch (e: HttpException) {
+        Log.e(TAG, "getBusinessTypes: ${e.message}", e)
+        message.value = R.string.unable_to_connect
+        return@launch
+      }
 
-  private val _personalInfoDetails = MutableLiveData<PersonalInfoDetails>()
-  val personalInfoDetails: LiveData<PersonalInfoDetails>
-    get() = _personalInfoDetails
+      if (response.isSuccessful && response.body() != null) {
+        _businessType.value = response.body()
+      } else {
+        message.value = R.string.unable_to_connect
+      }
+    }
+  }
 
   fun getDivisions() {
     viewModelScope.launch {
@@ -107,18 +125,18 @@ class EditPersonalInfoViewModel(application: Application) : BaseViewModel(applic
     }
   }
 
-  fun ocrNid(ocr: Ocr) {
+  fun getShopInfo(shopId: Int) {
     viewModelScope.launch {
       progress.value = true
       val response = try {
-        ocrApiClient.ocrNid(ocr)
+        authApiClient.getShopInfo(shopId)
       } catch (e: IOException) {
-        Log.e(TAG, "ocrNid: ${e.message}", e)
+        Log.e(TAG, "getShopInfo: ${e.message}", e)
         progress.value = false
         message.value = R.string.unable_to_connect
         return@launch
       } catch (e: HttpException) {
-        Log.e(TAG, "ocrNid: ${e.message}", e)
+        Log.e(TAG, "getShopInfo: ${e.message}", e)
         progress.value = false
         message.value = R.string.unable_to_connect
         return@launch
@@ -126,25 +144,25 @@ class EditPersonalInfoViewModel(application: Application) : BaseViewModel(applic
 
       progress.value = false
       if (response.isSuccessful && response.body() != null) {
-        _ocr.value = response.body()
+        _shopInfoDetails.value = response.body()
       } else {
         message.value = R.string.unable_to_connect
       }
     }
   }
 
-  fun getNidInfo(nid: Nid) {
+  fun updateShopInfo(shopInfo: ShopInfo) {
     viewModelScope.launch {
       progress.value = true
       val response = try {
-        authApiClient.getNidInfo(nid)
+        authApiClient.updateShopInfo(shopInfo)
       } catch (e: IOException) {
-        Log.e(TAG, "getNidInfo: ${e.message}", e)
+        Log.e(TAG, "updateShopInfo: ${e.message}", e)
         progress.value = false
         message.value = R.string.unable_to_connect
         return@launch
       } catch (e: HttpException) {
-        Log.e(TAG, "getNidInfo: ${e.message}", e)
+        Log.e(TAG, "updateShopInfo: ${e.message}", e)
         progress.value = false
         message.value = R.string.unable_to_connect
         return@launch
@@ -152,59 +170,7 @@ class EditPersonalInfoViewModel(application: Application) : BaseViewModel(applic
 
       progress.value = false
       if (response.isSuccessful && response.body() != null) {
-        _nid.value = response.body()
-      } else {
-        message.value = R.string.unable_to_connect_please_try_again
-      }
-    }
-  }
-
-  fun getPersonalInfo(shopOwnerId: Int) {
-    viewModelScope.launch {
-      progress.value = true
-      val response = try {
-        authApiClient.getPersonalInfo(shopOwnerId)
-      } catch (e: IOException) {
-        Log.e(TAG, "getPersonalInfo: ${e.message}", e)
-        progress.value = false
-        message.value = R.string.unable_to_connect
-        return@launch
-      } catch (e: HttpException) {
-        Log.e(TAG, "getPersonalInfo: ${e.message}", e)
-        progress.value = false
-        message.value = R.string.unable_to_connect
-        return@launch
-      }
-
-      progress.value = false
-      if (response.isSuccessful && response.body() != null) {
-        _personalInfoDetails.value = response.body()
-      } else {
-        message.value = R.string.unable_to_connect
-      }
-    }
-  }
-
-  fun updatePersonalInfo(ownerInfo: OwnerInfo) {
-    viewModelScope.launch {
-      progress.value = true
-      val response = try {
-        authApiClient.updateOwnerInfo(ownerInfo)
-      } catch (e: IOException) {
-        Log.e(TAG, "updatePersonalInfo: ${e.message}", e)
-        progress.value = false
-        message.value = R.string.unable_to_connect
-        return@launch
-      } catch (e: HttpException) {
-        Log.e(TAG, "updatePersonalInfo: ${e.message}", e)
-        progress.value = false
-        message.value = R.string.unable_to_connect
-        return@launch
-      }
-
-      progress.value = false
-      if (response.isSuccessful && response.body() != null) {
-        _ownerInfo.value = response.body()
+        _shopInfo.value = response.body()
       } else {
         message.value = R.string.unable_to_connect
       }
@@ -212,6 +178,6 @@ class EditPersonalInfoViewModel(application: Application) : BaseViewModel(applic
   }
 
   companion object {
-    private const val TAG = "EditPersonalInfoViewModel"
+    private const val TAG = "EditShopInfoViewModel"
   }
 }

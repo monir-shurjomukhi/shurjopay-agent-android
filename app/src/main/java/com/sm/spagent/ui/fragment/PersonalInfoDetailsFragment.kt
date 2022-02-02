@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.sm.spagent.R
 import com.sm.spagent.databinding.FragmentPersonalInfoDetailsBinding
+import com.sm.spagent.model.FragmentType
 import com.sm.spagent.ui.activity.MerchantDetailsActivity
 import com.sm.spagent.ui.viewmodel.PersonalInfoDetailsViewModel
 import com.squareup.picasso.Picasso
@@ -127,8 +128,9 @@ class PersonalInfoDetailsFragment : BaseFragment() {
   }
 
   override fun onResume() {
-    Log.d(TAG, "onResume:")
     super.onResume()
+    Log.d(TAG, "onResume:")
+    (activity as MerchantDetailsActivity).setFragmentType(FragmentType.PERSONAL_INFO)
   }
 
   override fun onDestroyView() {

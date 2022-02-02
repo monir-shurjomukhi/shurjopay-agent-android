@@ -85,8 +85,18 @@ interface ApiInterface {
     @Body ownerInfo: OwnerInfo
   ): Response<OwnerInfo>
 
+  @POST("qr-update-shop-owner-info")
+  suspend fun updateOwnerInfo(
+    @Body ownerInfo: OwnerInfo
+  ): Response<OwnerInfo>
+
   @POST("qr-store-shop-info")
   suspend fun submitShopInfo(
+    @Body shopInfo: ShopInfo
+  ): Response<ShopInfo>
+
+  @POST("qr-update-shop-info")
+  suspend fun updateShopInfo(
     @Body shopInfo: ShopInfo
   ): Response<ShopInfo>
 
@@ -95,8 +105,18 @@ interface ApiInterface {
     @Body accountInfo: AccountInfo
   ): Response<AccountInfo>
 
+  @POST("qr-update-settlement-ac-info")
+  suspend fun updateAccountInfo(
+    @Body accountInfo: AccountInfo
+  ): Response<AccountInfo>
+
   @POST("qr-save-nominee-info")
   suspend fun submitNomineeInfo(
+    @Body nomineeInfo: NomineeInfo
+  ): Response<NomineeInfo>
+
+  @POST("qr-update-nominee-info")
+  suspend fun updateNomineeInfo(
     @Body nomineeInfo: NomineeInfo
   ): Response<NomineeInfo>
 }

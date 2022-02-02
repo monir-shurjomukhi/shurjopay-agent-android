@@ -32,19 +32,19 @@ class LoginActivity : BaseActivity() {
       login()
     }
 
-    viewModel.progress.observe(this, {
+    viewModel.progress.observe(this) {
       if (it) {
         showProgress()
       } else {
         hideProgress()
       }
-    })
+    }
 
-    viewModel.message.observe(this, {
+    viewModel.message.observe(this) {
       shortSnack(binding.loginButton, it)
-    })
+    }
 
-    viewModel.login.observe(this, {
+    viewModel.login.observe(this) {
       when {
         it.sp_code.equals("200") -> {
           preference.putToken(it.token)
@@ -55,7 +55,7 @@ class LoginActivity : BaseActivity() {
           shortSnack(binding.loginButton, R.string.mobile_number_or_password_did_not_match)
         }
       }
-    })
+    }
   }
 
   private fun login() {

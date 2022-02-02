@@ -1,17 +1,14 @@
-package com.sm.spagent.ui.fragment
+package com.sm.spagent.ui.activity
 
 import android.app.DatePickerDialog
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import android.util.Patterns
-import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.ViewModelProvider
@@ -20,18 +17,16 @@ import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageView
 import com.canhub.cropper.options
 import com.sm.spagent.R
-import com.sm.spagent.databinding.FragmentAccountInfoBinding
+import com.sm.spagent.databinding.ActivityEditAccountInfoBinding
 import com.sm.spagent.model.AccountCategory
 import com.sm.spagent.model.AccountInfo
 import com.sm.spagent.model.ImageType
 import com.sm.spagent.model.NomineeInfo
-import com.sm.spagent.ui.activity.NewMerchantActivity
-import com.sm.spagent.ui.activity.SuccessActivity
-import com.sm.spagent.ui.viewmodel.AccountInfoViewModel
+import com.sm.spagent.ui.viewmodel.EditAccountInfoViewModel
 import com.sm.spagent.utils.ACCOUNT_ID
 import com.sm.spagent.utils.MERCHANT_ID
 import com.sm.spagent.utils.NOMINEE_ID
-import com.sm.spagent.utils.SHOP_ID
+import com.squareup.picasso.Picasso
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.quality
 import kotlinx.coroutines.launch
@@ -39,15 +34,14 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.*
 
-class AccountInfoFragment : BaseFragment() {
+class EditAccountInfoActivity : BaseActivity() {
 
-  private lateinit var viewModel: AccountInfoViewModel
-  private var _binding: FragmentAccountInfoBinding? = null
+  private lateinit var binding: ActivityEditAccountInfoBinding
+  private lateinit var viewModel: EditAccountInfoViewModel
 
-  // This property is only valid between onCreateView and
-  // onDestroyView.
-  private val binding get() = _binding!!
-
+  private var merchantId = -1
+  private var accountId = -1
+  private var nomineeId = -1
   private var imageType = ImageType.NOMINEE
   private var accountCategory = AccountCategory.EXISTING_BANK
   private var nomineeImage: String? = null
@@ -69,13 +63,13 @@ class AccountInfoFragment : BaseFragment() {
       // use the returned uri
       val uriContent = result.uriContent
       Log.d(TAG, "uriContent: $uriContent")
-      val uriFilePath = result.getUriFilePath(requireContext()) // optional usage
+      val uriFilePath = result.getUriFilePath(this) // optional usage
       Log.d(TAG, "uriFilePath: $uriFilePath")
       lifecycleScope.launch {
         showProgress()
         val file = File(uriFilePath)
         Log.d(TAG, "file size (KB): ${file.length() / 1024}")
-        val compressedImageFile = Compressor.compress(requireContext(), file) { quality(50) }
+        val compressedImageFile = Compressor.compress(this@EditAccountInfoActivity, file) { quality(50) }
         Log.d(TAG, "compressedImageFile size (KB): ${compressedImageFile.length() / 1024}")
         val bitmap = BitmapFactory.decodeFile(compressedImageFile.absolutePath)
         val outputStream = ByteArrayOutputStream()
@@ -109,15 +103,18 @@ class AccountInfoFragment : BaseFragment() {
     }
   }
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-    viewModel = ViewModelProvider(this)[AccountInfoViewModel::class.java]
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    binding = ActivityEditAccountInfoBinding.inflate(layoutInflater)
+    setContentView(binding.root)
+    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    supportActionBar?.setDisplayShowHomeEnabled(true)
+    supportActionBar?.title = getString(R.string.edit_account_info)
 
-    _binding = FragmentAccountInfoBinding.inflate(inflater, container, false)
-    val root: View = binding.root
+    viewModel = ViewModelProvider(this)[EditAccountInfoViewModel::class.java]
+    merchantId = intent.getIntExtra(MERCHANT_ID, -1)
+    accountId = intent.getIntExtra(ACCOUNT_ID, -1)
+    nomineeId = intent.getIntExtra(NOMINEE_ID, -1)
 
     setupViews()
     observeData()
@@ -127,17 +124,10 @@ class AccountInfoFragment : BaseFragment() {
     viewModel.getRelations()
     viewModel.getOccupations()
     viewModel.getDivisions()
-
-    return root
-  }
-
-  override fun onDestroyView() {
-    super.onDestroyView()
-    _binding = null
   }
 
   private fun setupViews() {
-    context?.let {
+    this.let {
       ArrayAdapter(
         it, android.R.layout.simple_list_item_1,
         accountTypes
@@ -146,7 +136,7 @@ class AccountInfoFragment : BaseFragment() {
       }
     }
 
-    context?.let {
+    this.let {
       ArrayAdapter(
         it, android.R.layout.simple_list_item_1,
         mfsAccountTypes
@@ -209,7 +199,7 @@ class AccountInfoFragment : BaseFragment() {
       }
     }
 
-    binding.saveNextButton.setOnClickListener {
+    binding.updateButton.setOnClickListener {
       when (accountCategory) {
         AccountCategory.EXISTING_BANK -> validateExistingBankInputs()
         AccountCategory.MFS -> validateMfsInputs()
@@ -219,7 +209,7 @@ class AccountInfoFragment : BaseFragment() {
   }
 
   private fun observeData() {
-    viewModel.progress.observe(viewLifecycleOwner) {
+    viewModel.progress.observe(this) {
       if (it) {
         showProgress()
       } else {
@@ -227,17 +217,17 @@ class AccountInfoFragment : BaseFragment() {
       }
     }
 
-    viewModel.message.observe(viewLifecycleOwner) {
-      shortSnack(binding.saveNextButton, it)
+    viewModel.message.observe(this) {
+      shortSnack(binding.updateButton, it)
     }
 
-    viewModel.bank.observe(viewLifecycleOwner) { bank ->
+    viewModel.bank.observe(this) { bank ->
       bankNames.clear()
       for (data in bank.bank_names!!) {
         bankNames[data.bank_name.toString()] = data.id!!
       }
 
-      context?.let {
+      this.let {
         ArrayAdapter(
           it, android.R.layout.simple_list_item_1,
           bankNames.keys.toList()
@@ -247,13 +237,13 @@ class AccountInfoFragment : BaseFragment() {
       }
     }
 
-    viewModel.mfs.observe(viewLifecycleOwner) { mfs ->
+    viewModel.mfs.observe(this) { mfs ->
       mfsNames.clear()
       for (data in mfs.mfs_names!!) {
         mfsNames[data.bank_name.toString()] = data.id!!
       }
 
-      context?.let {
+      this.let {
         ArrayAdapter(
           it, android.R.layout.simple_list_item_1,
           mfsNames.keys.toList()
@@ -263,13 +253,13 @@ class AccountInfoFragment : BaseFragment() {
       }
     }
 
-    viewModel.relation.observe(viewLifecycleOwner) { relation ->
+    viewModel.relation.observe(this) { relation ->
       relations.clear()
       for (data in relation.relation_names!!) {
         relations[data.relation_name.toString()] = data.id!!
       }
 
-      context?.let {
+      this.let {
         ArrayAdapter(
           it, android.R.layout.simple_list_item_1,
           relations.keys.toList()
@@ -279,13 +269,13 @@ class AccountInfoFragment : BaseFragment() {
       }
     }
 
-    viewModel.occupation.observe(viewLifecycleOwner) { occupation ->
+    viewModel.occupation.observe(this) { occupation ->
       occupations.clear()
       for (data in occupation.occupation_names!!) {
         occupations[data.occupation_name.toString()] = data.id!!
       }
 
-      context?.let {
+      this.let {
         ArrayAdapter(
           it, android.R.layout.simple_list_item_1,
           occupations.keys.toList()
@@ -295,13 +285,13 @@ class AccountInfoFragment : BaseFragment() {
       }
     }
 
-    viewModel.division.observe(viewLifecycleOwner) { division ->
+    viewModel.division.observe(this) { division ->
       divisions.clear()
       for (data in division.divisions!!) {
         divisions[data.division_name.toString()] = data.id!!
       }
 
-      context?.let {
+      this.let {
         ArrayAdapter(
           it, android.R.layout.simple_list_item_1,
           divisions.keys.toList()
@@ -309,15 +299,18 @@ class AccountInfoFragment : BaseFragment() {
           binding.divisionTextView.setAdapter(adapter)
         }
       }
+
+      if (accountId != -1) viewModel.getAccountInfo(accountId)
+      if (nomineeId != -1) viewModel.getNomineeInfo(nomineeId)
     }
 
-    viewModel.district.observe(viewLifecycleOwner) { district ->
+    viewModel.district.observe(this) { district ->
       districts.clear()
       for (data in district.districts!!) {
         districts[data.district_name.toString()] = data.id!!
       }
 
-      context?.let {
+      this.let {
         ArrayAdapter(
           it, android.R.layout.simple_list_item_1,
           districts.keys.toList()
@@ -327,13 +320,13 @@ class AccountInfoFragment : BaseFragment() {
       }
     }
 
-    viewModel.policeStation.observe(viewLifecycleOwner) { policeStation ->
+    viewModel.policeStation.observe(this) { policeStation ->
       policeStations.clear()
       for (data in policeStation.police_stations!!) {
         policeStations[data.police_station_name.toString()] = data.id!!
       }
 
-      context?.let {
+      this.let {
         ArrayAdapter(
           it, android.R.layout.simple_list_item_1,
           policeStations.keys.toList()
@@ -343,36 +336,138 @@ class AccountInfoFragment : BaseFragment() {
       }
     }
 
-    viewModel.accountInfo.observe(viewLifecycleOwner) { accountInfo ->
-      Log.d(TAG, "accountInfo: $accountInfo")
-      when (accountInfo.sp_code) {
-        "1" -> {
-          shortToast(accountInfo.message.toString())
-          (activity as NewMerchantActivity).setAccountId(accountInfo.account_id!!)
-          showSuccess()
+    viewModel.accountInfoDetails.observe(this) {
+      val accountInfo = it.account_info?.get(0)
+
+      if (accountInfo?.is_mfs != null && accountInfo.is_mfs == 1) {
+        if (!accountInfo.account_type.isNullOrEmpty()) {
+          binding.mfsAccountTypeTextView.setText(accountInfo.account_type, false)
         }
-        "2" -> {
-          shortToast(accountInfo.message.toString())
+        if (!accountInfo.account_name.isNullOrEmpty()) {
+          binding.mfsAccountNameLayout.editText?.setText(accountInfo.account_name)
         }
-        else -> {
-          shortToast(R.string.something_went_wrong)
+        if (!accountInfo.account_no.isNullOrEmpty()) {
+          binding.mfsAccountNumberLayout.editText?.setText(accountInfo.account_no)
+        }
+        if (!accountInfo.bank_name.isNullOrEmpty()) {
+          binding.mfsNameTextView.setText(accountInfo.bank_name, false)
+        }
+      } else {
+        if (!accountInfo?.account_type.isNullOrEmpty()) {
+          binding.accountTypeTextView.setText(accountInfo?.account_type, false)
+        }
+        if (!accountInfo?.account_name.isNullOrEmpty()) {
+          binding.accountNameLayout.editText?.setText(accountInfo?.account_name)
+        }
+        if (!accountInfo?.account_no.isNullOrEmpty()) {
+          binding.accountNumberLayout.editText?.setText(accountInfo?.account_no)
+        }
+        if (!accountInfo?.bank_name.isNullOrEmpty()) {
+          binding.bankNameTextView.setText(accountInfo?.bank_name, false)
+        }
+        if (!accountInfo?.bank_branch_name.isNullOrEmpty()) {
+          binding.branchNameLayout.editText?.setText(accountInfo?.bank_branch_name)
+        }
+        if (!accountInfo?.routing_no.isNullOrEmpty()) {
+          binding.routingNumberLayout.editText?.setText(accountInfo?.routing_no)
         }
       }
     }
 
-    viewModel.nomineeInfo.observe(viewLifecycleOwner) { nomineeInfo ->
+    viewModel.nomineeInfoDetails.observe(this) {
+      val nomineeInfo = it.nominee_info?.get(0)
+
+      if (!nomineeInfo?.name.isNullOrEmpty()) {
+        binding.nomineeNameLayout.editText?.setText(nomineeInfo?.name)
+      }
+      if (!nomineeInfo?.father_or_husband_name.isNullOrEmpty()) {
+        binding.fathersNameLayout.editText?.setText(nomineeInfo?.father_or_husband_name)
+      }
+      if (!nomineeInfo?.mother_name.isNullOrEmpty()) {
+        binding.mothersNameLayout.editText?.setText(nomineeInfo?.mother_name)
+      }
+      if (!nomineeInfo?.relation_name.isNullOrEmpty()) {
+        binding.relationTextView.setText(nomineeInfo?.relation_name, false)
+      }
+      if (!nomineeInfo?.contact_no.isNullOrEmpty()) {
+        binding.contactLayout.editText?.setText(nomineeInfo?.contact_no)
+      }
+      if (!nomineeInfo?.email_address.isNullOrEmpty()) {
+        binding.emailLayout.editText?.setText(nomineeInfo?.email_address)
+      }
+      if (!nomineeInfo?.dob.isNullOrEmpty()) {
+        binding.dobLayout.editText?.setText(nomineeInfo?.dob)
+      }
+      if (!nomineeInfo?.nid_no.isNullOrEmpty()) {
+        binding.nidLayout.editText?.setText(nomineeInfo?.nid_no)
+      }
+      if (!nomineeInfo?.occupation_name.isNullOrEmpty()) {
+        binding.occupationTextView.setText(nomineeInfo?.occupation_name, false)
+      }
+      if (!nomineeInfo?.addess.isNullOrEmpty()) {
+        binding.addressLayout.editText?.setText(nomineeInfo?.addess)
+      }
+      if (!nomineeInfo?.division_name.isNullOrEmpty()) {
+        binding.divisionTextView.setText(nomineeInfo?.division_name, false)
+      }
+      if (!nomineeInfo?.district_name.isNullOrEmpty()) {
+        districts[nomineeInfo?.district_name.toString()] = nomineeInfo?.district_id!!
+        binding.districtTextView.setText(nomineeInfo.district_name, false)
+      }
+      if (!nomineeInfo?.police_station_name.isNullOrEmpty()) {
+        policeStations[nomineeInfo?.police_station_name.toString()] = nomineeInfo?.police_station_id!!
+        binding.policeStationTextView.setText(nomineeInfo.police_station_name, false)
+      }
+
+      Picasso.get()
+        .load("https://stagingapp.engine.shurjopayment.com/nominee_img/${nomineeInfo?.nominee_img}")
+        .placeholder(R.drawable.ic_baseline_person_24)
+        .error(R.drawable.ic_baseline_broken_image_24)
+        .into(binding.nomineeImageView)
+
+      Picasso.get()
+        .load("https://stagingapp.engine.shurjopayment.com/nid_img/frontside/${nomineeInfo?.nid_front}")
+        .placeholder(R.drawable.ic_baseline_credit_card_24)
+        .error(R.drawable.ic_baseline_broken_image_24)
+        .into(binding.nomineeNIDFrontImageView)
+
+      Picasso.get()
+        .load("https://stagingapp.engine.shurjopayment.com/nid_img/backside/${nomineeInfo?.nid_back}")
+        .placeholder(R.drawable.ic_baseline_credit_card_24)
+        .error(R.drawable.ic_baseline_broken_image_24)
+        .into(binding.nomineeNIDBackImageView)
+
+      nomineeImage = nomineeInfo?.nominee_img_base64
+      nomineeNIDFrontImage = nomineeInfo?.nid_front_base64
+      nomineeNIDBackImage = nomineeInfo?.nid_back_base64
+    }
+
+    viewModel.accountInfo.observe(this) { accountInfo ->
+      Log.d(TAG, "accountInfo: $accountInfo")
+      when (accountInfo.sp_code) {
+        "1" -> {
+          shortToast(accountInfo.message.toString())
+        }
+        "2" -> {
+          shortToast(accountInfo.message.toString())
+        }
+        else -> {
+          shortToast(accountInfo.message.toString())
+        }
+      }
+    }
+
+    viewModel.nomineeInfo.observe(this) { nomineeInfo ->
       Log.d(TAG, "nomineeInfo: $nomineeInfo")
       when (nomineeInfo.sp_code) {
         "1" -> {
           shortToast(nomineeInfo.message.toString())
-          (activity as NewMerchantActivity).setNomineeId(nomineeInfo.nominee_id!!)
-          showSuccess()
         }
         "2" -> {
           shortToast(nomineeInfo.message.toString())
         }
         else -> {
-          shortToast(R.string.something_went_wrong)
+          shortToast(nomineeInfo.message.toString())
         }
       }
     }
@@ -384,7 +479,7 @@ class AccountInfoFragment : BaseFragment() {
     val m = c.get(Calendar.MONTH)
     val d = c.get(Calendar.DAY_OF_MONTH)
 
-    val dialog = DatePickerDialog(requireContext(), { _, year, monthOfYear, dayOfMonth ->
+    val dialog = DatePickerDialog(this, { _, year, monthOfYear, dayOfMonth ->
       val moy = if (monthOfYear > 8) (monthOfYear + 1) else "0${monthOfYear + 1}"
       val dom = if (dayOfMonth > 9) dayOfMonth else "0$dayOfMonth"
       val date = "$year-$moy-$dom"
@@ -424,28 +519,28 @@ class AccountInfoFragment : BaseFragment() {
     val routingNumber = binding.routingNumberLayout.editText?.text.toString()
 
     if (accountType.isEmpty()) {
-      binding.accountTypeLayout.error = getString(R.string.this_field_is_required)
+      binding.accountTypeLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.accountTypeLayout.y.toInt())
       return
     } else {
       binding.accountTypeLayout.error = null
     }
     if (accountName.isEmpty()) {
-      binding.accountNameLayout.error = getString(R.string.this_field_is_required)
+      binding.accountNameLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.accountNameLayout.y.toInt())
       return
     } else {
       binding.accountNameLayout.error = null
     }
     if (accountNumber.isEmpty()) {
-      binding.accountNumberLayout.error = getString(R.string.this_field_is_required)
+      binding.accountNumberLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.accountNumberLayout.y.toInt())
       return
     } else {
       binding.accountNumberLayout.error = null
     }
     if (bankName.isEmpty()) {
-      binding.bankNameLayout.error = getString(R.string.this_field_is_required)
+      binding.bankNameLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.bankNameLayout.y.toInt())
       return
     } else {
@@ -453,7 +548,7 @@ class AccountInfoFragment : BaseFragment() {
     }
 
     val accountInfo = AccountInfo(
-      null,
+      accountId,
       accountCategory,
       accountType,
       accountName,
@@ -462,7 +557,7 @@ class AccountInfoFragment : BaseFragment() {
       branchName,
       routingNumber,
       null,
-      (activity as NewMerchantActivity).getShopOwnerId(),
+      merchantId,
       null,
       null,
       null,
@@ -470,11 +565,11 @@ class AccountInfoFragment : BaseFragment() {
       null
     )
 
-    submitExistingBankInfo(accountInfo)
+    updateExistingBankInfo(accountInfo)
   }
 
-  private fun submitExistingBankInfo(accountInfo: AccountInfo) {
-    viewModel.submitAccountInfo(accountInfo)
+  private fun updateExistingBankInfo(accountInfo: AccountInfo) {
+    viewModel.updateAccountInfo(accountInfo)
   }
 
   private fun validateMfsInputs() {
@@ -485,28 +580,28 @@ class AccountInfoFragment : BaseFragment() {
     val mfsName = binding.mfsNameTextView.text.toString()
 
     if (accountType.isEmpty()) {
-      binding.mfsAccountTypeLayout.error = getString(R.string.this_field_is_required)
+      binding.mfsAccountTypeLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.mfsAccountTypeLayout.y.toInt())
       return
     } else {
       binding.mfsAccountTypeLayout.error = null
     }
     if (accountName.isEmpty()) {
-      binding.mfsAccountNameLayout.error = getString(R.string.this_field_is_required)
+      binding.mfsAccountNameLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.mfsAccountNameLayout.y.toInt())
       return
     } else {
       binding.mfsAccountNameLayout.error = null
     }
     if (accountNumber.isEmpty()) {
-      binding.mfsAccountNumberLayout.error = getString(R.string.this_field_is_required)
+      binding.mfsAccountNumberLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.mfsAccountNumberLayout.y.toInt())
       return
     } else {
       binding.mfsAccountNumberLayout.error = null
     }
     if (mfsName.isEmpty()) {
-      binding.mfsNameLayout.error = getString(R.string.this_field_is_required)
+      binding.mfsNameLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.mfsNameLayout.y.toInt())
       return
     } else {
@@ -514,7 +609,7 @@ class AccountInfoFragment : BaseFragment() {
     }
 
     val accountInfo = AccountInfo(
-      null,
+      accountId,
       accountCategory,
       accountType,
       accountName,
@@ -523,7 +618,7 @@ class AccountInfoFragment : BaseFragment() {
       null,
       null,
       1,
-      (activity as NewMerchantActivity).getShopOwnerId(),
+      merchantId,
       null,
       null,
       null,
@@ -531,11 +626,11 @@ class AccountInfoFragment : BaseFragment() {
       null
     )
 
-    submitMfsInfo(accountInfo)
+    updateMfsInfo(accountInfo)
   }
 
-  private fun submitMfsInfo(accountInfo: AccountInfo) {
-    viewModel.submitAccountInfo(accountInfo)
+  private fun updateMfsInfo(accountInfo: AccountInfo) {
+    viewModel.updateAccountInfo(accountInfo)
   }
 
   private fun validateNomineeInputs() {
@@ -555,121 +650,121 @@ class AccountInfoFragment : BaseFragment() {
     val policeStation = binding.policeStationLayout.editText?.text.toString()
 
     if (nomineeName.isEmpty()) {
-      binding.nomineeNameLayout.error = getString(R.string.this_field_is_required)
+      binding.nomineeNameLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.nomineeNameLayout.y.toInt())
       return
     } else {
       binding.nomineeNameLayout.error = null
     }
     if (fatherHusbandsName.isEmpty()) {
-      binding.fathersNameLayout.error = getString(R.string.this_field_is_required)
+      binding.fathersNameLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.fathersNameLayout.y.toInt())
       return
     } else {
       binding.fathersNameLayout.error = null
     }
     if (mothersName.isEmpty()) {
-      binding.mothersNameLayout.error = getString(R.string.this_field_is_required)
+      binding.mothersNameLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.mothersNameLayout.y.toInt())
       return
     } else {
       binding.mothersNameLayout.error = null
     }
     if (relation.isEmpty()) {
-      binding.relationLayout.error = getString(R.string.this_field_is_required)
+      binding.relationLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.relationLayout.y.toInt())
       return
     } else {
       binding.relationLayout.error = null
     }
     if (contactNo.isEmpty()) {
-      binding.contactLayout.error = getString(R.string.this_field_is_required)
+      binding.contactLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.contactLayout.y.toInt())
       return
     } else {
       binding.contactLayout.error = null
     }
     if (email.isNotEmpty() && !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-      binding.emailLayout.error = getString(R.string.email_is_invalid)
+      binding.emailLayout.error = getString(com.sm.spagent.R.string.email_is_invalid)
       binding.scrollView.smoothScrollTo(0, binding.emailLayout.y.toInt())
       return
     } else {
       binding.emailLayout.error = null
     }
     if (dob.isEmpty()) {
-      binding.dobLayout.error = getString(R.string.this_field_is_required)
+      binding.dobLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.dobLayout.y.toInt())
       return
     } else {
       binding.dobLayout.error = null
     }
     if (nidNo.isEmpty()) {
-      binding.nidLayout.error = getString(R.string.this_field_is_required)
+      binding.nidLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.nidLayout.y.toInt())
       return
     } else {
       binding.nidLayout.error = null
     }
     if (nidNo.length != 10 && nidNo.length != 13 && nidNo.length != 17) {
-      binding.nidLayout.error = getString(R.string.nid_is_invalid)
+      binding.nidLayout.error = getString(com.sm.spagent.R.string.nid_is_invalid)
       binding.scrollView.smoothScrollTo(0, binding.nidLayout.y.toInt())
       return
     } else {
       binding.nidLayout.error = null
     }
     if (occupation.isEmpty()) {
-      binding.occupationLayout.error = getString(R.string.this_field_is_required)
+      binding.occupationLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.occupationLayout.y.toInt())
       return
     } else {
       binding.occupationLayout.error = null
     }
     if (address.isEmpty()) {
-      binding.addressLayout.error = getString(R.string.this_field_is_required)
+      binding.addressLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.addressLayout.y.toInt())
       return
     } else {
       binding.addressLayout.error = null
     }
     if (division.isEmpty()) {
-      binding.divisionLayout.error = getString(R.string.this_field_is_required)
+      binding.divisionLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.divisionLayout.y.toInt())
       return
     } else {
       binding.divisionLayout.error = null
     }
     if (district.isEmpty()) {
-      binding.districtLayout.error = getString(R.string.this_field_is_required)
+      binding.districtLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.districtLayout.y.toInt())
       return
     } else {
       binding.districtLayout.error = null
     }
     if (policeStation.isEmpty()) {
-      binding.policeStationLayout.error = getString(R.string.this_field_is_required)
+      binding.policeStationLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.policeStationLayout.y.toInt())
       return
     } else {
       binding.policeStationLayout.error = null
     }
     if (nomineeImage == null) {
-      shortSnack(binding.nomineeImageLayout, R.string.capture_nominee_image)
+      shortSnack(binding.nomineeImageLayout, com.sm.spagent.R.string.capture_nominee_image)
       binding.scrollView.smoothScrollTo(0, binding.nomineeImageLayout.y.toInt())
       return
     }
     if (nomineeNIDFrontImage == null) {
-      shortSnack(binding.nomineeNIDFrontLayout, R.string.capture_front_side_of_nid)
+      shortSnack(binding.nomineeNIDFrontLayout, com.sm.spagent.R.string.capture_front_side_of_nid)
       binding.scrollView.smoothScrollTo(0, binding.nomineeNIDFrontLayout.y.toInt())
       return
     }
     if (nomineeNIDBackImage == null) {
-      shortSnack(binding.nomineeNIDBackLayout, R.string.capture_back_side_of_nid)
+      shortSnack(binding.nomineeNIDBackLayout, com.sm.spagent.R.string.capture_back_side_of_nid)
       binding.scrollView.smoothScrollTo(0, binding.nomineeNIDBackLayout.y.toInt())
       return
     }
 
     val nomineeInfo = NomineeInfo(
-      null,
+      nomineeId,
       nomineeName,
       fatherHusbandsName,
       mothersName,
@@ -683,7 +778,7 @@ class AccountInfoFragment : BaseFragment() {
       divisions[division]!!,
       districts[district]!!,
       policeStations[policeStation]!!,
-      (activity as NewMerchantActivity).getShopOwnerId(),
+      merchantId,
       null,
       nomineeImage!!,
       nomineeNIDFrontImage!!,
@@ -694,24 +789,14 @@ class AccountInfoFragment : BaseFragment() {
       null
     )
 
-    submitNomineeInfo(nomineeInfo)
+    updateNomineeInfo(nomineeInfo)
   }
 
-  private fun submitNomineeInfo(nomineeInfo: NomineeInfo) {
-    viewModel.submitNomineeInfo(nomineeInfo)
-  }
-
-  private fun showSuccess() {
-    val intent = Intent(requireContext(), SuccessActivity::class.java)
-    intent.putExtra(MERCHANT_ID, (activity as NewMerchantActivity).getShopOwnerId())
-    intent.putExtra(SHOP_ID, (activity as NewMerchantActivity).getShopId())
-    intent.putExtra(ACCOUNT_ID, (activity as NewMerchantActivity).getAccountId())
-    intent.putExtra(NOMINEE_ID, (activity as NewMerchantActivity).getNomineeId())
-    startActivity(intent)
-    (activity as NewMerchantActivity).finish()
+  private fun updateNomineeInfo(nomineeInfo: NomineeInfo) {
+    viewModel.updateNomineeInfo(nomineeInfo)
   }
 
   companion object {
-    private const val TAG = "AccountInfoFragment"
+    private const val TAG = "EditAccountInfoActivity"
   }
 }

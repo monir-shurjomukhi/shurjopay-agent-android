@@ -1,4 +1,4 @@
-package com.sm.spagent.ui.fragment
+package com.sm.spagent.ui.activity
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -8,9 +8,7 @@ import android.location.Location
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.MenuItem
 import android.widget.ArrayAdapter
 import androidx.core.app.ActivityCompat
 import androidx.core.widget.doAfterTextChanged
@@ -20,31 +18,31 @@ import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageView
 import com.canhub.cropper.options
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.OnTokenCanceledListener
 import com.sm.spagent.R
-import com.sm.spagent.databinding.FragmentShopInfoBinding
+import com.sm.spagent.databinding.ActivityEditShopInfoBinding
 import com.sm.spagent.model.ImageType
 import com.sm.spagent.model.ShopInfo
-import com.sm.spagent.ui.activity.NewMerchantActivity
-import com.sm.spagent.ui.viewmodel.ShopInfoViewModel
+import com.sm.spagent.ui.viewmodel.EditShopInfoViewModel
+import com.sm.spagent.utils.MERCHANT_ID
+import com.sm.spagent.utils.SHOP_ID
+import com.squareup.picasso.Picasso
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.quality
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.io.File
 
-class ShopInfoFragment : BaseFragment() {
+class EditShopInfoActivity : BaseActivity() {
 
-  private lateinit var viewModel: ShopInfoViewModel
-  private var _binding: FragmentShopInfoBinding? = null
+  private lateinit var binding: ActivityEditShopInfoBinding
+  private lateinit var viewModel: EditShopInfoViewModel
 
-  // This property is only valid between onCreateView and
-  // onDestroyView.
-  private val binding get() = _binding!!
-
+  private var merchantId = -1
+  private var shopId = -1
   private var imageType = ImageType.TRADE_LICENSE
   private var tradeLicenseImage: String? = null
   private var shopFrontImage: String? = null
@@ -63,13 +61,13 @@ class ShopInfoFragment : BaseFragment() {
       // use the returned uri
       val uriContent = result.uriContent
       Log.d(TAG, "uriContent: $uriContent")
-      val uriFilePath = result.getUriFilePath(requireContext()) // optional usage
+      val uriFilePath = result.getUriFilePath(this) // optional usage
       Log.d(TAG, "uriFilePath: $uriFilePath")
       lifecycleScope.launch {
         showProgress()
         val file = File(uriFilePath)
         Log.d(TAG, "file size (KB): ${file.length() / 1024}")
-        val compressedImageFile = Compressor.compress(requireContext(), file) { quality(50) }
+        val compressedImageFile = Compressor.compress(this@EditShopInfoActivity, file) { quality(50) }
         Log.d(TAG, "compressedImageFile size (KB): ${compressedImageFile.length() / 1024}")
         val bitmap = BitmapFactory.decodeFile(compressedImageFile.absolutePath)
         val outputStream = ByteArrayOutputStream()
@@ -99,29 +97,23 @@ class ShopInfoFragment : BaseFragment() {
     }
   }
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-    viewModel = ViewModelProvider(this)[ShopInfoViewModel::class.java]
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    binding = ActivityEditShopInfoBinding.inflate(layoutInflater)
+    setContentView(binding.root)
+    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    supportActionBar?.setDisplayShowHomeEnabled(true)
+    supportActionBar?.title = getString(R.string.edit_shop_info)
 
-    _binding = FragmentShopInfoBinding.inflate(inflater, container, false)
-    val root: View = binding.root
+    viewModel = ViewModelProvider(this)[EditShopInfoViewModel::class.java]
+    merchantId = intent.getIntExtra(MERCHANT_ID, -1)
+    shopId = intent.getIntExtra(SHOP_ID, -1)
 
     setupViews()
     observeData()
 
     viewModel.getBusinessTypes()
     viewModel.getDivisions()
-    requestLocation()
-
-    return root
-  }
-
-  override fun onDestroyView() {
-    super.onDestroyView()
-    _binding = null
   }
 
   private fun setupViews() {
@@ -130,7 +122,7 @@ class ShopInfoFragment : BaseFragment() {
     binding.tradeLicensePickerLayout.setOnClickListener { startImageCrop(ImageType.TRADE_LICENSE) }
     binding.shopFrontPickerLayout.setOnClickListener { startImageCrop(ImageType.SHOP_FRONT) }
 
-    context?.let {
+    this.let {
       ArrayAdapter(
         it, android.R.layout.simple_list_item_1,
         shopSizes
@@ -159,11 +151,11 @@ class ShopInfoFragment : BaseFragment() {
 
     binding.refreshLocationLayout.setOnClickListener { requestLocation() }
 
-    binding.saveNextButton.setOnClickListener { validateInputs() }
+    binding.updateButton.setOnClickListener { validateInputs() }
   }
 
   private fun observeData() {
-    viewModel.progress.observe(viewLifecycleOwner) {
+    viewModel.progress.observe(this) {
       if (it) {
         showProgress()
       } else {
@@ -171,17 +163,17 @@ class ShopInfoFragment : BaseFragment() {
       }
     }
 
-    viewModel.message.observe(viewLifecycleOwner) {
-      shortSnack(binding.saveNextButton, it)
+    viewModel.message.observe(this) {
+      shortSnack(binding.updateButton, it)
     }
 
-    viewModel.businessType.observe(viewLifecycleOwner) { businessType ->
+    viewModel.businessType.observe(this) { businessType ->
       businessTypes.clear()
       for (data in businessType.business_type_names!!) {
         businessTypes[data.business_type_name.toString()] = data.id!!
       }
 
-      context?.let {
+      this.let {
         ArrayAdapter(
           it, android.R.layout.simple_list_item_1,
           businessTypes.keys.toList()
@@ -191,13 +183,13 @@ class ShopInfoFragment : BaseFragment() {
       }
     }
 
-    viewModel.division.observe(viewLifecycleOwner) { division ->
+    viewModel.division.observe(this) { division ->
       divisions.clear()
       for (data in division.divisions!!) {
         divisions[data.division_name.toString()] = data.id!!
       }
 
-      context?.let {
+      this.let {
         ArrayAdapter(
           it, android.R.layout.simple_list_item_1,
           divisions.keys.toList()
@@ -205,15 +197,17 @@ class ShopInfoFragment : BaseFragment() {
           binding.divisionTextView.setAdapter(adapter)
         }
       }
+
+      viewModel.getShopInfo(shopId)
     }
 
-    viewModel.district.observe(viewLifecycleOwner) { district ->
+    viewModel.district.observe(this) { district ->
       districts.clear()
       for (data in district.districts!!) {
         districts[data.district_name.toString()] = data.id!!
       }
 
-      context?.let {
+      this.let {
         ArrayAdapter(
           it, android.R.layout.simple_list_item_1,
           districts.keys.toList()
@@ -223,13 +217,13 @@ class ShopInfoFragment : BaseFragment() {
       }
     }
 
-    viewModel.policeStation.observe(viewLifecycleOwner) { policeStation ->
+    viewModel.policeStation.observe(this) { policeStation ->
       policeStations.clear()
       for (data in policeStation.police_stations!!) {
         policeStations[data.police_station_name.toString()] = data.id!!
       }
 
-      context?.let {
+      this.let {
         ArrayAdapter(
           it, android.R.layout.simple_list_item_1,
           policeStations.keys.toList()
@@ -239,19 +233,66 @@ class ShopInfoFragment : BaseFragment() {
       }
     }
 
-    viewModel.shopInfo.observe(viewLifecycleOwner) { shopInfo ->
+    viewModel.shopInfoDetails.observe(this) {
+      val shopInfo = it.shop_info?.get(0)
+
+      if (!shopInfo?.shop_or_business_name.isNullOrEmpty()) {
+        binding.shopNameLayout.editText?.setText(shopInfo?.shop_or_business_name)
+      }
+      if (!shopInfo?.tin_no.isNullOrEmpty()) {
+        binding.tinLayout.editText?.setText(shopInfo?.tin_no)
+      }
+      if (!shopInfo?.business_type_name.isNullOrEmpty()) {
+        binding.businessTypeTextView.setText(shopInfo?.business_type_name, false)
+      }
+      if (!shopInfo?.shop_size.isNullOrEmpty()) {
+        binding.shopSizeTextView.setText(shopInfo?.shop_size, false)
+      }
+      if (!shopInfo?.shop_addess.isNullOrEmpty()) {
+        binding.shopAddressLayout.editText?.setText(shopInfo?.shop_addess)
+      }
+      if (!shopInfo?.division_name.isNullOrEmpty()) {
+        binding.divisionTextView.setText(shopInfo?.division_name, false)
+      }
+      if (!shopInfo?.district_name.isNullOrEmpty()) {
+        districts[shopInfo?.district_name.toString()] = shopInfo?.shop_address_district_id!!
+        binding.districtTextView.setText(shopInfo.district_name, false)
+      }
+      if (!shopInfo?.police_station_name.isNullOrEmpty()) {
+        districts[shopInfo?.police_station_name.toString()] = shopInfo?.shop_address_police_station_id!!
+        binding.policeStationTextView.setText(shopInfo.police_station_name, false)
+      }
+      if (!shopInfo?.shop_gps_location.isNullOrEmpty()) {
+        binding.locationLayout.editText?.setText(shopInfo?.shop_gps_location)
+      }
+
+      Picasso.get()
+        .load("https://stagingapp.engine.shurjopayment.com/trade_license/${shopInfo?.trade_licence}")
+        .placeholder(R.drawable.ic_baseline_image_24)
+        .error(R.drawable.ic_baseline_broken_image_24)
+        .into(binding.tradeLicenseImageView)
+
+      Picasso.get()
+        .load("https://stagingapp.engine.shurjopayment.com/shop_front_img/${shopInfo?.shop_front_img}")
+        .placeholder(R.drawable.ic_baseline_storefront_24)
+        .error(R.drawable.ic_baseline_broken_image_24)
+        .into(binding.shopFrontImageView)
+
+      tradeLicenseImage = shopInfo?.trade_licence_base64
+      shopFrontImage = shopInfo?.shop_front_img_base64
+    }
+
+    viewModel.shopInfo.observe(this) { shopInfo ->
       Log.d(TAG, "shopInfo: $shopInfo")
       when (shopInfo.sp_code) {
         "1" -> {
           shortToast(shopInfo.message.toString())
-          (activity as NewMerchantActivity).setShopId(shopInfo.shop_id!!)
-          (activity as NewMerchantActivity).goToNextStep()
         }
         "2" -> {
           shortToast(shopInfo.message.toString())
         }
         else -> {
-          shortToast(R.string.something_went_wrong)
+          shortToast(shopInfo.message.toString())
         }
       }
     }
@@ -260,18 +301,18 @@ class ShopInfoFragment : BaseFragment() {
   private fun requestLocation() {
     binding.locationLayout.editText?.setText(getString(R.string.getting_location))
     val fusedLocationClient: FusedLocationProviderClient =
-      LocationServices.getFusedLocationProviderClient(requireContext())
+      LocationServices.getFusedLocationProviderClient(this)
     if (ActivityCompat.checkSelfPermission(
-        requireContext(),
+        this,
         Manifest.permission.ACCESS_FINE_LOCATION
       ) != PackageManager.PERMISSION_GRANTED
       && ActivityCompat.checkSelfPermission(
-        requireContext(),
+        this,
         Manifest.permission.ACCESS_COARSE_LOCATION
       ) != PackageManager.PERMISSION_GRANTED
     ) {
       ActivityCompat.requestPermissions(
-        requireActivity(),
+        this,
         arrayOf(
           Manifest.permission.ACCESS_FINE_LOCATION,
           Manifest.permission.ACCESS_COARSE_LOCATION
@@ -289,7 +330,7 @@ class ShopInfoFragment : BaseFragment() {
         }
       }
       val task = fusedLocationClient.getCurrentLocation(
-        PRIORITY_BALANCED_POWER_ACCURACY,
+        LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY,
         token
       )
 
@@ -423,13 +464,13 @@ class ShopInfoFragment : BaseFragment() {
       return
     }*/
     if (shopFrontImage == null) {
-      shortSnack(binding.shopFrontLayout, R.string.capture_shop_front_image)
+      shortSnack(binding.updateButton, R.string.capture_shop_front_image)
       binding.scrollView.smoothScrollTo(0, binding.shopFrontLayout.y.toInt())
       return
     }
 
     val shopInfo = ShopInfo(
-      null,
+      shopId,
       shopName,
       tin,
       businessTypes[businessType]!!,
@@ -441,7 +482,7 @@ class ShopInfoFragment : BaseFragment() {
       shopLocation,
       tradeLicenseImage,
       shopFrontImage!!,
-      (activity as NewMerchantActivity).getShopOwnerId(),
+      merchantId,
       null,
       null,
       null,
@@ -452,10 +493,21 @@ class ShopInfoFragment : BaseFragment() {
   }
 
   private fun submitShopInfo(shopInfo: ShopInfo) {
-    viewModel.submitShopInfo(shopInfo)
+    viewModel.updateShopInfo(shopInfo)
+  }
+
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    // Handle item selection
+    return when (item.itemId) {
+      android.R.id.home -> {
+        onBackPressed()
+        true
+      }
+      else -> super.onOptionsItemSelected(item)
+    }
   }
 
   companion object {
-    private const val TAG = "ShopInfoFragment"
+    private const val TAG = "EditShopInfoActivity"
   }
 }
