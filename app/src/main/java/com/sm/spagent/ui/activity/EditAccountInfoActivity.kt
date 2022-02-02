@@ -26,6 +26,7 @@ import com.sm.spagent.ui.viewmodel.EditAccountInfoViewModel
 import com.sm.spagent.utils.ACCOUNT_ID
 import com.sm.spagent.utils.MERCHANT_ID
 import com.sm.spagent.utils.NOMINEE_ID
+import com.squareup.picasso.Picasso
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.quality
 import kotlinx.coroutines.launch
@@ -299,8 +300,8 @@ class EditAccountInfoActivity : BaseActivity() {
         }
       }
 
-      viewModel.getAccountInfo(accountId)
-      viewModel.getNomineeInfo(nomineeId)
+      if (accountId != -1) viewModel.getAccountInfo(accountId)
+      if (nomineeId != -1) viewModel.getNomineeInfo(nomineeId)
     }
 
     viewModel.district.observe(this) { district ->
@@ -372,49 +373,50 @@ class EditAccountInfoActivity : BaseActivity() {
         }
       }
     }
-/*
 
-    viewModel.nomineeInfoDetails.observe(viewLifecycleOwner) {
+    viewModel.nomineeInfoDetails.observe(this) {
       val nomineeInfo = it.nominee_info?.get(0)
 
       if (!nomineeInfo?.name.isNullOrEmpty()) {
-        binding.nomineeNameTextView.text = nomineeInfo?.name
+        binding.nomineeNameLayout.editText?.setText(nomineeInfo?.name)
       }
       if (!nomineeInfo?.father_or_husband_name.isNullOrEmpty()) {
-        binding.fathersNameTextView.text = nomineeInfo?.father_or_husband_name
+        binding.fathersNameLayout.editText?.setText(nomineeInfo?.father_or_husband_name)
       }
       if (!nomineeInfo?.mother_name.isNullOrEmpty()) {
-        binding.mothersNameTextView.text = nomineeInfo?.mother_name
+        binding.mothersNameLayout.editText?.setText(nomineeInfo?.mother_name)
       }
       if (!nomineeInfo?.relation_name.isNullOrEmpty()) {
-        binding.relationTextView.text = nomineeInfo?.relation_name
+        binding.relationTextView.setText(nomineeInfo?.relation_name, false)
       }
       if (!nomineeInfo?.contact_no.isNullOrEmpty()) {
-        binding.contactNoTextView.text = nomineeInfo?.contact_no
+        binding.contactLayout.editText?.setText(nomineeInfo?.contact_no)
       }
       if (!nomineeInfo?.email_address.isNullOrEmpty()) {
-        binding.emailTextView.text = nomineeInfo?.email_address
+        binding.emailLayout.editText?.setText(nomineeInfo?.email_address)
       }
       if (!nomineeInfo?.dob.isNullOrEmpty()) {
-        binding.dobTextView.text = nomineeInfo?.dob
+        binding.dobLayout.editText?.setText(nomineeInfo?.dob)
       }
       if (!nomineeInfo?.nid_no.isNullOrEmpty()) {
-        binding.nidTextView.text = nomineeInfo?.nid_no
+        binding.nidLayout.editText?.setText(nomineeInfo?.nid_no)
       }
       if (!nomineeInfo?.occupation_name.isNullOrEmpty()) {
-        binding.occupationTextView.text = nomineeInfo?.occupation_name
+        binding.occupationTextView.setText(nomineeInfo?.occupation_name, false)
       }
       if (!nomineeInfo?.addess.isNullOrEmpty()) {
-        binding.addressTextView.text = nomineeInfo?.addess
+        binding.addressLayout.editText?.setText(nomineeInfo?.addess)
       }
       if (!nomineeInfo?.division_name.isNullOrEmpty()) {
-        binding.divisionTextView.text = nomineeInfo?.division_name
+        binding.divisionTextView.setText(nomineeInfo?.division_name, false)
       }
       if (!nomineeInfo?.district_name.isNullOrEmpty()) {
-        binding.districtTextView.text = nomineeInfo?.district_name
+        districts[nomineeInfo?.district_name.toString()] = nomineeInfo?.district_id!!
+        binding.districtTextView.setText(nomineeInfo.district_name, false)
       }
       if (!nomineeInfo?.police_station_name.isNullOrEmpty()) {
-        binding.policeStationTextView.text = nomineeInfo?.police_station_name
+        policeStations[nomineeInfo?.police_station_name.toString()] = nomineeInfo?.police_station_id!!
+        binding.policeStationTextView.setText(nomineeInfo.police_station_name, false)
       }
 
       Picasso.get()
@@ -434,8 +436,11 @@ class EditAccountInfoActivity : BaseActivity() {
         .placeholder(R.drawable.ic_baseline_credit_card_24)
         .error(R.drawable.ic_baseline_broken_image_24)
         .into(binding.nomineeNIDBackImageView)
+
+      nomineeImage = nomineeInfo?.nominee_img_base64
+      nomineeNIDFrontImage = nomineeInfo?.nid_front_base64
+      nomineeNIDBackImage = nomineeInfo?.nid_back_base64
     }
-*/
 
     viewModel.accountInfo.observe(this) { accountInfo ->
       Log.d(TAG, "accountInfo: $accountInfo")
