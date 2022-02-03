@@ -519,28 +519,28 @@ class EditAccountInfoActivity : BaseActivity() {
     val routingNumber = binding.routingNumberLayout.editText?.text.toString()
 
     if (accountType.isEmpty()) {
-      binding.accountTypeLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
+      binding.accountTypeLayout.error = getString(R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.accountTypeLayout.y.toInt())
       return
     } else {
       binding.accountTypeLayout.error = null
     }
     if (accountName.isEmpty()) {
-      binding.accountNameLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
+      binding.accountNameLayout.error = getString(R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.accountNameLayout.y.toInt())
       return
     } else {
       binding.accountNameLayout.error = null
     }
     if (accountNumber.isEmpty()) {
-      binding.accountNumberLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
+      binding.accountNumberLayout.error = getString(R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.accountNumberLayout.y.toInt())
       return
     } else {
       binding.accountNumberLayout.error = null
     }
     if (bankName.isEmpty()) {
-      binding.bankNameLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
+      binding.bankNameLayout.error = getString(R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.bankNameLayout.y.toInt())
       return
     } else {
@@ -580,28 +580,28 @@ class EditAccountInfoActivity : BaseActivity() {
     val mfsName = binding.mfsNameTextView.text.toString()
 
     if (accountType.isEmpty()) {
-      binding.mfsAccountTypeLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
+      binding.mfsAccountTypeLayout.error = getString(R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.mfsAccountTypeLayout.y.toInt())
       return
     } else {
       binding.mfsAccountTypeLayout.error = null
     }
     if (accountName.isEmpty()) {
-      binding.mfsAccountNameLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
+      binding.mfsAccountNameLayout.error = getString(R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.mfsAccountNameLayout.y.toInt())
       return
     } else {
       binding.mfsAccountNameLayout.error = null
     }
     if (accountNumber.isEmpty()) {
-      binding.mfsAccountNumberLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
+      binding.mfsAccountNumberLayout.error = getString(R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.mfsAccountNumberLayout.y.toInt())
       return
     } else {
       binding.mfsAccountNumberLayout.error = null
     }
     if (mfsName.isEmpty()) {
-      binding.mfsNameLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
+      binding.mfsNameLayout.error = getString(R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.mfsNameLayout.y.toInt())
       return
     } else {
@@ -650,35 +650,35 @@ class EditAccountInfoActivity : BaseActivity() {
     val policeStation = binding.policeStationLayout.editText?.text.toString()
 
     if (nomineeName.isEmpty()) {
-      binding.nomineeNameLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
+      binding.nomineeNameLayout.error = getString(R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.nomineeNameLayout.y.toInt())
       return
     } else {
       binding.nomineeNameLayout.error = null
     }
     if (fatherHusbandsName.isEmpty()) {
-      binding.fathersNameLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
+      binding.fathersNameLayout.error = getString(R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.fathersNameLayout.y.toInt())
       return
     } else {
       binding.fathersNameLayout.error = null
     }
     if (mothersName.isEmpty()) {
-      binding.mothersNameLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
+      binding.mothersNameLayout.error = getString(R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.mothersNameLayout.y.toInt())
       return
     } else {
       binding.mothersNameLayout.error = null
     }
     if (relation.isEmpty()) {
-      binding.relationLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
+      binding.relationLayout.error = getString(R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.relationLayout.y.toInt())
       return
     } else {
       binding.relationLayout.error = null
     }
     if (contactNo.isEmpty()) {
-      binding.contactLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
+      binding.contactLayout.error = getString(R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.contactLayout.y.toInt())
       return
     } else {
@@ -692,14 +692,14 @@ class EditAccountInfoActivity : BaseActivity() {
       binding.emailLayout.error = null
     }
     if (dob.isEmpty()) {
-      binding.dobLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
+      binding.dobLayout.error = getString(R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.dobLayout.y.toInt())
       return
     } else {
       binding.dobLayout.error = null
     }
     if (nidNo.isEmpty()) {
-      binding.nidLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
+      binding.nidLayout.error = getString(R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.nidLayout.y.toInt())
       return
     } else {
@@ -713,35 +713,35 @@ class EditAccountInfoActivity : BaseActivity() {
       binding.nidLayout.error = null
     }
     if (occupation.isEmpty()) {
-      binding.occupationLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
+      binding.occupationLayout.error = getString(R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.occupationLayout.y.toInt())
       return
     } else {
       binding.occupationLayout.error = null
     }
     if (address.isEmpty()) {
-      binding.addressLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
+      binding.addressLayout.error = getString(R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.addressLayout.y.toInt())
       return
     } else {
       binding.addressLayout.error = null
     }
     if (division.isEmpty()) {
-      binding.divisionLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
+      binding.divisionLayout.error = getString(R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.divisionLayout.y.toInt())
       return
     } else {
       binding.divisionLayout.error = null
     }
     if (district.isEmpty()) {
-      binding.districtLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
+      binding.districtLayout.error = getString(R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.districtLayout.y.toInt())
       return
     } else {
       binding.districtLayout.error = null
     }
     if (policeStation.isEmpty()) {
-      binding.policeStationLayout.error = getString(com.sm.spagent.R.string.this_field_is_required)
+      binding.policeStationLayout.error = getString(R.string.this_field_is_required)
       binding.scrollView.smoothScrollTo(0, binding.policeStationLayout.y.toInt())
       return
     } else {
