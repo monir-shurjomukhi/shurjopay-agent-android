@@ -43,7 +43,7 @@
         app:stepperIconSize="20dp"
         app:stepperItems="@menu/menu_stepper_merchant"
         app:stepperTextColor="@android:color/black"
-        app:stepperTextSize="12sp"
+        app:stepperTextSize="14sp"
         app:stepperType="tab"
         app:stepperWidgetColor="@color/purple_500" />
   </androidx.cardview.widget.CardView>
