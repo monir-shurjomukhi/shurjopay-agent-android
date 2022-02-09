@@ -67,7 +67,8 @@ class EditShopInfoActivity : BaseActivity() {
         showProgress()
         val file = File(uriFilePath)
         Log.d(TAG, "file size (KB): ${file.length() / 1024}")
-        val compressedImageFile = Compressor.compress(this@EditShopInfoActivity, file) { quality(50) }
+        val compressedImageFile =
+          Compressor.compress(this@EditShopInfoActivity, file) { quality(50) }
         Log.d(TAG, "compressedImageFile size (KB): ${compressedImageFile.length() / 1024}")
         val bitmap = BitmapFactory.decodeFile(compressedImageFile.absolutePath)
         val outputStream = ByteArrayOutputStream()
@@ -259,7 +260,8 @@ class EditShopInfoActivity : BaseActivity() {
         binding.districtTextView.setText(shopInfo.district_name, false)
       }
       if (!shopInfo?.police_station_name.isNullOrEmpty()) {
-        districts[shopInfo?.police_station_name.toString()] = shopInfo?.shop_address_police_station_id!!
+        districts[shopInfo?.police_station_name.toString()] =
+          shopInfo?.shop_address_police_station_id!!
         binding.policeStationTextView.setText(shopInfo.police_station_name, false)
       }
       if (!shopInfo?.shop_gps_location.isNullOrEmpty()) {

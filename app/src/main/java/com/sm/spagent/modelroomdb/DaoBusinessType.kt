@@ -5,18 +5,18 @@ import androidx.room.*
 
 @Dao
 interface DaoBusinessType {
-    @Insert
-    fun insert(businessType: ModelBusinessType)
+  @Insert
+  fun insert(businessType: ModelBusinessType)
 
-    @Update
-    fun update(businessType: ModelBusinessType)
+  @Update
+  fun update(businessType: ModelBusinessType)
 
-    @Delete
-    fun delete(businessType: ModelBusinessType)
+  @Delete
+  fun delete(businessType: ModelBusinessType)
 
-    @Query("delete from qr_business_type")
-    fun deleteAllBusinessType()
+  @Query("delete from qr_business_type")
+  fun deleteAllBusinessType()
 
-    @Query("select * from qr_business_type order by business_type_name asc")
-    fun getAllBusinessType(): LiveData<List<ModelBusinessType>>
+  @Query("select * from qr_business_type order by business_type_name asc")
+  fun getAllBusinessType(): LiveData<List<ModelBusinessType>>
 }
