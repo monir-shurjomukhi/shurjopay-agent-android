@@ -5,6 +5,6 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "qr_nominee_info")
 data class ModelNomineeInfo(
-    @PrimaryKey(autoGenerate = false)
-    val id: String?,
+  @PrimaryKey(autoGenerate = false)
+  val id: String?,
 )

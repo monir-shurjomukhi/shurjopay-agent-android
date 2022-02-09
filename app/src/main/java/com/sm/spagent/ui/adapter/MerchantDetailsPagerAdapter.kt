@@ -14,7 +14,7 @@ class MerchantDetailsPagerAdapter(private val context: Context, fm: FragmentMana
   FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
   override fun getItem(position: Int): Fragment {
-    return when(position) {
+    return when (position) {
       0 -> PersonalInfoDetailsFragment.newInstance()
       1 -> ShopInfoDetailsFragment.newInstance()
       else -> AccountInfoDetailsFragment.newInstance()
@@ -22,7 +22,7 @@ class MerchantDetailsPagerAdapter(private val context: Context, fm: FragmentMana
   }
 
   override fun getPageTitle(position: Int): CharSequence {
-    return when(position) {
+    return when (position) {
       0 -> context.getString(R.string.personal_info)
       1 -> context.getString(R.string.shop_info)
       else -> context.getString(R.string.account_info)
