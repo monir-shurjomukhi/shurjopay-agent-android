@@ -16,9 +16,9 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
-        app:tabMode="auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:tabMode="auto" />
   </com.google.android.material.appbar.AppBarLayout>
 
   <androidx.viewpager.widget.ViewPager

@@ -31,9 +31,9 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="4dp"
+          android:text="@string/n_a"
           android:textColor="@color/black"
-          android:textSize="16sp"
-          android:text="@string/n_a" />
+          android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -55,9 +55,9 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="4dp"
+          android:text="@string/n_a"
           android:textColor="@color/black"
-          android:textSize="16sp"
-          android:text="@string/n_a" />
+          android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -79,9 +79,9 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="4dp"
+          android:text="@string/n_a"
           android:textColor="@color/black"
-          android:textSize="16sp"
-          android:text="@string/n_a" />
+          android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -103,9 +103,9 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="4dp"
+          android:text="@string/n_a"
           android:textColor="@color/black"
-          android:textSize="16sp"
-          android:text="@string/n_a" />
+          android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -127,9 +127,9 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="4dp"
+          android:text="@string/n_a"
           android:textColor="@color/black"
-          android:textSize="16sp"
-          android:text="@string/n_a" />
+          android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -151,9 +151,9 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="4dp"
+          android:text="@string/n_a"
           android:textColor="@color/black"
-          android:textSize="16sp"
-          android:text="@string/n_a" />
+          android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -175,9 +175,9 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="4dp"
+          android:text="@string/n_a"
           android:textColor="@color/black"
-          android:textSize="16sp"
-          android:text="@string/n_a" />
+          android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -199,9 +199,9 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="4dp"
+          android:text="@string/n_a"
           android:textColor="@color/black"
-          android:textSize="16sp"
-          android:text="@string/n_a" />
+          android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -223,9 +223,9 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="4dp"
+          android:text="@string/n_a"
           android:textColor="@color/black"
-          android:textSize="16sp"
-          android:text="@string/n_a" />
+          android:textSize="16sp" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
