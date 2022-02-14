@@ -38,6 +38,7 @@ class PersonalInfoFragment : BaseFragment() {
 
   private lateinit var viewModel: PersonalInfoViewModel
   private var _binding: FragmentPersonalInfoBinding? = null
+
   // This property is only valid between onCreateView and
   // onDestroyView.
   private val binding get() = _binding!!
@@ -258,7 +259,8 @@ class PersonalInfoFragment : BaseFragment() {
     viewModel.ocr.observe(viewLifecycleOwner) { ocr ->
       Log.d(TAG, "ocr: $ocr")
       if (ocr.nid != null && (ocr.nid.toString().length == 10 || ocr.nid.toString().length == 13
-            || ocr.nid.toString().length == 17))
+            || ocr.nid.toString().length == 17)
+      )
         binding.step2NIDLayout.editText?.setText(ocr.nid.toString())
       if (ocr.dob != null && ocr.dob.length == 10) binding.step2DOBLayout.editText?.setText(ocr.dob)
       goToNextStep()
@@ -347,8 +349,8 @@ class PersonalInfoFragment : BaseFragment() {
     val d = c.get(Calendar.DAY_OF_MONTH)
 
     val dialog = DatePickerDialog(requireContext(), { _, year, monthOfYear, dayOfMonth ->
-      val moy = if (monthOfYear>8) (monthOfYear+1) else "0${monthOfYear+1}"
-      val dom = if (dayOfMonth>9) dayOfMonth else "0$dayOfMonth"
+      val moy = if (monthOfYear > 8) (monthOfYear + 1) else "0${monthOfYear + 1}"
+      val dom = if (dayOfMonth > 9) dayOfMonth else "0$dayOfMonth"
       val date = "$year-$moy-$dom"
       binding.step2DOBLayout.editText?.setText(date)
     }, y, m, d)

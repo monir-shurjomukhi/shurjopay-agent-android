@@ -16,7 +16,10 @@ class MerchantsAdapter(
 ) :
   RecyclerView.Adapter<MerchantsAdapter.MyViewHolder>() {
 
-  inner class MyViewHolder(val binding: ShopOwnerListItemBinding, private val onItemClicked: (position: Int) -> Unit) :
+  inner class MyViewHolder(
+    val binding: ShopOwnerListItemBinding,
+    private val onItemClicked: (position: Int) -> Unit
+  ) :
     RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
     init {
@@ -29,7 +32,8 @@ class MerchantsAdapter(
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-    val binding = ShopOwnerListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    val binding =
+      ShopOwnerListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     return MyViewHolder(binding, onItemClicked)
   }
 
@@ -45,7 +49,8 @@ class MerchantsAdapter(
         binding.contactNoTextView.text = this.contact_no
         binding.addressTextView.text = this.perm_addess
         binding.policeStationTextView.text = this.police_station_name
-        binding.districtTextView.text = holder.itemView.context.getString(R.string.district_name, this.district_name)
+        binding.districtTextView.text =
+          holder.itemView.context.getString(R.string.district_name, this.district_name)
         binding.divisionTextView.text = this.division_name
       }
     }

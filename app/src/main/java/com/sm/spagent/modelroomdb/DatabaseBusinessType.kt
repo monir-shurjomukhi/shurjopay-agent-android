@@ -8,35 +8,36 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(entities = [ModelBusinessType::class], version = 1)
 abstract class DatabaseBusinessType : RoomDatabase() {
-    abstract fun businessTypeDao(): DaoBusinessType
-    companion object {
-        private var instance: DatabaseBusinessType? = null
+  abstract fun businessTypeDao(): DaoBusinessType
 
-        @Synchronized
-        fun getInstance(ctx: Context): DatabaseBusinessType {
-            if (instance == null)
-                instance = Room.databaseBuilder(
-                    ctx.applicationContext, DatabaseBusinessType::class.java,
-                    "qr_business_type"
-                )
-                    .fallbackToDestructiveMigration()
-                    .addCallback(roomCallback)
-                    .build()
+  companion object {
+    private var instance: DatabaseBusinessType? = null
 
-            return instance!!
-        }
+    @Synchronized
+    fun getInstance(ctx: Context): DatabaseBusinessType {
+      if (instance == null)
+        instance = Room.databaseBuilder(
+          ctx.applicationContext, DatabaseBusinessType::class.java,
+          "qr_business_type"
+        )
+          .fallbackToDestructiveMigration()
+          .addCallback(roomCallback)
+          .build()
 
-        private val roomCallback = object : Callback() {
-            override fun onCreate(db: SupportSQLiteDatabase) {
-                super.onCreate(db)
-                populateDatabase(instance!!)
-            }
-        }
-
-        private fun populateDatabase(db: DatabaseBusinessType) {
-            val businessTypeDao = db.businessTypeDao()
-            /*subscribeOnBackground {
-            }*/
-        }
+      return instance!!
     }
+
+    private val roomCallback = object : Callback() {
+      override fun onCreate(db: SupportSQLiteDatabase) {
+        super.onCreate(db)
+        populateDatabase(instance!!)
+      }
+    }
+
+    private fun populateDatabase(db: DatabaseBusinessType) {
+      val businessTypeDao = db.businessTypeDao()
+      /*subscribeOnBackground {
+      }*/
+    }
+  }
 }

@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "qr_business_type")
 data class ModelBusinessType(
-    @PrimaryKey(autoGenerate = false)
-    val id: String?,
-    val business_type_name: String?,
-    val status: Int?,
+  @PrimaryKey(autoGenerate = false)
+  val id: String?,
+  val business_type_name: String?,
+  val status: Int?,
 )

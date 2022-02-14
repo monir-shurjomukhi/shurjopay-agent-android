@@ -1,11 +1,10 @@
 package com.sm.spagent.ui.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import androidx.lifecycle.ViewModelProvider
+import androidx.appcompat.app.AppCompatActivity
 import com.sm.spagent.R
 import com.sm.spagent.databinding.ActivitySuccessBinding
 import com.sm.spagent.utils.ACCOUNT_ID

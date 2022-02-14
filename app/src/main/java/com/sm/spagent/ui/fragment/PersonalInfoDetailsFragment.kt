@@ -18,6 +18,7 @@ class PersonalInfoDetailsFragment : BaseFragment() {
 
   private lateinit var viewModel: PersonalInfoDetailsViewModel
   private var _binding: FragmentPersonalInfoDetailsBinding? = null
+
   // This property is only valid between onCreateView and
   // onDestroyView.
   private val binding get() = _binding!!

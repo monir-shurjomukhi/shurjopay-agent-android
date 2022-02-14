@@ -69,7 +69,8 @@ class EditAccountInfoActivity : BaseActivity() {
         showProgress()
         val file = File(uriFilePath)
         Log.d(TAG, "file size (KB): ${file.length() / 1024}")
-        val compressedImageFile = Compressor.compress(this@EditAccountInfoActivity, file) { quality(50) }
+        val compressedImageFile =
+          Compressor.compress(this@EditAccountInfoActivity, file) { quality(50) }
         Log.d(TAG, "compressedImageFile size (KB): ${compressedImageFile.length() / 1024}")
         val bitmap = BitmapFactory.decodeFile(compressedImageFile.absolutePath)
         val outputStream = ByteArrayOutputStream()
@@ -415,7 +416,8 @@ class EditAccountInfoActivity : BaseActivity() {
         binding.districtTextView.setText(nomineeInfo.district_name, false)
       }
       if (!nomineeInfo?.police_station_name.isNullOrEmpty()) {
-        policeStations[nomineeInfo?.police_station_name.toString()] = nomineeInfo?.police_station_id!!
+        policeStations[nomineeInfo?.police_station_name.toString()] =
+          nomineeInfo?.police_station_id!!
         binding.policeStationTextView.setText(nomineeInfo.police_station_name, false)
       }
 

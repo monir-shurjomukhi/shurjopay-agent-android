@@ -6,7 +6,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 
-open class BaseFragment: Fragment() {
+open class BaseFragment : Fragment() {
   private var progressDialog: ProgressDialog? = null
 
   protected fun showProgress() {
@@ -47,6 +47,7 @@ open class BaseFragment: Fragment() {
   }
 
   protected fun actionSnack(view: View, message: Int, action: Int, listener: View.OnClickListener) {
-    Snackbar.make(view, getString(message), Snackbar.LENGTH_INDEFINITE).setAction(action, listener).show()
+    Snackbar.make(view, getString(message), Snackbar.LENGTH_INDEFINITE).setAction(action, listener)
+      .show()
   }
 }

@@ -21,6 +21,7 @@ class MerchantsFragment : BaseFragment() {
 
   private lateinit var viewModel: MerchantsViewModel
   private var _binding: FragmentMerchantsBinding? = null
+
   // This property is only valid between onCreateView and
   // onDestroyView.
   private val binding get() = _binding!!
